@@ -1,5 +1,6 @@
 import express from 'express'
-const app: express.Application = express();
+import db from './db'
+const app: express.Application = express()
 
 app.get('/', (req, res) => res.send('DND Typescript devmode!'))
 
