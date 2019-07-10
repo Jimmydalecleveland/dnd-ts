@@ -1,19 +1,19 @@
 import { DataSource } from 'apollo-datasource'
-import db from '../db'
+import knex from '../db'
 
 class CharacterAPI extends DataSource {
-  context: any;
+  public context: any;
 
-  initialize(config: any) {
+  public initialize(config: any) {
     this.context = config.context
   }
 
-  getCharacter({ ID }: { ID: string }) {
-    return db('Character').select().where('ID', Number(ID)).first()
+  public getCharacter({ ID }: { ID: string }) {
+    return knex('Character').select().where('ID', Number(ID)).first()
   }
 
-  getCharacters() {
-    return db('Character').select()
+  public getCharacters() {
+    return knex('Character').select()
   }
 }
 

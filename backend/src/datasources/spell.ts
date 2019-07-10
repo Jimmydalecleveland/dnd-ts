@@ -1,19 +1,19 @@
 import { DataSource } from 'apollo-datasource'
-import db from '../db'
+import knex from '../db'
 
 class SpellAPI extends DataSource {
-  context: any
+  public context: any
 
-  initialize(config: any) {
+  public initialize(config: any) {
     this.context = config.context
   }
 
-  getSpells() {
-    return db('Spell').select()
+  public getSpells() {
+    return knex('Spell').select()
   }
 
-  getSpell({ ID }: { ID: string }) {
-    return db('Spell').select().where('ID', Number(ID)).first()
+  public getSpell({ ID }: { ID: string }) {
+    return knex('Spell').select().where('ID', Number(ID)).first()
   }
 }
 

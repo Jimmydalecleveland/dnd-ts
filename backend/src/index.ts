@@ -1,8 +1,8 @@
 import { ApolloServer } from 'apollo-server'
-import typeDefs from './schema'
-import SpellAPI from './datasources/spell'
 import CharacterAPI from './datasources/character'
+import SpellAPI from './datasources/spell'
 import resolvers from './resolvers'
+import typeDefs from './schema'
 
 const server = new ApolloServer({
   typeDefs,
@@ -14,5 +14,6 @@ const server = new ApolloServer({
 });
 
 server.listen().then(({ url }) => {
+  // tslint:disable-next-line: no-console
   console.log(`Server ready at ${url}`)
 })
