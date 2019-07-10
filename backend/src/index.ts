@@ -5,13 +5,13 @@ import resolvers from './resolvers'
 import typeDefs from './schema'
 
 const server = new ApolloServer({
-  typeDefs,
   resolvers,
+  typeDefs,
   dataSources: () => ({
-    spellAPI: new SpellAPI(),
     characterAPI: new CharacterAPI(),
+    spellAPI: new SpellAPI(),
   }),
-});
+})
 
 server.listen().then(({ url }) => {
   // tslint:disable-next-line: no-console

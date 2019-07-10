@@ -1,5 +1,4 @@
 import { config } from 'dotenv'
-import * as Knex from 'knex'
 config()
 
 // Knex is stupid and still hasn't solved their es6 imports issue
