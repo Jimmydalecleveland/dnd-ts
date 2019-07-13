@@ -14,13 +14,16 @@ const Characters = () => {
           return <p>Error: {error}</p>
         }
 
-        return data.characters.map((character) => (
-          <div>
-            <Link to={`/character/${character.ID}`} key={character.ID}>
-              {character.name}
-            </Link>
-          </div>
-        ))
+        return (
+          <>
+            {data.characters.map((character) => (
+              <div key={character.ID}>
+                <Link to={`/character/${character.ID}`}>{character.name}</Link>
+              </div>
+            ))}
+            <Link to="/create-character">Create New Character</Link>
+          </>
+        )
       }}
     </Query>
   )
