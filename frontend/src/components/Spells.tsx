@@ -1,14 +1,17 @@
+import { ApolloError, gql } from 'apollo-boost'
 import React from 'react'
 import { Query } from 'react-apollo'
-import { gql, ApolloError } from 'apollo-boost'
 
-
-const Spells = ({ spellID }: Props) => {
+const Spells = ({ spellID }: IProps) => {
   return (
-    <Query<Data, Variables> query={SPELL_QUERY} variables={{ ID: spellID }}>
+    <Query<IData, IVariables> query={SPELL_QUERY} variables={{ ID: spellID }}>
       {({ loading, error, data }) => {
-        if (loading) return <p>loading...</p>
-        if (error) return <p>Error: {error}</p>
+        if (loading) {
+          return <p>loading...</p>
+        }
+        if (error) {
+          return <p>Error: {error}</p>
+        }
 
         return <h1>{data.spell.name}</h1>
       }}
@@ -16,27 +19,27 @@ const Spells = ({ spellID }: Props) => {
   )
 }
 
-interface Props {
-  spellID: number;
+interface IProps {
+  spellID: number
 }
 
 const SPELL_QUERY = gql`
   query SpellQuery($ID: ID!) {
     spell(ID: $ID) {
       ID
-      name 
+      name
     }
   }
 `
 
-interface Data {
+interface IData {
   spell: {
     ID: string
     name: string
   }
 }
 
-interface Variables {
+interface IVariables {
   ID: number
 }
 

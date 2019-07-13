@@ -13,7 +13,10 @@ class SpellAPI extends DataSource {
   }
 
   public getSpell({ ID }: { ID: string }) {
-    return knex('Spell').select().where('ID', Number(ID)).first()
+    return knex('Spell')
+      .select()
+      .where('ID', Number(ID))
+      .first()
   }
 }
 

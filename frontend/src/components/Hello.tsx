@@ -1,8 +1,12 @@
 import React from 'react'
 
-export interface HelloProps {
-  compiler: string;
-  framework: string;
+export interface IHelloProps {
+  compiler: string
+  framework: string
 }
 
-export const Hello = (props: HelloProps) => <h1>Hello from {props.compiler} and {props.framework}!</h1>
+export const Hello = (props: IHelloProps) => (
+  <h1>
+    Hello from {props.compiler} and {props.framework}!
+  </h1>
+)
