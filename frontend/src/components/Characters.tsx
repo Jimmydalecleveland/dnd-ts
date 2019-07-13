@@ -1,6 +1,7 @@
 import { gql } from 'apollo-boost'
 import React from 'react'
 import { Query } from 'react-apollo'
+import { Link } from 'react-router-dom'
 
 const Characters = () => {
   return (
@@ -14,7 +15,11 @@ const Characters = () => {
         }
 
         return data.characters.map((character) => (
-          <p key={character.ID}>{character.name}</p>
+          <div>
+            <Link to={`/character/${character.ID}`} key={character.ID}>
+              {character.name}
+            </Link>
+          </div>
         ))
       }}
     </Query>
