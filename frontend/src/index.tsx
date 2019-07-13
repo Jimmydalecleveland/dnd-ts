@@ -3,7 +3,7 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 
-import Spells from './components/Spells'
+import Characters from './components/Characters'
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -11,7 +11,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Spells spellID={3} />
+    <Characters />
   </ApolloProvider>,
   document.getElementById('root')
 )
