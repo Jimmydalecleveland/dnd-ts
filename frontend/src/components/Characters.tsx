@@ -13,7 +13,9 @@ const Characters = () => {
           return <p>Error: {error}</p>
         }
 
-        return data.characters.map((character) => <p>{character.name}</p>)
+        return data.characters.map((character) => (
+          <p key={character.ID}>{character.name}</p>
+        ))
       }}
     </Query>
   )
@@ -22,6 +24,7 @@ const Characters = () => {
 const CHARACTERS_QUERY = gql`
   query CharactersQuery {
     characters {
+      ID
       name
     }
   }
@@ -30,6 +33,7 @@ const CHARACTERS_QUERY = gql`
 interface IData {
   characters: [
     {
+      ID: string
       name: string
     }
   ]

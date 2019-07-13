@@ -2,6 +2,7 @@ import ApolloClient from 'apollo-boost'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 
 import Characters from './components/Characters'
 
@@ -11,7 +12,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Characters />
+    <BrowserRouter>
+      <Route exact path="/characters/" component={Characters} />
+    </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root')
 )
