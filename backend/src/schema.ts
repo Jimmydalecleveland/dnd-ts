@@ -1,6 +1,11 @@
 import { gql } from 'apollo-server'
 
 const typeDefs = gql`
+  type Mutation {
+    createCharacter(name: String!): Character!
+    deleteCharacter(ID: ID!): Int
+  }
+
   type Query {
     spells: [Spell]!
     spell(ID: ID!): Spell
