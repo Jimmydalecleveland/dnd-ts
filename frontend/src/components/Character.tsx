@@ -1,10 +1,10 @@
 import { gql } from 'apollo-boost'
 import React from 'react'
 import { Mutation, Query } from 'react-apollo'
-import { Link } from 'react-router-dom'
 import { RouteComponentProps } from 'react-router-dom'
 
-const Character = ({ characterID, history }: IProps) => {
+const Character = ({ match, history }: RouteComponentProps<IProps>) => {
+  const { id: characterID } = match.params
   return (
     <Query<IData, IVariables>
       query={CHARACTER_QUERY}
@@ -52,8 +52,8 @@ const DELETE_CHARACTER = gql`
   }
 `
 
-interface IProps extends RouteComponentProps {
-  characterID: number
+interface IProps {
+  id: string
 }
 
 interface IData {
@@ -64,7 +64,7 @@ interface IData {
 }
 
 interface IVariables {
-  ID: number
+  ID: string
 }
 
 export default Character

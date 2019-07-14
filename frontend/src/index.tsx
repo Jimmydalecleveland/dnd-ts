@@ -17,10 +17,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Route exact path="/characters/" component={Characters} />
       <Route exact path="/create-character/" component={CreateCharacter} />
-      <Route
-        path={`/character/:id`}
-        render={(props) => <Character characterID={props.match.params.id} />}
-      />
+      <Route path={`/character/:id`} component={Character} />
     </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root')
