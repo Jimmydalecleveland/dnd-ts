@@ -1,9 +1,10 @@
 import { gql } from 'apollo-boost'
 import React from 'react'
-import { Query } from 'react-apollo'
+import { Mutation, Query } from 'react-apollo'
 import { Link } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 
-const Character = ({ characterID }: IProps) => {
+const Character = ({ characterID, history }: IProps) => {
   return (
     <Query<IData, IVariables>
       query={CHARACTER_QUERY}
@@ -17,7 +18,20 @@ const Character = ({ characterID }: IProps) => {
           return <p>Error: {error}</p>
         }
 
-        return <h1>{data.character.name}</h1>
+        return (
+          <div>
+            <h1>{data.character.name}</h1>
+            <Mutation
+              mutation={DELETE_CHARACTER}
+              variables={{ ID: data.character.ID }}
+              onCompleted={() => history.push('/characters/')}
+            >
+              {(deleteCharacter: () => void) => (
+                <button onClick={() => deleteCharacter()}>Delete</button>
+              )}
+            </Mutation>
+          </div>
+        )
       }}
     </Query>
   )
@@ -32,7 +46,13 @@ const CHARACTER_QUERY = gql`
   }
 `
 
-interface IProps {
+const DELETE_CHARACTER = gql`
+  mutation DeleteCharacter($ID: ID!) {
+    deleteCharacter(ID: $ID)
+  }
+`
+
+interface IProps extends RouteComponentProps {
   characterID: number
 }
 
