@@ -1,8 +1,9 @@
 import { gql } from 'apollo-boost'
 import React, { useState } from 'react'
 import { Mutation } from 'react-apollo'
+import { RouteComponentProps } from 'react-router-dom'
 
-const CreateCharacter = () => {
+const CreateCharacter = ({ history }: RouteComponentProps) => {
   const [name, setName] = useState('')
 
   return (
@@ -17,7 +18,13 @@ const CreateCharacter = () => {
           }
         />
       </label>
-      <Mutation mutation={CREATE_CHARACTER} variables={{ name }}>
+      <Mutation
+        mutation={CREATE_CHARACTER}
+        variables={{ name }}
+        onCompleted={(result: any) =>
+          history.push(`/character/${result.createCharacter.ID}`)
+        }
+      >
         {(createCharacter: () => void) => (
           <button onClick={() => createCharacter()}>Submit</button>
         )}
@@ -29,7 +36,7 @@ const CreateCharacter = () => {
 const CREATE_CHARACTER = gql`
   mutation CreateCharacter($name: String!) {
     createCharacter(name: $name) {
-      name
+      ID
     }
   }
 `
