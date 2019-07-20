@@ -24,7 +24,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
             <Mutation
               mutation={DELETE_CHARACTER}
               variables={{ ID: data.character.ID }}
-              onCompleted={() => history.push('/characters/')}
+              onCompleted={() => history.push('/characters')}
             >
               {(deleteCharacter: () => void) => (
                 <button onClick={() => deleteCharacter()}>Delete</button>
