@@ -11,6 +11,8 @@ const typeDefs = gql`
     spell(ID: ID!): Spell
     characters: [Character]!
     character(ID: ID!): Character
+    races: [Race]!
+    race(ID: ID!): Race
   }
 
   type Spell {
@@ -19,6 +21,17 @@ const typeDefs = gql`
   }
 
   type Character {
+    ID: ID!
+    name: String!
+  }
+
+  type Race {
+    ID: ID!
+    name: String!
+    subRaces: [SubRace]
+  }
+
+  type SubRace {
     ID: ID!
     name: String!
   }
