@@ -15,14 +15,16 @@ class RaceAPI extends DataSource {
       .first()
   }
 
-  public getSubRaces({ ID }: { ID: string }) {
+  public getSubraces({ ID }: { ID: string }) {
     return knex('Race')
       .select()
       .where('parentRaceID', Number(ID))
   }
 
   public getRaces() {
-    return knex('Race').select()
+    return knex('Race')
+      .select()
+      .whereNull('parentRaceID')
   }
 }
 

@@ -21,6 +21,11 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         return (
           <div>
             <h1>{data.character.name}</h1>
+            <h2>
+              {data.character.subrace
+                ? data.character.subrace.name
+                : data.character.race.name}
+            </h2>
             <Mutation
               mutation={DELETE_CHARACTER}
               variables={{ ID: data.character.ID }}
@@ -42,6 +47,14 @@ const CHARACTER_QUERY = gql`
     character(ID: $ID) {
       ID
       name
+      race {
+        ID
+        name
+      }
+      subrace {
+        ID
+        name
+      }
     }
   }
 `
@@ -60,7 +73,14 @@ interface IData {
   character: {
     ID: string
     name: string
+    race: IRace
+    subrace: IRace
   }
+}
+
+interface IRace {
+  ID: string
+  name: string
 }
 
 interface IVariables {

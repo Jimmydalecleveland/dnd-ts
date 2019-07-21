@@ -2,7 +2,7 @@ import { gql } from 'apollo-server'
 
 const typeDefs = gql`
   type Mutation {
-    createCharacter(name: String!): Character!
+    createCharacter(name: String!, raceID: ID!, subraceID: ID!): Character!
     deleteCharacter(ID: ID!): Int
   }
 
@@ -23,15 +23,17 @@ const typeDefs = gql`
   type Character {
     ID: ID!
     name: String!
+    race: Race
+    subrace: Subrace
   }
 
   type Race {
     ID: ID!
     name: String!
-    subRaces: [SubRace]
+    subraces: [Subrace]
   }
 
-  type SubRace {
+  type Subrace {
     ID: ID!
     name: String!
   }
