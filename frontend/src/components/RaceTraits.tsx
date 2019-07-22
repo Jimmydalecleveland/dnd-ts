@@ -11,13 +11,12 @@ const RaceTraits = ({ raceID }: IProps) => (
       if (error) {
         return <p>error: {error}</p>
       }
-      return (
+      return data.raceTraits.map((raceTrait) => (
         <>
-          {data.raceTraits.map((raceTrait) => (
-            <p>{raceTrait.name}</p>
-          ))}
+          <h3>{raceTrait.name}</h3>
+          <p>{raceTrait.description}</p>
         </>
-      )
+      ))
     }}
   </Query>
 )
