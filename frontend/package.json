@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
+    "file-loader": "^4.1.0",
     "react-hot-loader": "^4.12.0",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.0.4",
@@ -25,11 +26,13 @@
   },
   "dependencies": {
     "@types/react-router-dom": "^4.3.4",
+    "@types/styled-components": "^4.1.18",
     "apollo-boost": "^0.4.3",
     "graphql": "^14.4.2",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.1"
+    "react-router-dom": "^5.0.1",
+    "styled-components": "^4.3.2"
   }
 }

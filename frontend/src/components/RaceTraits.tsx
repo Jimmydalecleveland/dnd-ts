@@ -3,7 +3,7 @@ import React from 'react'
 import { Query } from 'react-apollo'
 
 const RaceTraits = ({ raceID }: IProps) => (
-  <Query<IRaceTraitData> query={RACETRAITS_QUERY} variables={{ raceID }}>
+  <Query<IData> query={RACETRAITS_QUERY} variables={{ raceID }}>
     {({ data, loading, error }) => {
       if (loading) {
         return <p>...loading</p>
@@ -41,7 +41,7 @@ interface IRaceTrait {
   description: string
 }
 
-interface IRaceTraitData {
+interface IData {
   raceTraits: IRaceTrait[]
 }
 

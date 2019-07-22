@@ -2,6 +2,8 @@ import { gql } from 'apollo-boost'
 import React, { useState } from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
+import styled from 'styled-components'
+import background from '../images/stone-steps.jpg'
 import RaceTraits from './RaceTraits'
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
@@ -18,17 +20,18 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
   }
 
   return (
-    <div>
-      <label htmlFor="name">
+    <StyledSection>
+      <StyledInput htmlFor="name">
         <span>Name:</span>
         <input
           id="name"
           type="text"
+          placeholder="Enter Thy Name"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             setName(event.target.value)
           }
         />
-      </label>
+      </StyledInput>
       <Query<IData> query={RACES_QUERY}>
         {({ data, loading, error }) => {
           if (loading) {
@@ -99,7 +102,7 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
           <button onClick={() => createCharacter()}>Submit</button>
         )}
       </Mutation>
-    </div>
+    </StyledSection>
   )
 }
 
@@ -133,5 +136,27 @@ interface IRace {
 interface IData {
   races: IRace[]
 }
+
+const StyledSection = styled.section`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  min-height: 100vh;
+  background-color: #3c424e;
+  background-image: url(${background});
+  background-blend-mode: overlay;
+`
+
+const StyledInput = styled.label`
+  font-size: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: bold;
+
+  input {
+    background: transparent;
+    border: solid 3px #737477;
+    padding: 10px 20px;
+    font-size: 30px;
+  }
+`
 
 export default CreateCharacter
