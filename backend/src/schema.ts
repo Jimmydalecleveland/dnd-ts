@@ -13,6 +13,7 @@ const typeDefs = gql`
     character(ID: ID!): Character
     races: [Race]!
     race(ID: ID!): Race
+    raceTraits(raceID: ID!): [RaceTrait]!
   }
 
   type Spell {
@@ -31,11 +32,19 @@ const typeDefs = gql`
     ID: ID!
     name: String!
     subraces: [Subrace]
+    traits: [RaceTrait]!
   }
 
   type Subrace {
     ID: ID!
     name: String!
+    traits: [RaceTrait]!
+  }
+
+  type RaceTrait {
+    ID: ID!
+    name: String!
+    description: String!
   }
 `
 

@@ -23,6 +23,11 @@ const resolvers = {
       dataSources.raceAPI.getRace({ ID }),
     races: (_: any, __: any, { dataSources }: any) =>
       dataSources.raceAPI.getRaces(),
+    raceTraits: (
+      _: any,
+      { raceID }: { raceID: string },
+      { dataSources }: any
+    ) => dataSources.raceAPI.getRaceTraits({ raceID }),
     spell: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
       dataSources.spellAPI.getSpell({ ID }),
     spells: (_: any, __: any, { dataSources }: any) =>
@@ -38,6 +43,13 @@ const resolvers = {
   Race: {
     subraces: (Race: IRace, _: any, { dataSources }: any) =>
       dataSources.raceAPI.getSubraces({ ID: Race.ID }),
+    traits: (Race: IRace, _: any, { dataSources }: any) =>
+      dataSources.raceAPI.getRaceTraits({ raceID: Race.ID }),
+  },
+
+  Subrace: {
+    traits: (Subrace: IRace, _: any, { dataSources }: any) =>
+      dataSources.raceAPI.getRaceTraits({ raceID: Subrace.ID }),
   },
 }
 

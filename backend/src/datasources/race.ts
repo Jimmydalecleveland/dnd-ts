@@ -26,6 +26,12 @@ class RaceAPI extends DataSource {
       .select()
       .whereNull('parentRaceID')
   }
+
+  public getRaceTraits({ raceID }: { raceID: string }) {
+    return knex('RaceTrait')
+      .select()
+      .where('raceID', Number(raceID))
+  }
 }
 
 export default RaceAPI
