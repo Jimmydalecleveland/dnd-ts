@@ -14,6 +14,7 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
     const raceObj = races.filter((race) => race.ID === value)[0]
     setChosenRaceID(value)
     setChosenRaceObj(raceObj)
+    setChosenSubraceID('')
   }
 
   return (
