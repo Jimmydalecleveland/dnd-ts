@@ -2,6 +2,7 @@ import { gql } from 'apollo-boost'
 import React, { useState } from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
+import RaceTraits from './RaceTraits'
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
   const [name, setName] = useState('')
@@ -84,26 +85,7 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
           )
         }}
       </Query>
-      <Query<IRaceTraitData>
-        query={RACETRAITS_QUERY}
-        variables={{ raceID: chosenRaceID }}
-      >
-        {({ data, loading, error }) => {
-          if (loading) {
-            return <p>...loading</p>
-          }
-          if (error) {
-            return <p>error: {error}</p>
-          }
-          return (
-            <>
-              {data.raceTraits.map((raceTrait) => (
-                <p>{raceTrait.name}</p>
-              ))}
-            </>
-          )
-        }}
-      </Query>
+      <RaceTraits raceID={chosenRaceID} />
       <Mutation
         mutation={CREATE_CHARACTER}
         variables={{ name, raceID: chosenRaceID, subraceID: chosenSubraceID }}
@@ -132,16 +114,6 @@ const RACES_QUERY = gql`
   }
 `
 
-const RACETRAITS_QUERY = gql`
-  query RaceTraits($raceID: ID!) {
-    raceTraits(raceID: $raceID) {
-      ID
-      name
-      description
-    }
-  }
-`
-
 const CREATE_CHARACTER = gql`
   mutation CreateCharacter($name: String!, $raceID: ID!, $subraceID: ID!) {
     createCharacter(name: $name, raceID: $raceID, subraceID: $subraceID) {
@@ -158,16 +130,6 @@ interface IRace {
 // interface IData extends Array<IRace> {}
 interface IData {
   races: IRace[]
-}
-
-interface IRaceTrait {
-  ID: string
-  name: string
-  description: string
-}
-
-interface IRaceTraitData {
-  raceTraits: IRaceTrait[]
 }
 
 export default CreateCharacter
