@@ -85,7 +85,8 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
           )
         }}
       </Query>
-      <RaceTraits raceID={chosenRaceID} />
+      {chosenRaceID && <RaceTraits raceID={chosenRaceID} />}
+      {chosenSubraceID && <RaceTraits raceID={chosenSubraceID} />}
       <Mutation
         mutation={CREATE_CHARACTER}
         variables={{ name, raceID: chosenRaceID, subraceID: chosenSubraceID }}
