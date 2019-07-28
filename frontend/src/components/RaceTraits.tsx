@@ -2,7 +2,9 @@ import { gql } from 'apollo-boost'
 import React from 'react'
 import { Query } from 'react-apollo'
 
-const RaceTraits = ({ raceID }: IProps) => (
+import SectionHeader from './SectionHeader'
+
+const RaceTraits = ({ raceID, headline }: IProps) => (
   <Query<IData> query={RACETRAITS_QUERY} variables={{ raceID }}>
     {({ data, loading, error }) => {
       if (loading) {
@@ -11,12 +13,17 @@ const RaceTraits = ({ raceID }: IProps) => (
       if (error) {
         return <p>error: {error}</p>
       }
-      return data.raceTraits.map((raceTrait) => (
-        <>
-          <h3>{raceTrait.name}</h3>
-          <p>{raceTrait.description}</p>
-        </>
-      ))
+      return (
+        <section>
+          <SectionHeader>{headline}</SectionHeader>
+          {data.raceTraits.map((raceTrait) => (
+            <React.Fragment key={raceTrait.ID}>
+              <h3>{raceTrait.name}</h3>
+              <p>{raceTrait.description}</p>
+            </React.Fragment>
+          ))}
+        </section>
+      )
     }}
   </Query>
 )
@@ -33,6 +40,7 @@ const RACETRAITS_QUERY = gql`
 
 interface IProps {
   raceID: string
+  headline: string
 }
 
 interface IRaceTrait {

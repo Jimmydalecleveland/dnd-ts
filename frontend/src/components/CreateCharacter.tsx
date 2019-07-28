@@ -5,13 +5,16 @@ import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import background from '../images/stone-steps.jpg'
 import RaceTraits from './RaceTraits'
+import SectionHeader from './SectionHeader'
 import ToggleButton from './ToggleButton'
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
   const [name, setName] = useState('')
-  const [chosenRaceObj, setChosenRaceObj] = useState(null)
   const [chosenRaceID, setChosenRaceID] = useState('')
-  const [chosenSubraceID, setChosenSubraceID] = useState('')
+  const [chosenRaceObj, setChosenRaceObj] = useState(null)
+  const [chosenSubraceID, setChosenSubraceID] = useState(null)
+  const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
+  const [showModal, setShowModal] = useState(false)
 
   const setChosenRace = (value: string, races: IData['races']): void => {
     const raceObj = races.filter((race) => race.ID === value)[0]
@@ -20,10 +23,17 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
     setChosenSubraceID('')
   }
 
+  const setChosenSubrace = (value: string) => {
+    const subraceObj = chosenRaceObj.subraces.filter(
+      (subrace: IRace) => subrace.ID === value
+    )[0]
+    setChosenSubraceID(value)
+    setChosenSubraceObj(subraceObj)
+  }
+
   return (
     <StyledSection>
       <StyledInput htmlFor="name">
-        <span>Name:</span>
         <input
           id="name"
           type="text"
@@ -42,51 +52,8 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
             return <p>error: {error}</p>
           }
           return (
-            <>
-              <label htmlFor="race">
-                <span>Race:</span>
-                <select
-                  name="race"
-                  id="race"
-                  value={chosenRaceID}
-                  onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                    setChosenRace(event.target.value, data.races)
-                  }
-                >
-                  <option value="" disabled>
-                    Select a race...
-                  </option>
-                  {data.races.map((race) => (
-                    <option key={race.ID} value={race.ID}>
-                      {race.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              {chosenRaceID && chosenRaceObj.subraces.length > 0 && (
-                <label htmlFor="subrace">
-                  <span>Subrace:</span>
-                  <select
-                    name="subrace"
-                    id="subrace"
-                    value={chosenSubraceID}
-                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                      setChosenSubraceID(event.target.value)
-                    }
-                  >
-                    <option value="" disabled>
-                      Select a race...
-                    </option>
-                    {chosenRaceObj.subraces.map((subrace: IRace) => (
-                      <option key={subrace.ID} value={subrace.ID}>
-                        {subrace.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
-
+            <section>
+              <SectionHeader>RACE</SectionHeader>
               <RaceList>
                 {data.races.map((race) => (
                   <ToggleButton
@@ -98,12 +65,27 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
                   </ToggleButton>
                 ))}
               </RaceList>
-            </>
+
+              {chosenRaceID && chosenRaceObj.subraces.length > 0 && (
+                <section>
+                  <SectionHeader>SUBRACE</SectionHeader>
+                  <RaceList>
+                    {chosenRaceObj.subraces.map((subrace: IRace) => (
+                      <ToggleButton
+                        key={subrace.ID}
+                        isActive={chosenSubraceID === subrace.ID}
+                        handleClick={() => setChosenSubrace(subrace.ID)}
+                      >
+                        {subrace.name}
+                      </ToggleButton>
+                    ))}
+                  </RaceList>
+                </section>
+              )}
+            </section>
           )
         }}
       </Query>
-      {chosenRaceID && <RaceTraits raceID={chosenRaceID} />}
-      {chosenSubraceID && <RaceTraits raceID={chosenSubraceID} />}
       <Mutation
         mutation={CREATE_CHARACTER}
         variables={{ name, raceID: chosenRaceID, subraceID: chosenSubraceID }}
@@ -115,6 +97,30 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
           <button onClick={() => createCharacter()}>Submit</button>
         )}
       </Mutation>
+      <button onClick={() => setShowModal(true)}>Show Info</button>
+      {showModal && (
+        <Modal>
+          <span onClick={() => setShowModal(false)}>X</span>
+          <div>
+            {chosenRaceID && (
+              <div>
+                <RaceTraits
+                  raceID={chosenRaceID}
+                  headline={chosenRaceObj.name}
+                />
+              </div>
+            )}
+            {chosenSubraceID && (
+              <div>
+                <RaceTraits
+                  raceID={chosenSubraceID}
+                  headline={chosenSubraceObj.name}
+                />
+              </div>
+            )}
+          </div>
+        </Modal>
+      )}
     </StyledSection>
   )
 }
@@ -151,6 +157,8 @@ interface IData {
 }
 
 const StyledSection = styled.section`
+  position: relative;
+  z-index: 1;
   height: 100vh;
   padding: 15px;
   background-color: #3c424e;
@@ -159,6 +167,8 @@ const StyledSection = styled.section`
 `
 
 const StyledInput = styled.label`
+  display: block;
+  margin-bottom: 20px;
   font-size: 20px;
   font-family: 'Segoe UI', sans-serif;
   font-weight: bold;
@@ -169,8 +179,12 @@ const StyledInput = styled.label`
     border: solid 3px #737477;
     border: ${({ theme }) => `solid 1px ${theme.colors.outline}`};
     padding: 10px 20px;
-    font-size: 26px;
+    font-size: 22px;
     color: #fff;
+
+    &:focus {
+      border: solid 1px ${({ theme }) => theme.colors.primaryTransparent};
+    }
   }
 `
 
@@ -179,7 +193,33 @@ const RaceList = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 5px;
   width: 100%;
-  margin: 15px 0 15px;
+  margin: 0 0 20px;
+`
+
+const Modal = styled.section`
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.9);
+
+  > span {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+  }
+
+  > div {
+    padding: 10px;
+    height: 100%;
+    overflow-y: scroll;
+  }
 `
 
 export default CreateCharacter
