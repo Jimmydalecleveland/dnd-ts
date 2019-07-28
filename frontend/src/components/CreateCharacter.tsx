@@ -85,6 +85,17 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
                   </select>
                 </label>
               )}
+
+              <RaceList>
+                {data.races.map((race) => (
+                  <RaceButton
+                    key={race.ID}
+                    onClick={() => setChosenRace(race.ID, data.races)}
+                  >
+                    {race.name}
+                  </RaceButton>
+                ))}
+              </RaceList>
             </>
           )
         }}
@@ -138,9 +149,8 @@ interface IData {
 }
 
 const StyledSection = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  min-height: 100vh;
+  height: 100vh;
+  padding: 15px;
   background-color: #3c424e;
   background-image: url(${background});
   background-blend-mode: overlay;
@@ -152,10 +162,35 @@ const StyledInput = styled.label`
   font-weight: bold;
 
   input {
+    width: 100%;
     background: transparent;
     border: solid 3px #737477;
+    border: ${({ theme }) => `solid 1px ${theme.colors.outline}`};
     padding: 10px 20px;
-    font-size: 30px;
+    font-size: 26px;
+    color: #fff;
+  }
+`
+
+const RaceList = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin: 15px 0 15px;
+`
+
+const RaceButton = styled.button`
+  padding: 15px;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.outline};
+  background: none;
+  border: solid 1px transparent;
+
+  &:first-child {
+    border: ${({ theme }) => `solid 1px ${theme.colors.highlight}`};
+    color: ${({ theme }) => theme.colors.highlight};
   }
 `
 
