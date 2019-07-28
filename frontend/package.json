@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --hot",
+    "dev:broadcast": "webpack-dev-server --hot --host 0.0.0.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -36,6 +37,7 @@
     "react-router-dom": "^5.0.1",
     "style-loader": "^0.23.1",
     "styled-components": "^4.3.2",
-    "typeface-barlow": "0.0.71"
+    "typeface-barlow": "0.0.71",
+    "typeface-rokkitt": "0.0.72"
   }
 }

@@ -100,7 +100,9 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
       <button onClick={() => setShowModal(true)}>Show Info</button>
       {showModal && (
         <Modal>
-          <span onClick={() => setShowModal(false)}>X</span>
+          <span className="close-button" onClick={() => setShowModal(false)}>
+            X
+          </span>
           <div>
             {chosenRaceID && (
               <div>
@@ -203,22 +205,24 @@ const Modal = styled.section`
   left: 0;
   width: 100%;
   height: 100vh;
-  padding: 20px;
+  padding: 10px;
   background-color: rgba(0, 0, 0, 0.9);
 
-  > span {
-    position: fixed;
-    top: 10px;
-    right: 10px;
+  > .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
     cursor: pointer;
     font-family: 'Barlow', sans-serif;
-    font-weight: 600;
+    font-weight: 900;
+    font-size: 20px;
   }
 
   > div {
-    padding: 10px;
+    padding: 20px;
     height: 100%;
     overflow-y: scroll;
+    border: solid 1px ${({ theme }) => theme.colors.outline};
   }
 `
 
