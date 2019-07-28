@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import background from '../images/stone-steps.jpg'
 import RaceTraits from './RaceTraits'
+import ToggleButton from './ToggleButton'
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
   const [name, setName] = useState('')
@@ -88,12 +89,13 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
 
               <RaceList>
                 {data.races.map((race) => (
-                  <RaceButton
+                  <ToggleButton
                     key={race.ID}
-                    onClick={() => setChosenRace(race.ID, data.races)}
+                    isActive={chosenRaceID === race.ID}
+                    handleClick={() => setChosenRace(race.ID, data.races)}
                   >
                     {race.name}
-                  </RaceButton>
+                  </ToggleButton>
                 ))}
               </RaceList>
             </>
@@ -175,23 +177,9 @@ const StyledInput = styled.label`
 const RaceList = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
   width: 100%;
   margin: 15px 0 15px;
-`
-
-const RaceButton = styled.button`
-  padding: 15px;
-  text-transform: uppercase;
-  font-size: 18px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.outline};
-  background: none;
-  border: solid 1px transparent;
-
-  &:first-child {
-    border: ${({ theme }) => `solid 1px ${theme.colors.highlight}`};
-    color: ${({ theme }) => theme.colors.highlight};
-  }
 `
 
 export default CreateCharacter

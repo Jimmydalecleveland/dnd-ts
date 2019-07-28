@@ -2,6 +2,7 @@
 export default {
   colors: {
     primary: '#45e0c1',
+    primaryTransparent: 'rgba(69, 224, 193, 0.6)',
     secondary: '#6fb8e2',
     highlight: '#ecb802',
     outline: '#737477',
