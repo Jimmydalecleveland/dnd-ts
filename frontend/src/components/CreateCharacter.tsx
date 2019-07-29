@@ -1,4 +1,5 @@
 import { gql } from 'apollo-boost'
+import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
@@ -99,7 +100,11 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
       </Mutation>
       <button onClick={() => setShowModal(true)}>Show Info</button>
       {showModal && (
-        <Modal>
+        <Modal
+          initial={{ scale: 0.4 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+        >
           <span className="close-button" onClick={() => setShowModal(false)}>
             X
           </span>
@@ -198,7 +203,7 @@ const RaceList = styled.div`
   margin: 0 0 20px;
 `
 
-const Modal = styled.section`
+const Modal = styled(motion.section)`
   position: fixed;
   z-index: 2;
   top: 0;
@@ -223,6 +228,11 @@ const Modal = styled.section`
     height: 100%;
     overflow-y: scroll;
     border: solid 1px ${({ theme }) => theme.colors.outline};
+    background-image: linear-gradient(
+      245deg,
+      rgba(200, 200, 200, 0.1),
+      rgb(0, 0, 0) 90%
+    );
   }
 `
 
