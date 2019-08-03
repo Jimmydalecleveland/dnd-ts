@@ -1,8 +1,20 @@
 import { gql } from 'apollo-boost'
+import { motion } from 'framer-motion'
 import React from 'react'
 import { Query } from 'react-apollo'
 
 import SectionHeader from './SectionHeader'
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+}
 
 const RaceTraits = ({ raceID, headline }: IProps) => (
   <Query<IData> query={RACETRAITS_QUERY} variables={{ raceID }}>
@@ -17,10 +29,10 @@ const RaceTraits = ({ raceID, headline }: IProps) => (
         <section>
           <SectionHeader>{headline}</SectionHeader>
           {data.raceTraits.map((raceTrait) => (
-            <React.Fragment key={raceTrait.ID}>
+            <motion.div key={raceTrait.ID} variants={item}>
               <h3>{raceTrait.name}</h3>
               <p>{raceTrait.description}</p>
-            </React.Fragment>
+            </motion.div>
           ))}
         </section>
       )

@@ -1,5 +1,5 @@
 import { gql } from 'apollo-boost'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
@@ -8,6 +8,21 @@ import background from '../images/stone-steps.jpg'
 import RaceTraits from './RaceTraits'
 import SectionHeader from './SectionHeader'
 import ToggleButton from './ToggleButton'
+
+const container = {
+  hidden: { opacity: 1, scale: 0.4 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      damping: 20,
+      staggerChildren: 0.1,
+      stiffness: 260,
+      type: 'spring',
+      when: 'beforeChildren',
+    },
+  },
+}
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
   const [name, setName] = useState('')
@@ -100,33 +115,36 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
       </Mutation>
       <button onClick={() => setShowModal(true)}>Show Info</button>
       {showModal && (
-        <Modal
-          initial={{ scale: 0.4 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-        >
-          <span className="close-button" onClick={() => setShowModal(false)}>
-            X
-          </span>
-          <div>
-            {chosenRaceID && (
-              <div>
-                <RaceTraits
-                  raceID={chosenRaceID}
-                  headline={chosenRaceObj.name}
-                />
-              </div>
-            )}
-            {chosenSubraceID && (
-              <div>
-                <RaceTraits
-                  raceID={chosenSubraceID}
-                  headline={chosenSubraceObj.name}
-                />
-              </div>
-            )}
-          </div>
-        </Modal>
+        <AnimatePresence>
+          <Modal
+            variants={container}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            <span className="close-button" onClick={() => setShowModal(false)}>
+              X
+            </span>
+            <div>
+              {chosenRaceID && (
+                <div>
+                  <RaceTraits
+                    raceID={chosenRaceID}
+                    headline={chosenRaceObj.name}
+                  />
+                </div>
+              )}
+              {chosenSubraceID && (
+                <div>
+                  <RaceTraits
+                    raceID={chosenSubraceID}
+                    headline={chosenSubraceObj.name}
+                  />
+                </div>
+              )}
+            </div>
+          </Modal>
+        </AnimatePresence>
       )}
     </StyledSection>
   )
