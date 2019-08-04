@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
-import background from '../images/stone-steps.jpg'
+import ActivityButton from './ActivityButton'
 import RaceTraits from './RaceTraits'
 import SectionHeader from './SectionHeader'
 import ToggleButton from './ToggleButton'
@@ -32,11 +32,24 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
   const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
   const [showModal, setShowModal] = useState(false)
 
+  const detailButtonText = () => {
+    if (!chosenRaceID) {
+      return 'Select a race'
+    }
+    if (chosenSubraceObj) {
+      return `${chosenSubraceObj.name} details`
+    }
+    if (chosenRaceObj) {
+      return `${chosenRaceObj.name} details`
+    }
+  }
+
   const setChosenRace = (value: string, races: IData['races']): void => {
     const raceObj = races.filter((race) => race.ID === value)[0]
     setChosenRaceID(value)
     setChosenRaceObj(raceObj)
     setChosenSubraceID('')
+    setChosenSubraceObj(null)
   }
 
   const setChosenSubrace = (value: string) => {
@@ -48,7 +61,7 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
   }
 
   return (
-    <StyledSection>
+    <StyledGridSection>
       <StyledInput htmlFor="name">
         <input
           id="name"
@@ -102,51 +115,65 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
           )
         }}
       </Query>
-      <Mutation
-        mutation={CREATE_CHARACTER}
-        variables={{ name, raceID: chosenRaceID, subraceID: chosenSubraceID }}
-        onCompleted={(result: any) =>
-          history.push(`/character/${result.createCharacter.ID}`)
-        }
-      >
-        {(createCharacter: () => void) => (
-          <button onClick={() => createCharacter()}>Submit</button>
+
+      <StyledBottomWrapper>
+        <ToggleButton
+          disabled={!chosenRaceObj}
+          isActive={showModal}
+          handleClick={() => setShowModal(true)}
+        >
+          {detailButtonText()}
+        </ToggleButton>
+        {showModal && (
+          <AnimatePresence>
+            <Modal
+              variants={container}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <span
+                className="close-button"
+                onClick={() => setShowModal(false)}
+              >
+                X
+              </span>
+              <div>
+                {chosenRaceID && (
+                  <div>
+                    <RaceTraits
+                      raceID={chosenRaceID}
+                      headline={chosenRaceObj.name}
+                    />
+                  </div>
+                )}
+                {chosenSubraceID && (
+                  <div>
+                    <RaceTraits
+                      raceID={chosenSubraceID}
+                      headline={chosenSubraceObj.name}
+                    />
+                  </div>
+                )}
+              </div>
+            </Modal>
+          </AnimatePresence>
         )}
-      </Mutation>
-      <button onClick={() => setShowModal(true)}>Show Info</button>
-      {showModal && (
-        <AnimatePresence>
-          <Modal
-            variants={container}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            <span className="close-button" onClick={() => setShowModal(false)}>
-              X
-            </span>
-            <div>
-              {chosenRaceID && (
-                <div>
-                  <RaceTraits
-                    raceID={chosenRaceID}
-                    headline={chosenRaceObj.name}
-                  />
-                </div>
-              )}
-              {chosenSubraceID && (
-                <div>
-                  <RaceTraits
-                    raceID={chosenSubraceID}
-                    headline={chosenSubraceObj.name}
-                  />
-                </div>
-              )}
-            </div>
-          </Modal>
-        </AnimatePresence>
-      )}
-    </StyledSection>
+        <Mutation
+          mutation={CREATE_CHARACTER}
+          variables={{ name, raceID: chosenRaceID, subraceID: chosenSubraceID }}
+          onCompleted={(result: any) =>
+            history.push(`/character/${result.createCharacter.ID}`)
+          }
+        >
+          {(createCharacter: () => void) => (
+            <ActivityButton handleClick={() => createCharacter()}>
+              Next
+            </ActivityButton>
+          )}
+        </Mutation>
+      </StyledBottomWrapper>
+    </StyledGridSection>
   )
 }
 
@@ -181,19 +208,22 @@ interface IData {
   races: IRace[]
 }
 
-const StyledSection = styled.section`
-  position: relative;
-  z-index: 1;
-  height: 100vh;
-  padding: 15px;
-  background-color: #3c424e;
-  background-image: url(${background});
-  background-blend-mode: overlay;
+const StyledGridSection = styled.section`
+  display: grid;
+  grid-template-rows: 70px 1fr 1fr;
+  height: 100%;
+`
+
+const StyledBottomWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  margin-top: auto;
+  grid-gap: 10px;
+  justify-content: space-between;
 `
 
 const StyledInput = styled.label`
   display: block;
-  margin-bottom: 20px;
   font-size: 20px;
   font-family: 'Segoe UI', sans-serif;
   font-weight: bold;
@@ -222,12 +252,12 @@ const RaceList = styled.div`
 `
 
 const Modal = styled(motion.section)`
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.9);
 
