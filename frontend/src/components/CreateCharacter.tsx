@@ -44,6 +44,20 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
     }
   }
 
+  const isNextButtonDisabled = () => {
+    if (chosenRaceObj) {
+      if (chosenRaceObj.subraces.length > 0) {
+        if (chosenSubraceObj) {
+          return false
+        }
+      } else {
+        return false
+      }
+    }
+
+    return true
+  }
+
   const setChosenRace = (value: string, races: IData['races']): void => {
     const raceObj = races.filter((race) => race.ID === value)[0]
     setChosenRaceID(value)
@@ -167,7 +181,10 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
           }
         >
           {(createCharacter: () => void) => (
-            <ActivityButton handleClick={() => createCharacter()}>
+            <ActivityButton
+              disabled={isNextButtonDisabled()}
+              handleClick={() => createCharacter()}
+            >
               Next
             </ActivityButton>
           )}

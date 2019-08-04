@@ -7,13 +7,17 @@ const ActivityButton: React.FC<IProps> = ({
   children,
 }) => (
   <StyledActivityButton disabled={disabled} onClick={handleClick}>
-    <span className="border-top-left" />
-    <span className="border-left" />
-    <span className="border-bottom-left" />
-    <span className="border-bottom-right" />
-    <span className="border-right-bottom" />
-    <span className="border-right-top" />
-    <span className="border-top-right" />
+    {!disabled && (
+      <>
+        <span className="border-top-left" />
+        <span className="border-left" />
+        <span className="border-bottom-left" />
+        <span className="border-bottom-right" />
+        <span className="border-right-bottom" />
+        <span className="border-right-top" />
+        <span className="border-top-right" />
+      </>
+    )}
     {children}
   </StyledActivityButton>
 )
@@ -30,6 +34,10 @@ const StyledActivityButton = styled.button`
   text-transform: uppercase;
   font-size: 18px;
   font-weight: 500;
+
+  &:hover {
+    background: rgb(158, 233, 218);
+  }
 
   .border-top-left {
     background: ${({ theme }) =>
