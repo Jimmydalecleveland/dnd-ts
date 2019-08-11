@@ -14,6 +14,7 @@ import CreateCharacter from './components/CreateCharacter'
 import GlobalStyle from './components/GlobalStyle'
 import Main from './components/Main'
 import MobileNav from './components/MobileNav'
+import Spell from './components/Spell'
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -26,13 +27,10 @@ ReactDOM.render(
         <GlobalStyle />
         <BrowserRouter>
           <Main>
-            <Route exact path="/characters/" component={Characters} />
-            <Route
-              exact
-              path="/create-character/"
-              component={CreateCharacter}
-            />
-            <Route path={`/character/:id`} component={Character} />
+            <Route exact path="/characters" component={Characters} />
+            <Route exact path="/create-character" component={CreateCharacter} />
+            <Route exact path="/character/:id" component={Character} />
+            <Route exact path="/spell/:id" component={Spell} />
           </Main>
           <MobileNav />
         </BrowserRouter>

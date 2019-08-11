@@ -1,8 +1,10 @@
 import { ApolloError, gql } from 'apollo-boost'
 import React from 'react'
 import { Query } from 'react-apollo'
+import { RouteComponentProps } from 'react-router-dom'
 
-const Spells = ({ spellID }: IProps) => {
+const Spell = ({ match, history }: RouteComponentProps<IProps>) => {
+  const { id: spellID } = match.params
   return (
     <Query<IData, IVariables> query={SPELL_QUERY} variables={{ ID: spellID }}>
       {({ loading, error, data }) => {
@@ -12,7 +14,6 @@ const Spells = ({ spellID }: IProps) => {
         if (error) {
           return <p>Error: {error}</p>
         }
-
         return <h1>{data.spell.name}</h1>
       }}
     </Query>
@@ -20,7 +21,7 @@ const Spells = ({ spellID }: IProps) => {
 }
 
 interface IProps {
-  spellID: number
+  id: string
 }
 
 const SPELL_QUERY = gql`
@@ -40,7 +41,7 @@ interface IData {
 }
 
 interface IVariables {
-  ID: number
+  ID: string
 }
 
-export default Spells
+export default Spell
