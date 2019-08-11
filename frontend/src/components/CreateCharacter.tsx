@@ -1,7 +1,7 @@
 import { gql } from 'apollo-boost'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
-import { Mutation, Query } from 'react-apollo'
+import { useMutation, useQuery } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import ActivityButton from './ActivityButton'
@@ -25,12 +25,18 @@ const container = {
 }
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
+  const { loading, error, data } = useQuery(RACES_QUERY)
   const [name, setName] = useState('')
   const [chosenRaceID, setChosenRaceID] = useState('')
   const [chosenRaceObj, setChosenRaceObj] = useState(null)
   const [chosenSubraceID, setChosenSubraceID] = useState(null)
   const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
   const [showModal, setShowModal] = useState(false)
+  const [createCharacter] = useMutation(CREATE_CHARACTER, {
+    variables: { name, raceID: chosenRaceID, subraceID: chosenSubraceID },
+    onCompleted: (result: any) =>
+      history.push(`/character/${result.createCharacter.ID}`),
+  })
 
   const detailButtonText = () => {
     if (!chosenRaceID) {
@@ -86,49 +92,41 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
           }
         />
       </StyledInput>
-      <Query<IData> query={RACES_QUERY}>
-        {({ data, loading, error }) => {
-          if (loading) {
-            return <p>...loading</p>
-          }
-          if (error) {
-            return <p>error: {error}</p>
-          }
-          return (
+      {loading && <p>...loading</p>}
+      {error && <p>error: {error}</p>}
+      {!loading && !error && (
+        <section>
+          <SectionHeader>RACE</SectionHeader>
+          <RaceList>
+            {data.races.map((race: IRace) => (
+              <ToggleButton
+                key={race.ID}
+                isActive={chosenRaceID === race.ID}
+                handleClick={() => setChosenRace(race.ID, data.races)}
+              >
+                {race.name}
+              </ToggleButton>
+            ))}
+          </RaceList>
+
+          {chosenRaceID && chosenRaceObj.subraces.length > 0 && (
             <section>
-              <SectionHeader>RACE</SectionHeader>
+              <SectionHeader>SUBRACE</SectionHeader>
               <RaceList>
-                {data.races.map((race) => (
+                {chosenRaceObj.subraces.map((subrace: IRace) => (
                   <ToggleButton
-                    key={race.ID}
-                    isActive={chosenRaceID === race.ID}
-                    handleClick={() => setChosenRace(race.ID, data.races)}
+                    key={subrace.ID}
+                    isActive={chosenSubraceID === subrace.ID}
+                    handleClick={() => setChosenSubrace(subrace.ID)}
                   >
-                    {race.name}
+                    {subrace.name}
                   </ToggleButton>
                 ))}
               </RaceList>
-
-              {chosenRaceID && chosenRaceObj.subraces.length > 0 && (
-                <section>
-                  <SectionHeader>SUBRACE</SectionHeader>
-                  <RaceList>
-                    {chosenRaceObj.subraces.map((subrace: IRace) => (
-                      <ToggleButton
-                        key={subrace.ID}
-                        isActive={chosenSubraceID === subrace.ID}
-                        handleClick={() => setChosenSubrace(subrace.ID)}
-                      >
-                        {subrace.name}
-                      </ToggleButton>
-                    ))}
-                  </RaceList>
-                </section>
-              )}
             </section>
-          )
-        }}
-      </Query>
+          )}
+        </section>
+      )}
 
       <StyledBottomWrapper>
         <ToggleButton
@@ -173,22 +171,12 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
             </Modal>
           </AnimatePresence>
         )}
-        <Mutation
-          mutation={CREATE_CHARACTER}
-          variables={{ name, raceID: chosenRaceID, subraceID: chosenSubraceID }}
-          onCompleted={(result: any) =>
-            history.push(`/character/${result.createCharacter.ID}`)
-          }
+        <ActivityButton
+          disabled={isNextButtonDisabled()}
+          handleClick={createCharacter}
         >
-          {(createCharacter: () => void) => (
-            <ActivityButton
-              disabled={isNextButtonDisabled()}
-              handleClick={() => createCharacter()}
-            >
-              Next
-            </ActivityButton>
-          )}
-        </Mutation>
+          Next
+        </ActivityButton>
       </StyledBottomWrapper>
     </StyledGridSection>
   )
