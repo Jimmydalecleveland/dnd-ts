@@ -3,6 +3,12 @@ const path = require('path')
 module.exports = {
   mode: 'development',
 
+  entry: './src/index.tsx',
+  output: {
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/', // required for font loading on historyApiFallback
+  },
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
 
