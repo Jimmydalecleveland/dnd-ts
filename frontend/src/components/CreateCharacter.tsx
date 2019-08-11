@@ -1,28 +1,82 @@
 import { gql } from 'apollo-boost'
+import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
-import background from '../images/stone-steps.jpg'
+import ActivityButton from './ActivityButton'
 import RaceTraits from './RaceTraits'
+import SectionHeader from './SectionHeader'
+import ToggleButton from './ToggleButton'
+
+const container = {
+  hidden: { opacity: 1, scale: 0.4 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      damping: 20,
+      staggerChildren: 0.1,
+      stiffness: 260,
+      type: 'spring',
+      when: 'beforeChildren',
+    },
+  },
+}
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
   const [name, setName] = useState('')
-  const [chosenRaceObj, setChosenRaceObj] = useState(null)
   const [chosenRaceID, setChosenRaceID] = useState('')
-  const [chosenSubraceID, setChosenSubraceID] = useState('')
+  const [chosenRaceObj, setChosenRaceObj] = useState(null)
+  const [chosenSubraceID, setChosenSubraceID] = useState(null)
+  const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
+  const [showModal, setShowModal] = useState(false)
+
+  const detailButtonText = () => {
+    if (!chosenRaceID) {
+      return 'Select a race'
+    }
+    if (chosenSubraceObj) {
+      return `${chosenSubraceObj.name} details`
+    }
+    if (chosenRaceObj) {
+      return `${chosenRaceObj.name} details`
+    }
+  }
+
+  const isNextButtonDisabled = () => {
+    if (chosenRaceObj) {
+      if (chosenRaceObj.subraces.length > 0) {
+        if (chosenSubraceObj) {
+          return false
+        }
+      } else {
+        return false
+      }
+    }
+
+    return true
+  }
 
   const setChosenRace = (value: string, races: IData['races']): void => {
     const raceObj = races.filter((race) => race.ID === value)[0]
     setChosenRaceID(value)
     setChosenRaceObj(raceObj)
     setChosenSubraceID('')
+    setChosenSubraceObj(null)
+  }
+
+  const setChosenSubrace = (value: string) => {
+    const subraceObj = chosenRaceObj.subraces.filter(
+      (subrace: IRace) => subrace.ID === value
+    )[0]
+    setChosenSubraceID(value)
+    setChosenSubraceObj(subraceObj)
   }
 
   return (
-    <StyledSection>
+    <StyledGridSection>
       <StyledInput htmlFor="name">
-        <span>Name:</span>
         <input
           id="name"
           type="text"
@@ -41,79 +95,102 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
             return <p>error: {error}</p>
           }
           return (
-            <>
-              <label htmlFor="race">
-                <span>Race:</span>
-                <select
-                  name="race"
-                  id="race"
-                  value={chosenRaceID}
-                  onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                    setChosenRace(event.target.value, data.races)
-                  }
-                >
-                  <option value="" disabled>
-                    Select a race...
-                  </option>
-                  {data.races.map((race) => (
-                    <option key={race.ID} value={race.ID}>
-                      {race.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              {chosenRaceID && chosenRaceObj.subraces.length > 0 && (
-                <label htmlFor="subrace">
-                  <span>Subrace:</span>
-                  <select
-                    name="subrace"
-                    id="subrace"
-                    value={chosenSubraceID}
-                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                      setChosenSubraceID(event.target.value)
-                    }
-                  >
-                    <option value="" disabled>
-                      Select a race...
-                    </option>
-                    {chosenRaceObj.subraces.map((subrace: IRace) => (
-                      <option key={subrace.ID} value={subrace.ID}>
-                        {subrace.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
-
+            <section>
+              <SectionHeader>RACE</SectionHeader>
               <RaceList>
                 {data.races.map((race) => (
-                  <RaceButton
+                  <ToggleButton
                     key={race.ID}
-                    onClick={() => setChosenRace(race.ID, data.races)}
+                    isActive={chosenRaceID === race.ID}
+                    handleClick={() => setChosenRace(race.ID, data.races)}
                   >
                     {race.name}
-                  </RaceButton>
+                  </ToggleButton>
                 ))}
               </RaceList>
-            </>
+
+              {chosenRaceID && chosenRaceObj.subraces.length > 0 && (
+                <section>
+                  <SectionHeader>SUBRACE</SectionHeader>
+                  <RaceList>
+                    {chosenRaceObj.subraces.map((subrace: IRace) => (
+                      <ToggleButton
+                        key={subrace.ID}
+                        isActive={chosenSubraceID === subrace.ID}
+                        handleClick={() => setChosenSubrace(subrace.ID)}
+                      >
+                        {subrace.name}
+                      </ToggleButton>
+                    ))}
+                  </RaceList>
+                </section>
+              )}
+            </section>
           )
         }}
       </Query>
-      {chosenRaceID && <RaceTraits raceID={chosenRaceID} />}
-      {chosenSubraceID && <RaceTraits raceID={chosenSubraceID} />}
-      <Mutation
-        mutation={CREATE_CHARACTER}
-        variables={{ name, raceID: chosenRaceID, subraceID: chosenSubraceID }}
-        onCompleted={(result: any) =>
-          history.push(`/character/${result.createCharacter.ID}`)
-        }
-      >
-        {(createCharacter: () => void) => (
-          <button onClick={() => createCharacter()}>Submit</button>
+
+      <StyledBottomWrapper>
+        <ToggleButton
+          disabled={!chosenRaceObj}
+          isActive={showModal}
+          handleClick={() => setShowModal(true)}
+        >
+          {detailButtonText()}
+        </ToggleButton>
+        {showModal && (
+          <AnimatePresence>
+            <Modal
+              variants={container}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <span
+                className="close-button"
+                onClick={() => setShowModal(false)}
+              >
+                X
+              </span>
+              <div>
+                {chosenRaceID && (
+                  <div>
+                    <RaceTraits
+                      raceID={chosenRaceID}
+                      headline={chosenRaceObj.name}
+                    />
+                  </div>
+                )}
+                {chosenSubraceID && (
+                  <div>
+                    <RaceTraits
+                      raceID={chosenSubraceID}
+                      headline={chosenSubraceObj.name}
+                    />
+                  </div>
+                )}
+              </div>
+            </Modal>
+          </AnimatePresence>
         )}
-      </Mutation>
-    </StyledSection>
+        <Mutation
+          mutation={CREATE_CHARACTER}
+          variables={{ name, raceID: chosenRaceID, subraceID: chosenSubraceID }}
+          onCompleted={(result: any) =>
+            history.push(`/character/${result.createCharacter.ID}`)
+          }
+        >
+          {(createCharacter: () => void) => (
+            <ActivityButton
+              disabled={isNextButtonDisabled()}
+              handleClick={() => createCharacter()}
+            >
+              Next
+            </ActivityButton>
+          )}
+        </Mutation>
+      </StyledBottomWrapper>
+    </StyledGridSection>
   )
 }
 
@@ -148,15 +225,22 @@ interface IData {
   races: IRace[]
 }
 
-const StyledSection = styled.section`
-  height: 100vh;
-  padding: 15px;
-  background-color: #3c424e;
-  background-image: url(${background});
-  background-blend-mode: overlay;
+const StyledGridSection = styled.section`
+  display: grid;
+  grid-template-rows: 70px 1fr 1fr;
+  height: 100%;
+`
+
+const StyledBottomWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  margin-top: auto;
+  grid-gap: 10px;
+  justify-content: space-between;
 `
 
 const StyledInput = styled.label`
+  display: block;
   font-size: 20px;
   font-family: 'Segoe UI', sans-serif;
   font-weight: bold;
@@ -167,30 +251,53 @@ const StyledInput = styled.label`
     border: solid 3px #737477;
     border: ${({ theme }) => `solid 1px ${theme.colors.outline}`};
     padding: 10px 20px;
-    font-size: 26px;
+    font-size: 22px;
     color: #fff;
+
+    &:focus {
+      border: solid 1px ${({ theme }) => theme.colors.primaryTransparent};
+    }
   }
 `
 
 const RaceList = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
   width: 100%;
-  margin: 15px 0 15px;
+  margin: 0 0 20px;
 `
 
-const RaceButton = styled.button`
-  padding: 15px;
-  text-transform: uppercase;
-  font-size: 18px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.outline};
-  background: none;
-  border: solid 1px transparent;
+const Modal = styled(motion.section)`
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.9);
 
-  &:first-child {
-    border: ${({ theme }) => `solid 1px ${theme.colors.highlight}`};
-    color: ${({ theme }) => theme.colors.highlight};
+  > .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  > div {
+    padding: 20px;
+    height: 100%;
+    overflow-y: scroll;
+    border: solid 1px ${({ theme }) => theme.colors.outline};
+    background-image: linear-gradient(
+      245deg,
+      rgba(200, 200, 200, 0.1),
+      rgb(0, 0, 0) 90%
+    );
   }
 `
 
