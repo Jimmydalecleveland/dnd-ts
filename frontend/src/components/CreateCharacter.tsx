@@ -25,18 +25,21 @@ const container = {
 }
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
-  const { loading, error, data } = useQuery(RACES_QUERY)
+  const { loading, error, data } = useQuery<IQueryData>(RACES_QUERY)
   const [name, setName] = useState('')
   const [chosenRaceID, setChosenRaceID] = useState('')
   const [chosenRaceObj, setChosenRaceObj] = useState(null)
   const [chosenSubraceID, setChosenSubraceID] = useState(null)
   const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  const [createCharacter] = useMutation(CREATE_CHARACTER, {
-    variables: { name, raceID: chosenRaceID, subraceID: chosenSubraceID },
-    onCompleted: (result: any) =>
-      history.push(`/character/${result.createCharacter.ID}`),
-  })
+  const [createCharacter] = useMutation<IMutationData, IMutationVariables>(
+    CREATE_CHARACTER,
+    {
+      onCompleted: (result) =>
+        history.push(`/character/${result.createCharacter.ID}`),
+      variables: { name, raceID: chosenRaceID, subraceID: chosenSubraceID },
+    }
+  )
 
   const detailButtonText = () => {
     if (!chosenRaceID) {
@@ -64,7 +67,7 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
     return true
   }
 
-  const setChosenRace = (value: string, races: IData['races']): void => {
+  const setChosenRace = (value: string, races: IQueryData['races']): void => {
     const raceObj = races.filter((race) => race.ID === value)[0]
     setChosenRaceID(value)
     setChosenRaceObj(raceObj)
@@ -208,9 +211,20 @@ interface IRace {
   name: string
 }
 
-// interface IData extends Array<IRace> {}
-interface IData {
+interface IQueryData {
   races: IRace[]
+}
+
+interface IMutationData {
+  createCharacter: {
+    ID: string
+  }
+}
+
+interface IMutationVariables {
+  name: string
+  raceID: string
+  subraceID: string
 }
 
 const StyledGridSection = styled.section`
