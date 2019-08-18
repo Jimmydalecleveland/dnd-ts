@@ -1,23 +1,21 @@
 import { ApolloError, gql } from 'apollo-boost'
 import React from 'react'
-import { Query } from 'react-apollo'
+import { useQuery } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 
-const Spell = ({ match, history }: RouteComponentProps<IProps>) => {
+const Spell = ({ match }: RouteComponentProps<IProps>) => {
   const { id: spellID } = match.params
-  return (
-    <Query<IData, IVariables> query={SPELL_QUERY} variables={{ ID: spellID }}>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <p>loading...</p>
-        }
-        if (error) {
-          return <p>Error: {error}</p>
-        }
-        return <h1>{data.spell.name}</h1>
-      }}
-    </Query>
-  )
+  const { loading, data } = useQuery<IData, IVariables>(SPELL_QUERY, {
+    variables: {
+      ID: spellID,
+    },
+  })
+
+  if (loading) {
+    return <p>loading...</p>
+  }
+
+  return <h1>{data.spell.name}</h1>
 }
 
 interface IProps {
