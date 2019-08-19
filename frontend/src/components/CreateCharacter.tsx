@@ -34,10 +34,7 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
   const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
   const [showModal, setShowModal] = useState(false)
 
-  const [
-    getRaceTraits,
-    { loading: raceTraitsLoading, data: raceTraitsData },
-  ] = useLazyQuery(RACETRAITS_QUERY)
+  const [getRaceTraits] = useLazyQuery(RACETRAITS_QUERY)
 
   const [createCharacter] = useMutation<IMutationData, IMutationVariables>(
     CREATE_CHARACTER,
