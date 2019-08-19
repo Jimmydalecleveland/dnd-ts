@@ -1,7 +1,7 @@
 import { gql } from 'apollo-boost'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
-import { useMutation, useQuery } from 'react-apollo'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import ActivityButton from './ActivityButton'

@@ -1,6 +1,6 @@
 import ApolloClient from 'apollo-boost'
 import React from 'react'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from '@apollo/react-hooks'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { ThemeProvider, withTheme } from 'styled-components'

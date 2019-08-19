@@ -1,7 +1,7 @@
+import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { motion } from 'framer-motion'
 import React from 'react'
-import { Query } from 'react-apollo'
 
 import SectionHeader from './SectionHeader'
 
@@ -16,29 +16,29 @@ const item = {
   },
 }
 
-const RaceTraits = ({ raceID, headline }: IProps) => (
-  <Query<IData> query={RACETRAITS_QUERY} variables={{ raceID }}>
-    {({ data, loading, error }) => {
-      if (loading) {
-        return <p>...loading</p>
-      }
-      if (error) {
-        return <p>error: {error}</p>
-      }
-      return (
-        <section>
-          <SectionHeader>{headline}</SectionHeader>
-          {data.raceTraits.map((raceTrait) => (
-            <motion.div key={raceTrait.ID} variants={item}>
-              <h3>{raceTrait.name}</h3>
-              <p>{raceTrait.description}</p>
-            </motion.div>
-          ))}
-        </section>
-      )
-    }}
-  </Query>
-)
+const RaceTraits = ({ raceID, headline }: IProps) => {
+  const { loading, data } = useQuery<IQueryData, IQueryVariables>(
+    RACETRAITS_QUERY,
+    {
+      variables: { raceID },
+    }
+  )
+  if (loading) {
+    return <p>...loading</p>
+  }
+
+  return (
+    <section>
+      <SectionHeader>{headline}</SectionHeader>
+      {data.raceTraits.map((raceTrait) => (
+        <motion.div key={raceTrait.ID} variants={item}>
+          <h3>{raceTrait.name}</h3>
+          <p>{raceTrait.description}</p>
+        </motion.div>
+      ))}
+    </section>
+  )
+}
 
 const RACETRAITS_QUERY = gql`
   query RaceTraits($raceID: ID!) {
@@ -61,8 +61,12 @@ interface IRaceTrait {
   description: string
 }
 
-interface IData {
+interface IQueryData {
   raceTraits: IRaceTrait[]
+}
+
+interface IQueryVariables {
+  raceID: string
 }
 
 export default RaceTraits

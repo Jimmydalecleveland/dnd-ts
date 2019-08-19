@@ -1,6 +1,6 @@
+import { useQuery } from '@apollo/react-hooks'
 import { ApolloError, gql } from 'apollo-boost'
 import React from 'react'
-import { useQuery } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 
 const Spell = ({ match }: RouteComponentProps<IProps>) => {

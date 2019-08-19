@@ -1,6 +1,6 @@
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import React from 'react'
-import { useMutation, useQuery } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {

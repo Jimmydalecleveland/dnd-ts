@@ -1,6 +1,6 @@
+import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import React from 'react'
-import { useQuery } from 'react-apollo'
 import { Link } from 'react-router-dom'
 
 const Characters = () => {
