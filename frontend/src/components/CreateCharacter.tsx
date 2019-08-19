@@ -1,7 +1,7 @@
+import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
-import { useMutation, useQuery } from '@apollo/react-hooks'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import ActivityButton from './ActivityButton'
@@ -26,12 +26,19 @@ const container = {
 
 const CreateCharacter = ({ history }: RouteComponentProps) => {
   const { loading, error, data } = useQuery<IQueryData>(RACES_QUERY)
+
   const [name, setName] = useState('')
   const [chosenRaceID, setChosenRaceID] = useState('')
   const [chosenRaceObj, setChosenRaceObj] = useState(null)
   const [chosenSubraceID, setChosenSubraceID] = useState(null)
   const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
   const [showModal, setShowModal] = useState(false)
+
+  const [
+    getRaceTraits,
+    { loading: raceTraitsLoading, data: raceTraitsData },
+  ] = useLazyQuery(RACETRAITS_QUERY)
+
   const [createCharacter] = useMutation<IMutationData, IMutationVariables>(
     CREATE_CHARACTER,
     {
@@ -105,7 +112,10 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
               <ToggleButton
                 key={race.ID}
                 isActive={chosenRaceID === race.ID}
-                handleClick={() => setChosenRace(race.ID, data.races)}
+                handleClick={() => {
+                  getRaceTraits({ variables: { raceID: race.ID } })
+                  setChosenRace(race.ID, data.races)
+                }}
               >
                 {race.name}
               </ToggleButton>
@@ -120,7 +130,10 @@ const CreateCharacter = ({ history }: RouteComponentProps) => {
                   <ToggleButton
                     key={subrace.ID}
                     isActive={chosenSubraceID === subrace.ID}
-                    handleClick={() => setChosenSubrace(subrace.ID)}
+                    handleClick={() => {
+                      getRaceTraits({ variables: { raceID: subrace.ID } })
+                      setChosenSubrace(subrace.ID)
+                    }}
                   >
                     {subrace.name}
                   </ToggleButton>
@@ -194,6 +207,16 @@ const RACES_QUERY = gql`
         ID
         name
       }
+    }
+  }
+`
+
+const RACETRAITS_QUERY = gql`
+  query RaceTraits($raceID: ID!) {
+    raceTraits(raceID: $raceID) {
+      ID
+      name
+      description
     }
   }
 `
