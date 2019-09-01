@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import React, { useContext, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
+import { useCharacter } from '../context'
 import ActivityButton from './ActivityButton'
-import { Character } from './CreateCharacter'
 import RaceTraits from './RaceTraits'
 import SectionHeader from './SectionHeader'
 import ToggleButton from './ToggleButton'
@@ -26,7 +26,8 @@ const container = {
 }
 
 const RaceSelection = ({ history }: RouteComponentProps) => {
-  const setPlayerCharacter = useContext(Character)
+  const { character, setCharacter } = useCharacter()
+
   const { loading, error, data } = useQuery<IQueryData>(RACES_QUERY)
 
   const [name, setName] = useState('')
@@ -35,7 +36,6 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
   const [chosenSubraceID, setChosenSubraceID] = useState(null)
   const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  setPlayerCharacter(chosenRaceObj)
 
   const [getRaceTraits] = useLazyQuery(RACETRAITS_QUERY)
 
@@ -96,9 +96,10 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
         <input
           id="name"
           type="text"
+          value={character.name}
           placeholder="Enter Thy Name"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setName(event.target.value)
+            setCharacter({ ...character, name: event.target.value })
           }
         />
       </StyledInput>

@@ -1,15 +1,13 @@
 import React, { createContext, useContext, useState } from 'react'
 import { Route, RouteComponentProps } from 'react-router-dom'
+import CharacterProvider from '../context'
 import RaceSelection from './RaceSelection'
-export const Character = createContext(null)
 
-const CreateCharacter = ({ history }: RouteComponentProps) => {
-  const [playerCharacter, setPlayerCharacter] = useState({})
-
+const CreateCharacter = () => {
   return (
-    <Character.Provider value={setPlayerCharacter}>
+    <CharacterProvider>
       <Route exact path="/create-character" component={RaceSelection} />
-    </Character.Provider>
+    </CharacterProvider>
   )
 }
 
