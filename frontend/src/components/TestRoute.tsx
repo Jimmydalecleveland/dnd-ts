@@ -20,26 +20,35 @@ const TestRoute = () => {
 }
 
 const SomeLinks = () => {
-  const { setCharacter } = useCharacter()
+  const { character, setCharacter } = useCharacter()
 
-  console.log(setCharacter)
   return (
     <>
       <button
         type="button"
-        onClick={() => setCharacter({ race: { name: 'dwarf' } })}
+        onClick={() => setCharacter({ name: 'Woofy', race: { name: 'dwarf' } })}
       >
         Set Race to Dwarf
       </button>
       <button
         type="button"
-        onClick={() => setCharacter({ race: { name: 'hill dwarf' } })}
+        onClick={() =>
+          setCharacter({
+            ...character,
+            race: { name: 'dwarf', subrace: 'hill dwarf' },
+          })
+        }
       >
         Set Sub Race to Hill Dwarf
       </button>
       <button
         type="button"
-        onClick={() => setCharacter({ race: { name: 'elf' } })}
+        onClick={() =>
+          setCharacter({
+            ...character,
+            race: { ...character.race, name: 'elf' },
+          })
+        }
       >
         Set Race to Elf
       </button>
@@ -49,7 +58,14 @@ const SomeLinks = () => {
 
 const SomeComponent = () => {
   const { character } = useCharacter()
-  return <h1>Some: {character.race.name}</h1>
+  return (
+    <>
+      <h1>Some Component: {character.name}</h1>
+      <h2>
+        {character.race.name} -- {character.race.subrace}
+      </h2>
+    </>
+  )
 }
 
 export default TestRoute

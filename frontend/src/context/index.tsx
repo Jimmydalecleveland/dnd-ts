@@ -1,12 +1,16 @@
 import React, { createContext, useContext, useState } from 'react'
 
+const defaultCharacterShape = { name: '', race: { name: '', subrace: '' } }
+
 const CharacterContext = createContext({
-  character: { race: { name: '' } },
+  character: defaultCharacterShape,
   setCharacter: (f: any) => f,
 })
 
+export const useCharacter = () => useContext(CharacterContext)
+
 const CharacterProvider: React.FC = ({ children }) => {
-  const [character, setCharacter] = useState({ race: { name: '' } })
+  const [character, setCharacter] = useState<ICharacter>(defaultCharacterShape)
 
   return (
     <CharacterContext.Provider value={{ character, setCharacter }}>
@@ -15,6 +19,17 @@ const CharacterProvider: React.FC = ({ children }) => {
   )
 }
 
-export default CharacterProvider
+interface ICharacter {
+  name: string
+  race: {
+    name: string
+    subrace: string
+  }
+}
 
-export const useCharacter = () => useContext(CharacterContext)
+interface ICharacterContext {
+  character: ICharacter
+  setCharacter: ({  }: ICharacter) => void
+}
+
+export default CharacterProvider
