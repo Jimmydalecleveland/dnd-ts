@@ -30,8 +30,6 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
 
   const { loading, error, data } = useQuery<IQueryData>(RACES_QUERY)
 
-  const [name, setName] = useState('')
-  const [chosenRaceID, setChosenRaceID] = useState('')
   const [chosenRaceObj, setChosenRaceObj] = useState(null)
   const [chosenSubraceID, setChosenSubraceID] = useState(null)
   const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
@@ -44,12 +42,16 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
     {
       onCompleted: (result) =>
         history.push(`/character/${result.createCharacter.ID}`),
-      variables: { name, raceID: chosenRaceID, subraceID: chosenSubraceID },
+      variables: {
+        name: character.name,
+        raceID: character.race.ID,
+        subraceID: chosenSubraceID,
+      },
     }
   )
 
   const detailButtonText = () => {
-    if (!chosenRaceID) {
+    if (!character.race.ID) {
       return 'Select a race'
     }
     if (chosenSubraceObj) {
@@ -76,7 +78,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
 
   const setChosenRace = (value: string, races: IQueryData['races']): void => {
     const raceObj = races.filter((race) => race.ID === value)[0]
-    setChosenRaceID(value)
+    setCharacter({ ...character, race: raceObj })
     setChosenRaceObj(raceObj)
     setChosenSubraceID('')
     setChosenSubraceObj(null)
@@ -112,7 +114,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
             {data.races.map((race: IRace) => (
               <ToggleButton
                 key={race.ID}
-                isActive={chosenRaceID === race.ID}
+                isActive={character.race.ID === race.ID}
                 handleClick={() => {
                   getRaceTraits({ variables: { raceID: race.ID } })
                   setChosenRace(race.ID, data.races)
@@ -123,7 +125,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
             ))}
           </RaceList>
 
-          {chosenRaceID && chosenRaceObj.subraces.length > 0 && (
+          {character.race.ID && chosenRaceObj.subraces.length > 0 && (
             <section>
               <SectionHeader>SUBRACE</SectionHeader>
               <RaceList>
@@ -168,10 +170,10 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
                 X
               </span>
               <div>
-                {chosenRaceID && (
+                {character.race.ID && (
                   <div>
                     <RaceTraits
-                      raceID={chosenRaceID}
+                      raceID={character.race.ID}
                       headline={chosenRaceObj.name}
                     />
                   </div>

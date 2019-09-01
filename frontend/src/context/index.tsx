@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState } from 'react'
 
-const defaultCharacterShape = { name: '', race: { name: '', subrace: '' } }
+const defaultCharacterShape = {
+  name: '',
+  race: { ID: '', name: '', subrace: '' },
+}
 
 const CharacterContext = createContext({
   character: defaultCharacterShape,
@@ -22,6 +25,7 @@ const CharacterProvider: React.FC = ({ children }) => {
 interface ICharacter {
   name: string
   race: {
+    ID: string
     name: string
     subrace: string
   }
