@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState } from 'react'
 
-const defaultCharacterShape = {
+const defaultCharacterShape: ICharacter = {
   name: '',
-  race: { ID: '', name: '', subrace: '' },
+  race: { ID: '', name: '', subraces: [] },
+  subrace: null,
 }
 
 const CharacterContext = createContext({
@@ -27,8 +28,14 @@ interface ICharacter {
   race: {
     ID: string
     name: string
-    subrace: string
+    subraces?: ISubrace[]
   }
+  subrace: ISubrace
+}
+
+interface ISubrace {
+  ID: string
+  name: string
 }
 
 interface ICharacterContext {
