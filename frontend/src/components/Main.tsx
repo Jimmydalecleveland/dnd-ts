@@ -15,6 +15,7 @@ const StyledMain = styled.main`
   padding: 15px;
   background-color: #3c424e;
   background-image: url(${background});
+  background-position: top center;
   background-blend-mode: overlay;
 `
 

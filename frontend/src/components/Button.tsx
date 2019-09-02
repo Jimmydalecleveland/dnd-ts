@@ -23,7 +23,7 @@ const StyledButton = styled.button`
 `
 
 interface IProps {
-  children: string
+  children: JSX.Element
   disabled?: boolean
   handleClick(): void
 }

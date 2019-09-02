@@ -225,7 +225,7 @@ const StyledActivityButton = styled.button(({ theme, disabled }) => {
 interface IProps {
   children: string
   disabled?: boolean
-  handleClick(): void
+  handleClick?(): void
 }
 
 export default ActivityButton
