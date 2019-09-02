@@ -2,7 +2,7 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useContext, useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { Link, RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { useCharacter } from '../context'
 import ActivityButton from './ActivityButton'
@@ -59,7 +59,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
   }
 
   const isNextButtonDisabled = () => {
-    if (character.race) {
+    if (character.name && character.race.ID) {
       if (character.race.subraces.length > 0) {
         if (character.subrace) {
           return false
@@ -184,12 +184,11 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
             </Modal>
           </AnimatePresence>
         )}
-        <ActivityButton
-          disabled={isNextButtonDisabled()}
-          handleClick={createCharacter}
-        >
-          Next
-        </ActivityButton>
+        <Link to="/create-character/class">
+          <ActivityButton disabled={isNextButtonDisabled()}>
+            NEXT: CLASS
+          </ActivityButton>
+        </Link>
       </StyledBottomWrapper>
     </StyledGridSection>
   )
