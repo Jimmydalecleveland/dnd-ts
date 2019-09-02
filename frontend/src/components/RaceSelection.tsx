@@ -27,11 +27,8 @@ const container = {
 
 const RaceSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
-
   const { loading, error, data } = useQuery<IQueryData>(RACES_QUERY)
 
-  const [chosenSubraceID, setChosenSubraceID] = useState(null)
-  const [chosenSubraceObj, setChosenSubraceObj] = useState(null)
   const [showModal, setShowModal] = useState(false)
 
   const [getRaceTraits] = useLazyQuery(RACETRAITS_QUERY)
@@ -44,7 +41,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
       variables: {
         name: character.name,
         raceID: character.race.ID,
-        subraceID: chosenSubraceID,
+        subraceID: character.subrace ? character.subrace.ID : null,
       },
     }
   )
@@ -53,8 +50,8 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
     if (!character.race.ID) {
       return 'Select a race'
     }
-    if (chosenSubraceObj) {
-      return `${chosenSubraceObj.name} details`
+    if (character.subrace) {
+      return `${character.subrace.name} details`
     }
     if (character.race) {
       return `${character.race.name} details`
@@ -64,7 +61,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
   const isNextButtonDisabled = () => {
     if (character.race) {
       if (character.race.subraces.length > 0) {
-        if (chosenSubraceObj) {
+        if (character.subrace) {
           return false
         }
       } else {
@@ -77,17 +74,14 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
 
   const setChosenRace = (value: string, races: IQueryData['races']): void => {
     const raceObj = races.filter((race) => race.ID === value)[0]
-    setCharacter({ ...character, race: raceObj })
-    setChosenSubraceID('')
-    setChosenSubraceObj(null)
+    setCharacter({ ...character, race: raceObj, subrace: null })
   }
 
   const setChosenSubrace = (value: string) => {
     const subraceObj = character.race.subraces.filter(
-      (subrace: IRace) => subrace.ID === value
+      (subrace) => subrace.ID === value
     )[0]
-    setChosenSubraceID(value)
-    setChosenSubraceObj(subraceObj)
+    setCharacter({ ...character, subrace: subraceObj })
   }
 
   return (
@@ -130,7 +124,9 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
                 {character.race.subraces.map((subrace: IRace) => (
                   <ToggleButton
                     key={subrace.ID}
-                    isActive={chosenSubraceID === subrace.ID}
+                    isActive={
+                      character.subrace && character.subrace.ID === subrace.ID
+                    }
                     handleClick={() => {
                       getRaceTraits({ variables: { raceID: subrace.ID } })
                       setChosenSubrace(subrace.ID)
@@ -168,7 +164,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
                 X
               </span>
               <div>
-                {character.race.ID && (
+                {character.race && (
                   <div>
                     <RaceTraits
                       raceID={character.race.ID}
@@ -176,11 +172,11 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
                     />
                   </div>
                 )}
-                {chosenSubraceID && (
+                {character.subrace && (
                   <div>
                     <RaceTraits
-                      raceID={chosenSubraceID}
-                      headline={chosenSubraceObj.name}
+                      raceID={character.subrace.ID}
+                      headline={character.subrace.name}
                     />
                   </div>
                 )}
