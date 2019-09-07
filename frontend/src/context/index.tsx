@@ -1,12 +1,17 @@
 import React, { createContext, useContext, useState } from 'react'
 import { ICharacter } from '../interfaces'
 
-const defaultCharacterShape: ICharacter = {
-  ID: '',
-  name: '',
-  race: { ID: '', name: '', subraces: [] },
-  subrace: null,
-}
+// TODO: remove dummyData for development
+import dummyCharacter from './dummyData'
+
+// const defaultCharacterShape: ICharacter = {
+//   ID: '',
+//   name: '',
+//   race: { ID: '', name: '', subraces: [] },
+//   subrace: null,
+// }
+
+const defaultCharacterShape = dummyCharacter
 
 const CharacterContext = createContext({
   character: defaultCharacterShape,
