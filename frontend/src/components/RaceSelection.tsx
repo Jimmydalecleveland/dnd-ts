@@ -34,18 +34,18 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
 
   const [getRaceTraits] = useLazyQuery(RACETRAITS_QUERY)
 
-  const [createCharacter] = useMutation<IMutationData, IMutationVariables>(
-    CREATE_CHARACTER,
-    {
-      onCompleted: (result) =>
-        history.push(`/character/${result.createCharacter.ID}`),
-      variables: {
-        name: character.name,
-        raceID: character.race.ID,
-        subraceID: character.subrace ? character.subrace.ID : null,
-      },
-    }
-  )
+  // const [createCharacter] = useMutation<IMutationData, IMutationVariables>(
+  //   CREATE_CHARACTER,
+  //   {
+  //     onCompleted: (result) =>
+  //       history.push(`/character/${result.createCharacter.ID}`),
+  //     variables: {
+  //       name: character.name,
+  //       raceID: character.race.ID,
+  //       subraceID: character.subrace ? character.subrace.ID : null,
+  //     },
+  //   }
+  // )
 
   const detailButtonText = () => {
     if (!character.race.ID) {

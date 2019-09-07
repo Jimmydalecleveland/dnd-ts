@@ -5,7 +5,6 @@ import mobileBackground from '../images/bg-mobile.jpg'
 import background from '../images/stone-steps.jpg'
 
 const Main: React.FC = ({ children }) => {
-  const moo = ''
   return <StyledMain>{children}</StyledMain>
 }
 
