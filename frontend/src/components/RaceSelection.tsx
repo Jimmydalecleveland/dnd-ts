@@ -220,7 +220,7 @@ const StyledGridSection = styled.section`
 
 const StyledBottomWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 100px;
+  grid-template-columns: 3fr minmax(100px, 1fr);
   margin-top: auto;
   grid-gap: 10px;
   justify-content: space-between;
