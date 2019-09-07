@@ -37,6 +37,12 @@ const resolvers = {
     charClasses: (_: any, __: any, { dataSources }: any) =>
       dataSources.charClassAPI.getCharClasses(),
   },
+
+  CharClass: {
+    features: (CharClass: ICharClass, _: any, { dataSources }: any) =>
+      dataSources.charClassAPI.getFeatures({ ID: CharClass.ID }),
+  },
+
   Character: {
     race: (Character: ICharacter, _: any, { dataSources }: any) =>
       dataSources.characterAPI.getCharacterRace({ ID: Character.ID }),
@@ -55,6 +61,11 @@ const resolvers = {
     traits: (Subrace: IRace, _: any, { dataSources }: any) =>
       dataSources.raceAPI.getRaceTraits({ raceID: Subrace.ID }),
   },
+}
+
+interface ICharClass {
+  ID: number
+  name: string
 }
 
 interface ICharacter {

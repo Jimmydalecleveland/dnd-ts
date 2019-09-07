@@ -18,6 +18,17 @@ class CharClassAPI extends DataSource {
   public getCharClasses() {
     return knex('CharClass').select()
   }
+
+  public getFeatures({ ID }: { ID: string }) {
+    return knex('ClassLevelFeature')
+      .select('ClassLevelFeature.*', 'ClassLevel.classLevel as level')
+      .innerJoin(
+        'ClassLevel',
+        'ClassLevel.ID',
+        'ClassLevelFeature.classLevelID'
+      )
+      .where('classID', Number(ID))
+  }
 }
 
 export default CharClassAPI

@@ -49,9 +49,17 @@ const typeDefs = gql`
     description: String!
   }
 
+  type CharClassFeature {
+    ID: ID!
+    name: String!
+    description: String!
+    level: Int!
+  }
+
   type CharClass {
     ID: ID!
     name: String!
+    features: [CharClassFeature]!
   }
 `
 
