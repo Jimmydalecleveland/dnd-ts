@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { ICharacter } from '../interfaces'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const { id: characterID } = match.params
@@ -66,17 +67,7 @@ interface IProps {
 }
 
 interface IQueryData {
-  character: {
-    ID: string
-    name: string
-    race: IRace
-    subrace: IRace
-  }
-}
-
-interface IRace {
-  ID: string
-  name: string
+  character: ICharacter
 }
 
 interface IQueryVariables {

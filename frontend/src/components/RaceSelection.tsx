@@ -5,6 +5,7 @@ import React, { useContext, useState } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { useCharacter } from '../context'
+import { IRace } from '../interfaces'
 import ActivityButton from './ActivityButton'
 import RaceTraits from './RaceTraits'
 import SectionHeader from './SectionHeader'
@@ -184,19 +185,15 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
             </Modal>
           </AnimatePresence>
         )}
-        <Link to="/create-character/class">
-          <ActivityButton disabled={isNextButtonDisabled()}>
-            NEXT: CLASS
-          </ActivityButton>
-        </Link>
+        <ActivityButton
+          disabled={isNextButtonDisabled()}
+          handleClick={() => history.push('/create-character/class')}
+        >
+          NEXT: CLASS
+        </ActivityButton>
       </StyledBottomWrapper>
     </StyledGridSection>
   )
-}
-
-interface IRace {
-  ID: string
-  name: string
 }
 
 interface IQueryData {

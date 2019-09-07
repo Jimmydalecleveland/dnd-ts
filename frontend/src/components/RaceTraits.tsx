@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { motion } from 'framer-motion'
 import React from 'react'
+import { IRaceTrait } from '../interfaces'
 
 import SectionHeader from './SectionHeader'
 
@@ -53,12 +54,6 @@ const RACETRAITS_QUERY = gql`
 interface IProps {
   raceID: string
   headline: string
-}
-
-interface IRaceTrait {
-  ID: string
-  name: string
-  description: string
 }
 
 interface IQueryData {
