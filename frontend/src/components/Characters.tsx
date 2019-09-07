@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { ICharacter } from '../interfaces'
 
 const Characters = () => {
   const { loading, data } = useQuery<IQueryData>(CHARACTERS_QUERY)
@@ -31,12 +32,7 @@ const CHARACTERS_QUERY = gql`
 `
 
 interface IQueryData {
-  characters: [
-    {
-      ID: string
-      name: string
-    }
-  ]
+  characters: [ICharacter]
 }
 
 export default Characters
