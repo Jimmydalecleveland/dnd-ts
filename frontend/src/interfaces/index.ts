@@ -1,6 +1,11 @@
 export interface IRace {
   ID: string
   name: string
+  subraces?: ISubrace[]
+}
+export interface ISubrace {
+  ID: string
+  name: string
 }
 
 export interface IRaceTrait {
@@ -13,5 +18,5 @@ export interface ICharacter {
   ID: string
   name: string
   race: IRace
-  subrace: IRace
+  subrace: ISubrace
 }

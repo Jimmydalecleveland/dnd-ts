@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from 'react'
+import { ICharacter } from '../interfaces'
 
 const defaultCharacterShape: ICharacter = {
+  ID: '',
   name: '',
   race: { ID: '', name: '', subraces: [] },
   subrace: null,
@@ -11,7 +13,8 @@ const CharacterContext = createContext({
   setCharacter: (f: any) => f,
 })
 
-export const useCharacter = () => useContext(CharacterContext)
+export const useCharacter = () =>
+  useContext<ICharacterContext>(CharacterContext)
 
 const CharacterProvider: React.FC = ({ children }) => {
   const [character, setCharacter] = useState<ICharacter>(defaultCharacterShape)
@@ -21,21 +24,6 @@ const CharacterProvider: React.FC = ({ children }) => {
       {children}
     </CharacterContext.Provider>
   )
-}
-
-interface ICharacter {
-  name: string
-  race: {
-    ID: string
-    name: string
-    subraces?: ISubrace[]
-  }
-  subrace: ISubrace
-}
-
-interface ISubrace {
-  ID: string
-  name: string
 }
 
 interface ICharacterContext {
