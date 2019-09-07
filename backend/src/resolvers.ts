@@ -32,6 +32,10 @@ const resolvers = {
       dataSources.spellAPI.getSpell({ ID }),
     spells: (_: any, __: any, { dataSources }: any) =>
       dataSources.spellAPI.getSpells(),
+    charClass: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
+      dataSources.charClassAPI.getCharClass({ ID }),
+    charClasses: (_: any, __: any, { dataSources }: any) =>
+      dataSources.charClassAPI.getCharClasses(),
   },
   Character: {
     race: (Character: ICharacter, _: any, { dataSources }: any) =>
