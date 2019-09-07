@@ -104,7 +104,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
         <section>
           <SectionHeader>RACE</SectionHeader>
           <RaceList>
-            {data.races.map((race: IRace) => (
+            {data.races.map((race) => (
               <ToggleButton
                 key={race.ID}
                 isActive={character.race.ID === race.ID}
@@ -122,7 +122,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
             <section>
               <SectionHeader>SUBRACE</SectionHeader>
               <RaceList>
-                {character.race.subraces.map((subrace: IRace) => (
+                {character.race.subraces.map((subrace) => (
                   <ToggleButton
                     key={subrace.ID}
                     isActive={
