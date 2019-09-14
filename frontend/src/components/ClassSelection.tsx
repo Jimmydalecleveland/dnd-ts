@@ -2,9 +2,12 @@ import { useLazyQuery, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { useCharacter } from '../context'
 import { ICharClass } from '../interfaces'
+import ActivityButton from './ActivityButton'
+import FeatureList from './FeatureList'
 import SectionHeader from './SectionHeader'
 import ToggleButton from './ToggleButton'
 
@@ -23,7 +26,7 @@ const container = {
   },
 }
 
-const ClassSelection = () => {
+const ClassSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
   const { loading, error, data } = useQuery<IQueryData>(CLASSES_QUERY)
   const [getClassFeatures, { data: charClassData }] = useLazyQuery<
@@ -84,15 +87,16 @@ const ClassSelection = () => {
               <div>
                 {character.charClass && (
                   <div>
-                    {charClassData.charClass.features.map((feature) => (
-                      <p key={feature.ID}>{feature.name}</p>
-                    ))}
+                    <FeatureList charClassID={character.charClass.ID} headline="Class Features"></FeatureList>
                   </div>
                 )}
               </div>
             </Modal>
           </AnimatePresence>
         )}
+      <ActivityButton disabled={character.charClass.ID ? false : true}
+          handleClick={() => history.push('/create-character/background')}
+      >Next: Background</ActivityButton>
       </StyledBottomWrapper>
     </div>
   )

@@ -18,6 +18,14 @@ export interface IRaceTrait {
 export interface ICharClass {
   ID: string
   name: string
+  features: ICharClassFeature[]
+}
+
+export interface ICharClassFeature {
+  ID: string
+  name: string
+  description: string
+  level: string
 }
 
 export interface ICharacter {

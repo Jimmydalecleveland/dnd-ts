@@ -5,6 +5,7 @@ const dummyCharacter: ICharacter = {
   charClass: {
     ID: '',
     name: '',
+    features: []
   },
   name: 'a',
   race: {
