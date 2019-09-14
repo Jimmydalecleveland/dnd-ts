@@ -28,6 +28,7 @@ class CharClassAPI extends DataSource {
         'ClassLevelFeature.classLevelID'
       )
       .where('classID', Number(ID))
+      .orderBy('level', 'asc')
   }
 }
 
