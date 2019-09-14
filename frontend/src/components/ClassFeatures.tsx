@@ -1,20 +1,10 @@
+import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
-import { motion } from 'framer-motion'
-import React from 'react'
-import {ICharClass, ICharClassFeature} from '../interfaces'
-import SectionHeader from './SectionHeader'
 
-const item = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-  },
-}
+import { ICharClass } from '../interfaces'
+import SectionHeader from './SectionHeader'
+import FeatureItem from './FeatureItem'
 
 const ClassFeatures = ({ charClassID, headline }: IProps) => {
   const { loading, data } = useQuery<IQueryData, IQueryVariables>(
@@ -29,10 +19,10 @@ const ClassFeatures = ({ charClassID, headline }: IProps) => {
     <section>
       <SectionHeader>{headline}</SectionHeader>
       {data.charClass.features.map((feature) => (
-        <motion.div key={feature.ID} variants={item}>
-          <h3>{feature.name} - Level {feature.level}</h3>
-          <p>{feature.description}</p>
-        </motion.div>
+        <FeatureItem key={feature.ID}
+          title={`${feature.name} - Level ${feature.level}`}
+          description={feature.description}
+        />
       ))}
     </section>
   )

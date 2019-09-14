@@ -1,30 +1,17 @@
+import React, { useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
-import { useCharacter } from '../context'
-import { IRace } from '../interfaces'
-import ActivityButton from './ActivityButton'
-import RaceTraits from './RaceTraits'
-import SectionHeader from './SectionHeader'
-import ToggleButton from './ToggleButton'
 
-const container = {
-  hidden: { opacity: 1, scale: 0.4 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      damping: 20,
-      staggerChildren: 0.1,
-      stiffness: 260,
-      type: 'spring',
-      when: 'beforeChildren',
-    },
-  },
-}
+import { animationContainer } from '../FeatureItem'
+import { useCharacter } from '../../context'
+import { IRace } from '../../interfaces'
+import ActivityButton from '../ActivityButton'
+import RaceTraits from '../RaceTraits'
+import SectionHeader from '../SectionHeader'
+import ToggleButton from '../ToggleButton'
 
 const RaceSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
@@ -33,19 +20,6 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
   const [showModal, setShowModal] = useState(false)
 
   const [getRaceTraits] = useLazyQuery(RACETRAITS_QUERY)
-
-  // const [createCharacter] = useMutation<IMutationData, IMutationVariables>(
-  //   CREATE_CHARACTER,
-  //   {
-  //     onCompleted: (result) =>
-  //       history.push(`/character/${result.createCharacter.ID}`),
-  //     variables: {
-  //       name: character.name,
-  //       raceID: character.race.ID,
-  //       subraceID: character.subrace ? character.subrace.ID : null,
-  //     },
-  //   }
-  // )
 
   const detailButtonText = () => {
     if (!character.race.ID) {
@@ -153,7 +127,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
         {showModal && (
           <AnimatePresence>
             <Modal
-              variants={container}
+              variants={animationContainer}
               initial="hidden"
               animate="visible"
               exit="hidden"
@@ -198,18 +172,6 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
 
 interface IQueryData {
   races: IRace[]
-}
-
-interface IMutationData {
-  createCharacter: {
-    ID: string
-  }
-}
-
-interface IMutationVariables {
-  name: string
-  raceID: string
-  subraceID: string
 }
 
 const StyledGridSection = styled.section`

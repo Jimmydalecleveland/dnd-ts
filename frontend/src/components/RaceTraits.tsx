@@ -1,21 +1,11 @@
+import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { motion } from 'framer-motion'
-import React from 'react'
+
 import { IRaceTrait } from '../interfaces'
-
 import SectionHeader from './SectionHeader'
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-  },
-}
+import FeatureItem from './FeatureItem'
 
 const RaceTraits = ({ raceID, headline }: IProps) => {
   const { loading, data } = useQuery<IQueryData, IQueryVariables>(
@@ -31,12 +21,7 @@ const RaceTraits = ({ raceID, headline }: IProps) => {
   return (
     <section>
       <SectionHeader>{headline}</SectionHeader>
-      {data.raceTraits.map((raceTrait) => (
-        <motion.div key={raceTrait.ID} variants={item}>
-          <h3>{raceTrait.name}</h3>
-          <p>{raceTrait.description}</p>
-        </motion.div>
-      ))}
+      {data.raceTraits.map((raceTrait) => <FeatureItem key={raceTrait.ID} title={raceTrait.name} description={raceTrait.description} />)}
     </section>
   )
 }

@@ -4,8 +4,8 @@ const dummyCharacter: ICharacter = {
   ID: '',
   charClass: {
     ID: '',
+    features: [],
     name: '',
-    features: []
   },
   name: 'a',
   race: {

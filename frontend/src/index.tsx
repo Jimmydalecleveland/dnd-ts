@@ -10,10 +10,10 @@ import darkTheme from './theme'
 
 import Character from './components/Character'
 import Characters from './components/Characters'
-import CreateCharacter from './components/CreateCharacter'
 import GlobalStyle from './components/GlobalStyle'
 import Main from './components/Main'
 import MobileNav from './components/MobileNav'
+import CreateCharacter from './components/pages/CreateCharacter'
 import Spell from './components/Spell'
 
 const client = new ApolloClient({

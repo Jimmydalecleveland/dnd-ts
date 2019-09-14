@@ -1,30 +1,18 @@
+import React, { useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import { useLazyQuery, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
-import { useCharacter } from '../context'
-import { ICharClass } from '../interfaces'
-import ActivityButton from './ActivityButton'
-import FeatureList from './FeatureList'
-import SectionHeader from './SectionHeader'
-import ToggleButton from './ToggleButton'
 
-const container = {
-  hidden: { opacity: 1, scale: 0.4 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      damping: 20,
-      staggerChildren: 0.1,
-      stiffness: 260,
-      type: 'spring',
-      when: 'beforeChildren',
-    },
-  },
-}
+import { animationContainer } from '../FeatureItem'
+import { useCharacter } from '../../context'
+import { ICharClass } from '../../interfaces'
+import ActivityButton from '../ActivityButton'
+import ClassFeatures from '../ClassFeatures'
+import SectionHeader from '../SectionHeader'
+import ToggleButton from '../ToggleButton'
+
 
 const ClassSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
@@ -73,7 +61,7 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
         {showModal && (
           <AnimatePresence>
             <Modal
-              variants={container}
+              variants={animationContainer}
               initial="hidden"
               animate="visible"
               exit="hidden"
@@ -87,7 +75,7 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
               <div>
                 {character.charClass && (
                   <div>
-                    <FeatureList charClassID={character.charClass.ID} headline="Class Features"></FeatureList>
+                    <ClassFeatures charClassID={character.charClass.ID} headline="Class Features"></ClassFeatures>
                   </div>
                 )}
               </div>

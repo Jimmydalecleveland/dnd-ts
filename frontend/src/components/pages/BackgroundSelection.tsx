@@ -1,5 +1,5 @@
 import React from 'react'
-import { useCharacter } from '../context'
+import { useCharacter } from '../../context'
 
 const BackgroundSelection = () => {
   const { character, setCharacter } = useCharacter()
