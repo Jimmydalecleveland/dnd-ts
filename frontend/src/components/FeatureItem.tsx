@@ -41,5 +41,4 @@ interface IProps {
   description: string
 }
 
-
 export default FeatureList

@@ -21,7 +21,13 @@ const RaceTraits = ({ raceID, headline }: IProps) => {
   return (
     <section>
       <SectionHeader>{headline}</SectionHeader>
-      {data.raceTraits.map((raceTrait) => <FeatureItem key={raceTrait.ID} title={raceTrait.name} description={raceTrait.description} />)}
+      {data.raceTraits.map((raceTrait) => (
+        <FeatureItem
+          key={raceTrait.ID}
+          title={raceTrait.name}
+          description={raceTrait.description}
+        />
+      ))}
     </section>
   )
 }

@@ -13,7 +13,6 @@ import ClassFeatures from '../ClassFeatures'
 import SectionHeader from '../SectionHeader'
 import ToggleButton from '../ToggleButton'
 
-
 const ClassSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
   const { loading, error, data } = useQuery<IQueryData>(CLASSES_QUERY)
@@ -75,16 +74,22 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
               <div>
                 {character.charClass && (
                   <div>
-                    <ClassFeatures charClassID={character.charClass.ID} headline="Class Features"></ClassFeatures>
+                    <ClassFeatures
+                      charClassID={character.charClass.ID}
+                      headline="Class Features"
+                    ></ClassFeatures>
                   </div>
                 )}
               </div>
             </Modal>
           </AnimatePresence>
         )}
-      <ActivityButton disabled={character.charClass.ID ? false : true}
+        <ActivityButton
+          disabled={character.charClass.ID ? false : true}
           handleClick={() => history.push('/create-character/background')}
-      >Next: Background</ActivityButton>
+        >
+          Next: Background
+        </ActivityButton>
       </StyledBottomWrapper>
     </div>
   )

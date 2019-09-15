@@ -9,7 +9,7 @@ import FeatureItem from './FeatureItem'
 const ClassFeatures = ({ charClassID, headline }: IProps) => {
   const { loading, data } = useQuery<IQueryData, IQueryVariables>(
     CLASS_FEATURES_QUERY,
-    { variables: { charClassID }, }
+    { variables: { charClassID } }
   )
   if (loading) {
     return <p>...loading</p>
@@ -19,7 +19,8 @@ const ClassFeatures = ({ charClassID, headline }: IProps) => {
     <section>
       <SectionHeader>{headline}</SectionHeader>
       {data.charClass.features.map((feature) => (
-        <FeatureItem key={feature.ID}
+        <FeatureItem
+          key={feature.ID}
           title={`${feature.name} - Level ${feature.level}`}
           description={feature.description}
         />
