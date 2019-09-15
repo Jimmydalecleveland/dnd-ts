@@ -2,6 +2,11 @@ import { ICharacter } from '../interfaces'
 
 const dummyCharacter: ICharacter = {
   ID: '',
+  background: {
+    ID: '',
+    features: [],
+    name: '',
+  },
   charClass: {
     ID: '',
     features: [],

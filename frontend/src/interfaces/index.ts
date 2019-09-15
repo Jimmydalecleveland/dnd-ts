@@ -15,6 +15,18 @@ export interface IRaceTrait {
   description: string
 }
 
+export interface IBackground {
+  ID: string
+  name: string
+  features: IBackgroundFeature[]
+}
+
+export interface IBackgroundFeature {
+  ID: string
+  name: string
+  description: string
+}
+
 export interface ICharClass {
   ID: string
   name: string
@@ -34,4 +46,5 @@ export interface ICharacter {
   race: IRace
   subrace: ISubrace
   charClass: ICharClass
+  background: IBackground
 }
