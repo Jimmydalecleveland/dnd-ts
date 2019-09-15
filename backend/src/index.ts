@@ -1,7 +1,8 @@
 import { ApolloServer } from 'apollo-server'
 import CharacterAPI from './datasources/character'
-import CharClassAPI from './datasources/charClass'
 import RaceAPI from './datasources/race'
+import CharClassAPI from './datasources/charClass'
+import BackgroundAPI from './datasources/background'
 import SpellAPI from './datasources/spell'
 import resolvers from './resolvers'
 import typeDefs from './schema'
@@ -10,6 +11,7 @@ const server = new ApolloServer({
   resolvers,
   typeDefs,
   dataSources: () => ({
+    backgroundAPI: new BackgroundAPI(),
     charClassAPI: new CharClassAPI(),
     characterAPI: new CharacterAPI(),
     raceAPI: new RaceAPI(),

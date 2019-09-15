@@ -14,6 +14,8 @@ const typeDefs = gql`
     races: [Race]!
     race(ID: ID!): Race
     raceTraits(raceID: ID!): [RaceTrait]!
+    backgrounds: [Background]!
+    background(ID: ID!): Background
     charClasses: [CharClass]!
     charClass(ID: ID!): CharClass
   }
@@ -44,6 +46,18 @@ const typeDefs = gql`
   }
 
   type RaceTrait {
+    ID: ID!
+    name: String!
+    description: String!
+  }
+
+  type Background {
+    ID: ID!
+    name: String!
+    features: [BackgroundFeature]!
+  }
+
+  type BackgroundFeature {
     ID: ID!
     name: String!
     description: String!

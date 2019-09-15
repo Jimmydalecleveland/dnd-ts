@@ -14,28 +14,33 @@ const resolvers = {
     deleteCharacter: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
       dataSources.characterAPI.deleteCharacter({ ID }),
   },
+
   Query: {
-    character: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacter({ ID }),
     characters: (_: any, __: any, { dataSources }: any) =>
       dataSources.characterAPI.getCharacters(),
-    race: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.raceAPI.getRace({ ID }),
+    character: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
+      dataSources.characterAPI.getCharacter({ ID }),
     races: (_: any, __: any, { dataSources }: any) =>
       dataSources.raceAPI.getRaces(),
+    race: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
+      dataSources.raceAPI.getRace({ ID }),
     raceTraits: (
       _: any,
       { raceID }: { raceID: string },
       { dataSources }: any
     ) => dataSources.raceAPI.getRaceTraits({ raceID }),
-    spell: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.spellAPI.getSpell({ ID }),
     spells: (_: any, __: any, { dataSources }: any) =>
       dataSources.spellAPI.getSpells(),
-    charClass: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.charClassAPI.getCharClass({ ID }),
+    spell: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
+      dataSources.spellAPI.getSpell({ ID }),
+    backgrounds: (_: any, __: any, { dataSources }: any) =>
+      dataSources.backgroundAPI.getBackgrounds(),
+    background: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
+      dataSources.backgroundAPI.getBackground({ ID }),
     charClasses: (_: any, __: any, { dataSources }: any) =>
       dataSources.charClassAPI.getCharClasses(),
+    charClass: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
+      dataSources.charClassAPI.getCharClass({ ID }),
   },
 
   CharClass: {
@@ -61,6 +66,11 @@ const resolvers = {
     traits: (Subrace: IRace, _: any, { dataSources }: any) =>
       dataSources.raceAPI.getRaceTraits({ raceID: Subrace.ID }),
   },
+
+  Background: {
+    features: (Background: IBackground, _: any, { dataSources }: any) =>
+      dataSources.backgroundAPI.getFeatures({ backgroundID: Background.ID }),
+  },
 }
 
 interface ICharClass {
@@ -77,6 +87,11 @@ interface IRace {
   ID: number
   name: string
   parentRaceID: number | null
+}
+
+interface IBackground {
+  ID: number
+  name: string
 }
 
 export default resolvers
