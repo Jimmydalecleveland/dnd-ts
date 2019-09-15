@@ -264,7 +264,7 @@ const RACES_QUERY = gql`
 `
 
 const RACETRAITS_QUERY = gql`
-  query RaceTraits($raceID: ID!) {
+  query RaceTraitsPrefetch($raceID: ID!) {
     raceTraits(raceID: $raceID) {
       ID
       name

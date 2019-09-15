@@ -171,7 +171,7 @@ const CLASSES_QUERY = gql`
 `
 
 const CLASS_FEATURES_QUERY = gql`
-  query CharClassFeatures($charClassID: ID!) {
+  query CharClassFeaturesPrefetch($charClassID: ID!) {
     charClass(ID: $charClassID) {
       features {
         ID
