@@ -54,3 +54,4 @@ typings/
 .cache
 
 build
+.vscode
