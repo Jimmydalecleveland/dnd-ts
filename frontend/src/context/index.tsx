@@ -10,6 +10,7 @@ const CharacterContext = createContext({
   character: defaultCharacterShape,
   setCharacter: (f: any) => f,
 })
+CharacterContext.displayName = 'CreateCharacterContext'
 
 export const useCharacter = () =>
   useContext<ICharacterContext>(CharacterContext)
