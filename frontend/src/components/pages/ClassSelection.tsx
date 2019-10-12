@@ -76,7 +76,7 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
                   <div>
                     <ClassFeatures
                       charClassID={character.charClass.ID}
-                      headline="Class Features"
+                      headline={`${character.charClass.name} Features`}
                     ></ClassFeatures>
                   </div>
                 )}

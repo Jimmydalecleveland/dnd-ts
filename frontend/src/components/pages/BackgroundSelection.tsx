@@ -52,11 +52,11 @@ const BackgroundSelection = () => {
 
       <StyledBottomWrapper>
         <ToggleButton
-          disabled={!character.charClass}
+          disabled={!character.background.ID}
           isActive={showModal}
           handleClick={() => setShowModal(true)}
         >
-          {`${character.charClass.name} details`}
+          {`${character.background.name} details`}
         </ToggleButton>
         {showModal && (
           <AnimatePresence>
@@ -77,7 +77,7 @@ const BackgroundSelection = () => {
                   <div>
                     <BackgroundFeatures
                       backgroundID={character.background.ID}
-                      headline="Background Features"
+                      headline={`${character.background.name} Features`}
                     ></BackgroundFeatures>
                   </div>
                 )}
