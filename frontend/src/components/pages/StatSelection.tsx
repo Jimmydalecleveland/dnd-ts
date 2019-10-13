@@ -3,6 +3,7 @@ import React from 'react'
 import { useCharacter } from '../../context'
 import SectionHeader from '../SectionHeader'
 import AbilityScoreRange from '../AbilityScoreRange'
+import CharacterTitles from '../CharacterTitles'
 
 const StatSelection = () => {
   const { character, setCharacter } = useCharacter()
@@ -20,14 +21,9 @@ const StatSelection = () => {
 
   return (
     <div>
-      <h1>{character.name}</h1>
-      <h2>{character.race.name}</h2>
-      {character.subrace && <h3>{character.subrace.name}</h3>}
-      {character.charClass && <h3>{character.charClass.name}</h3>}
-      {character.background && <h3>{character.background.name}</h3>}
+      <CharacterTitles />
 
       <section>
-        <SectionHeader>ABILITY SCORES</SectionHeader>
         {Object.entries(character.abilityScores).map((ability) => (
           <AbilityScoreRange
             ability={ability[0]}

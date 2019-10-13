@@ -2,6 +2,8 @@ import { ICharacter } from '../interfaces'
 
 const dummyCharacter: ICharacter = {
   ID: '',
+  // name: 'Logen Ninefingers',
+  name: 'Ravalynn woofsnake',
   background: {
     ID: '1',
     features: [],
@@ -12,7 +14,6 @@ const dummyCharacter: ICharacter = {
     features: [],
     name: 'wizard',
   },
-  name: 'a',
   race: {
     ID: '16',
     name: 'elf',
