@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import { gql } from 'apollo-boost'
 import { useQuery, useLazyQuery } from '@apollo/react-hooks'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -12,7 +13,7 @@ import ToggleButton from '../ToggleButton'
 import ActivityButton from '../ActivityButton'
 import BackgroundFeatures from '../BackgroundFeatures'
 
-const BackgroundSelection = () => {
+const BackgroundSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
   const { loading, error, data } = useQuery<IBackgroundsData>(BACKGROUNDS_QUERY)
   const [getBackgroundFeatures] = useLazyQuery<IBackgroundData>(
@@ -86,10 +87,10 @@ const BackgroundSelection = () => {
           </AnimatePresence>
         )}
         <ActivityButton
-          disabled={character.charClass.ID ? false : true}
-          // handleClick={() => history.push('/create-character/background')}
+          disabled={character.background.ID ? false : true}
+          handleClick={() => history.push('/create-character/stats')}
         >
-          Next: Background
+          Next: Ability Scores
         </ActivityButton>
       </StyledBottomWrapper>
     </div>
