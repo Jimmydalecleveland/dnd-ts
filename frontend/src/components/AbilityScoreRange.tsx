@@ -13,26 +13,31 @@ const AbilityScoreRange = ({
       <span
         key={index}
         style={{
-          display: 'flex',
           border: 'solid 2px white',
+          display: 'flex',
           height: 12,
-          borderColor:
-            index > 4 && (index + 1) * 2 <= score ? 'goldenrod' : 'white',
+          position: 'relative',
         }}
-        className="filled"
+        className={`filled${
+          index > 4 && (index + 1) * 2 <= score
+            ? ' positive'
+            : index <= 4 && (index + 1) * 2 > score
+            ? ' negative'
+            : ''
+        }`}
       >
         <span
           style={{
-            flex: 1,
             backgroundColor:
               (index + 1) * 2 - 1 <= score ? 'white' : 'transparent',
+            flex: 1,
           }}
           data-attribute-block={`${ability}${index + 1}`}
         />
         <span
           style={{
-            flex: 1,
             backgroundColor: (index + 1) * 2 <= score ? 'white' : 'transparent',
+            flex: 1,
           }}
           data-attribute-block={`${ability}${index + 1}`}
         />
@@ -145,7 +150,19 @@ const Divider = styled.hr`
 const Adjusters = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 16px;
   margin-left: 14px;
+
+  button {
+    padding: 4px 10px;
+    margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+    color: white;
+    background-color: transparent;
+    border: solid 2px ${({ theme }) => theme.colors.outline};
+  }
 `
 
 const ScoreBlocks = styled.div`
@@ -153,6 +170,26 @@ const ScoreBlocks = styled.div`
   grid-template-columns: repeat(10, 1fr);
   grid-column-gap: 3px;
   padding-left: 8px;
+
+  .positive::after {
+    content: '';
+    position: absolute;
+    width: calc(100% + 3px);
+    height: 6px;
+    top: 16px;
+    left: -1px;
+    background-color: goldenrod;
+  }
+
+  .negative::after {
+    content: '';
+    position: absolute;
+    width: calc(100% + 3px);
+    height: 6px;
+    top: 16px;
+    left: -1px;
+    background-color: orangered;
+  }
 `
 
 export default AbilityScoreRange
