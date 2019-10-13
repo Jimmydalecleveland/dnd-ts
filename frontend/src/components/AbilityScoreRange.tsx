@@ -8,16 +8,10 @@ const AbilityScoreRange = ({
 }: IProps) => {
   const modifier = Math.floor((score - 10) / 2)
 
-  const createPointBlocks = () => {
-    return [...Array(10)].map((slot, index) => (
-      <span
+  const createScoreBlocks = () => {
+    return [...Array(10)].map((_, index) => (
+      <ScoreBlock
         key={index}
-        style={{
-          border: 'solid 2px white',
-          display: 'flex',
-          height: 12,
-          position: 'relative',
-        }}
         className={`filled${
           index > 4 && (index + 1) * 2 <= score
             ? ' positive'
@@ -25,31 +19,35 @@ const AbilityScoreRange = ({
             ? ' negative'
             : ''
         }`}
+        index={index}
       >
         <span
+          className="half-block"
           style={{
             backgroundColor:
               (index + 1) * 2 - 1 <= score ? 'white' : 'transparent',
-            flex: 1,
           }}
-          data-attribute-block={`${ability}${index + 1}`}
         />
         <span
+          className="half-block"
           style={{
             backgroundColor: (index + 1) * 2 <= score ? 'white' : 'transparent',
-            flex: 1,
           }}
-          data-attribute-block={`${ability}${index + 1}`}
         />
-      </span>
+      </ScoreBlock>
     ))
   }
 
   return (
     <Wrapper>
       <ModifierHexagon modifier={modifier}>
-        {modifier >= 0 && '+'}
-        {modifier}
+        <svg width="auto" height="100%" viewBox="0 0 114 120">
+          <polygon points="60,120 112,90 112,30 60,0 8,30 8,90"></polygon>
+          <text x="52%" y="55%" dominantBaseline="middle" textAnchor="middle">
+            {modifier >= 0 && '+'}
+            {modifier}
+          </text>
+        </svg>
       </ModifierHexagon>
 
       <Main>
@@ -58,7 +56,7 @@ const AbilityScoreRange = ({
           <h3 className="score">{score}</h3>
         </div>
         <Divider></Divider>
-        <ScoreBlocks>{createPointBlocks()}</ScoreBlocks>
+        <ScoreBlockGrid>{createScoreBlocks()}</ScoreBlockGrid>
       </Main>
 
       <Adjusters>
@@ -85,17 +83,31 @@ const Wrapper = styled.section`
 `
 
 const ModifierHexagon = styled.div<{ modifier: number }>`
-  color: ${({ modifier }) => {
-    if (modifier > 0) {
-      return 'goldenrod'
-    } else if (modifier < 0) {
-      return 'orangered'
+  display: flex;
+  width: 48px;
+  height: 54px;
+  margin-top: 5px;
+
+  svg {
+    polygon {
+      fill: transparent;
+      stroke: ${({ theme }) => theme.colors.outline};
+      stroke-width: 5;
     }
-    return 'white'
-  }};
-  width: 40px;
-  font-size: 26px;
-  font-weight: bold;
+
+    text {
+      fill: ${({ theme, modifier }) => {
+        if (modifier > 0) {
+          return theme.colors.highlight
+        } else if (modifier < 0) {
+          return theme.colors.negative
+        }
+        return 'white'
+      }};
+      font-size: 68px;
+      font-weight: bold;
+    }
+  }
 `
 
 const Main = styled.div`
@@ -129,7 +141,7 @@ const Main = styled.div`
 const Divider = styled.hr`
   background-color: ${({ theme }) => theme.colors.outline};
   position: relative;
-  margin: 5px 0 7px;
+  margin: 4px 0 9px;
   border: none;
   height: 1px;
 
@@ -141,7 +153,8 @@ const Divider = styled.hr`
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);
+    /* half + padding-left of ScoreBlockGrid */
+    transform: translateX(-50% + 9px);
     width: 0;
     height: 0;
   }
@@ -165,30 +178,45 @@ const Adjusters = styled.div`
   }
 `
 
-const ScoreBlocks = styled.div`
+const ScoreBlockGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-column-gap: 3px;
   padding-left: 8px;
+`
 
-  .positive::after {
+const ScoreBlock = styled.span<{ index: number }>`
+  border: solid 2px white;
+  display: flex;
+  height: 12px;
+  position: relative;
+  margin-right: ${(props) => (props.index === 4 ? '1px' : '0')};
+  margin-left: ${(props) => (props.index === 5 ? '1px' : '0')};
+
+  &.positive::after {
     content: '';
     position: absolute;
-    width: calc(100% + 3px);
-    height: 6px;
-    top: 16px;
-    left: -1px;
-    background-color: goldenrod;
+    width: calc(100% + 4px);
+    height: 4px;
+    bottom: -12px;
+    left: -2px;
+
+    background-color: ${({ theme }) => theme.colors.highlight};
   }
 
-  .negative::after {
+  &.negative::after {
     content: '';
     position: absolute;
     width: calc(100% + 3px);
-    height: 6px;
-    top: 16px;
-    left: -1px;
-    background-color: orangered;
+    height: 4px;
+    bottom: -12px;
+    left: -2px;
+
+    background-color: ${({ theme }) => theme.colors.negative};
+  }
+
+  .half-block {
+    flex: 1;
   }
 `
 
