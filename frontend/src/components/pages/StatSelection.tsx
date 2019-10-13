@@ -2,9 +2,16 @@ import React from 'react'
 
 import { useCharacter } from '../../context'
 import SectionHeader from '../SectionHeader'
+import { ICharacter } from '../../interfaces'
 
 const StatSelection = () => {
   const { character, setCharacter } = useCharacter()
+  const updateAbilityScore = (ability: string, score: number) => {
+    setCharacter({
+      ...character,
+      abilityScores: { ...character.abilityScores, [ability]: score },
+    })
+  }
 
   return (
     <div>
@@ -17,15 +24,23 @@ const StatSelection = () => {
       <section>
         <SectionHeader>ABILITY SCORES</SectionHeader>
         <h3>Ability Points Remaining: 7</h3>
-        <AbilityScoreRange attribute="strength" value={10} />
-        <AbilityScoreRange attribute="dexterity" value={8} />
-        <AbilityScoreRange attribute="intelligence" value={15} />
+        {Object.entries(character.abilityScores).map((ability) => (
+          <AbilityScoreRange
+            ability={ability[0]}
+            score={ability[1]}
+            updateAbilityScore={updateAbilityScore}
+          />
+        ))}
       </section>
     </div>
   )
 }
 
-const AbilityScoreRange = ({ attribute, value = 10 }: IProps) => {
+const AbilityScoreRange = ({
+  ability,
+  score = 10,
+  updateAbilityScore,
+}: IProps) => {
   const createPointBlocks = () => {
     return [...Array(10)].map((slot, index) => (
       <span
@@ -37,16 +52,16 @@ const AbilityScoreRange = ({ attribute, value = 10 }: IProps) => {
           style={{
             flex: 1,
             backgroundColor:
-              (index + 1) * 2 - 1 <= value ? 'white' : 'transparent',
+              (index + 1) * 2 - 1 <= score ? 'white' : 'transparent',
           }}
-          data-attribute-block={`${attribute}${index + 1}`}
+          data-attribute-block={`${ability}${index + 1}`}
         />
         <span
           style={{
             flex: 1,
-            backgroundColor: (index + 1) * 2 <= value ? 'white' : 'transparent',
+            backgroundColor: (index + 1) * 2 <= score ? 'white' : 'transparent',
           }}
-          data-attribute-block={`${attribute}${index + 1}`}
+          data-attribute-block={`${ability}${index + 1}`}
         />
       </span>
     ))
@@ -54,7 +69,7 @@ const AbilityScoreRange = ({ attribute, value = 10 }: IProps) => {
 
   return (
     <div>
-      <h1>{attribute}</h1>
+      <h1>{ability}</h1>
       <span>Score: 10</span>
       <span>Modifier: 0</span>
 
@@ -67,13 +82,16 @@ const AbilityScoreRange = ({ attribute, value = 10 }: IProps) => {
       >
         {createPointBlocks()}
       </div>
+      <button onClick={() => updateAbilityScore(ability, score - 1)}>-</button>
+      <button onClick={() => updateAbilityScore(ability, score + 1)}>+</button>
     </div>
   )
 }
 
 interface IProps {
-  attribute: string
-  value?: number
+  ability: string
+  score?: number
+  updateAbilityScore(ability: string, score: number): void
 }
 
 export default StatSelection

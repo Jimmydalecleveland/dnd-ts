@@ -35,6 +35,14 @@ const dummyCharacter: ICharacter = {
     ID: '26',
     name: 'high elf',
   },
+  abilityScores: {
+    strength: 10,
+    dexterity: 8,
+    constitution: 10,
+    intelligence: 15,
+    wisdom: 14,
+    charisma: 11,
+  },
 }
 
 export default dummyCharacter

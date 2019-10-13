@@ -6,7 +6,7 @@ import dummyCharacter from './dummyData'
 
 const defaultCharacterShape = dummyCharacter
 
-const CharacterContext = createContext({
+const CharacterContext = createContext<ICharacterContext>({
   character: defaultCharacterShape,
   setCharacter: (f: any) => f,
 })
@@ -27,7 +27,7 @@ const CharacterProvider: React.FC = ({ children }) => {
 
 interface ICharacterContext {
   character: ICharacter
-  setCharacter: ({  }: ICharacter) => void
+  setCharacter: React.Dispatch<React.SetStateAction<ICharacter>>
 }
 
 export default CharacterProvider

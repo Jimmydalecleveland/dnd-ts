@@ -40,6 +40,15 @@ export interface ICharClassFeature {
   level: string
 }
 
+export interface IAbilityScores {
+  strength: number
+  dexterity: number
+  constitution: number
+  intelligence: number
+  wisdom: number
+  charisma: number
+}
+
 export interface ICharacter {
   ID: string
   name: string
@@ -47,4 +56,5 @@ export interface ICharacter {
   subrace: ISubrace
   charClass: ICharClass
   background: IBackground
+  abilityScores: IAbilityScores
 }
