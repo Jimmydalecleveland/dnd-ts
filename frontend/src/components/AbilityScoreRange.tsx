@@ -12,28 +12,18 @@ const AbilityScoreRange = ({
     return [...Array(10)].map((_, index) => (
       <ScoreBlock
         key={index}
-        className={`filled${
+        className={
           index > 4 && (index + 1) * 2 <= score
-            ? ' positive'
+            ? 'positive'
             : index <= 4 && (index + 1) * 2 > score
-            ? ' negative'
+            ? 'negative'
             : ''
-        }`}
+        }
         index={index}
+        score={score}
       >
-        <span
-          className="half-block"
-          style={{
-            backgroundColor:
-              (index + 1) * 2 - 1 <= score ? 'white' : 'transparent',
-          }}
-        />
-        <span
-          className="half-block"
-          style={{
-            backgroundColor: (index + 1) * 2 <= score ? 'white' : 'transparent',
-          }}
-        />
+        <span className="half-block-left" />
+        <span className="half-block-right" />
       </ScoreBlock>
     ))
   }
@@ -185,7 +175,7 @@ const ScoreBlockGrid = styled.div`
   padding-left: 8px;
 `
 
-const ScoreBlock = styled.span<{ index: number }>`
+const ScoreBlock = styled.span<{ index: number; score: number }>`
   border: solid 2px white;
   display: flex;
   height: 12px;
@@ -215,8 +205,16 @@ const ScoreBlock = styled.span<{ index: number }>`
     background-color: ${({ theme }) => theme.colors.negative};
   }
 
-  .half-block {
+  .half-block-left {
     flex: 1;
+    background-color: ${(props) =>
+      (props.index + 1) * 2 - 1 <= props.score ? 'white' : 'transparent'};
+  }
+
+  .half-block-right {
+    flex: 1;
+    background-color: ${(props) =>
+      (props.index + 1) * 2 <= props.score ? 'white' : 'transparent'};
   }
 `
 
