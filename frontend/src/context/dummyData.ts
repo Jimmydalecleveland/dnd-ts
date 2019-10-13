@@ -8,9 +8,9 @@ const dummyCharacter: ICharacter = {
     name: 'acolyte',
   },
   charClass: {
-    ID: '',
+    ID: '1',
     features: [],
-    name: '',
+    name: 'wizard',
   },
   name: 'a',
   race: {
@@ -36,7 +36,7 @@ const dummyCharacter: ICharacter = {
     name: 'high elf',
   },
   abilityScores: {
-    strength: 10,
+    strength: 20,
     dexterity: 8,
     constitution: 11,
     intelligence: 15,

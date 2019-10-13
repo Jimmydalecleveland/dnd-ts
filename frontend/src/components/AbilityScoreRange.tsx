@@ -50,10 +50,16 @@ const AbilityScoreRange = ({
       </Main>
 
       <Adjusters>
-        <button onClick={() => updateAbilityScore(ability, score + 1)}>
+        <button
+          disabled={score >= 20 && true}
+          onClick={() => updateAbilityScore(ability, score + 1)}
+        >
           +
         </button>
-        <button onClick={() => updateAbilityScore(ability, score - 1)}>
+        <button
+          disabled={score <= 0 && true}
+          onClick={() => updateAbilityScore(ability, score - 1)}
+        >
           -
         </button>
       </Adjusters>
@@ -165,6 +171,11 @@ const Adjusters = styled.div`
     color: white;
     background-color: transparent;
     border: solid 2px ${({ theme }) => theme.colors.outline};
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
   }
 `
 

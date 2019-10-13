@@ -6,7 +6,12 @@ import AbilityScoreRange from '../AbilityScoreRange'
 
 const StatSelection = () => {
   const { character, setCharacter } = useCharacter()
+
   const updateAbilityScore = (ability: string, score: number) => {
+    if (score > 20 || score < 0) {
+      return
+    }
+
     setCharacter({
       ...character,
       abilityScores: { ...character.abilityScores, [ability]: score },
