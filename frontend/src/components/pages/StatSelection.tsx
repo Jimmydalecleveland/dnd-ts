@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useCharacter } from '../../context'
 import SectionHeader from '../SectionHeader'
-import { ICharacter } from '../../interfaces'
+import AbilityScoreRange from '../AbilityScoreRange'
 
 const StatSelection = () => {
   const { character, setCharacter } = useCharacter()
@@ -23,7 +23,6 @@ const StatSelection = () => {
 
       <section>
         <SectionHeader>ABILITY SCORES</SectionHeader>
-        <h3>Ability Points Remaining: 7</h3>
         {Object.entries(character.abilityScores).map((ability) => (
           <AbilityScoreRange
             ability={ability[0]}
@@ -34,64 +33,6 @@ const StatSelection = () => {
       </section>
     </div>
   )
-}
-
-const AbilityScoreRange = ({
-  ability,
-  score = 10,
-  updateAbilityScore,
-}: IProps) => {
-  const createPointBlocks = () => {
-    return [...Array(10)].map((slot, index) => (
-      <span
-        key={index}
-        style={{ display: 'flex', border: 'solid 2px white', height: 12 }}
-        className="filled"
-      >
-        <span
-          style={{
-            flex: 1,
-            backgroundColor:
-              (index + 1) * 2 - 1 <= score ? 'white' : 'transparent',
-          }}
-          data-attribute-block={`${ability}${index + 1}`}
-        />
-        <span
-          style={{
-            flex: 1,
-            backgroundColor: (index + 1) * 2 <= score ? 'white' : 'transparent',
-          }}
-          data-attribute-block={`${ability}${index + 1}`}
-        />
-      </span>
-    ))
-  }
-
-  return (
-    <div>
-      <h1>{ability}</h1>
-      <span>Score: {score}</span>
-      <span>Modifier: {Math.floor((score - 10) / 2)}</span>
-
-      <div
-        style={{
-          display: 'grid',
-          gridColumnGap: '3px',
-          gridTemplateColumns: 'repeat(10, 1fr)',
-        }}
-      >
-        {createPointBlocks()}
-      </div>
-      <button onClick={() => updateAbilityScore(ability, score - 1)}>-</button>
-      <button onClick={() => updateAbilityScore(ability, score + 1)}>+</button>
-    </div>
-  )
-}
-
-interface IProps {
-  ability: string
-  score?: number
-  updateAbilityScore(ability: string, score: number): void
 }
 
 export default StatSelection

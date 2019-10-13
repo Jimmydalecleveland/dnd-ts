@@ -38,10 +38,10 @@ const dummyCharacter: ICharacter = {
   abilityScores: {
     strength: 10,
     dexterity: 8,
-    constitution: 10,
+    constitution: 11,
     intelligence: 15,
-    wisdom: 14,
-    charisma: 11,
+    wisdom: 18,
+    charisma: 12,
   },
 }
 
