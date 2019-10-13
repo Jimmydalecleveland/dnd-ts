@@ -70,8 +70,8 @@ const AbilityScoreRange = ({
   return (
     <div>
       <h1>{ability}</h1>
-      <span>Score: 10</span>
-      <span>Modifier: 0</span>
+      <span>Score: {score}</span>
+      <span>Modifier: {Math.floor((score - 10) / 2)}</span>
 
       <div
         style={{

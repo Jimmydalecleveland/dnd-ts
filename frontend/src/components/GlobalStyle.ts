@@ -15,6 +15,7 @@ export default createGlobalStyle<{ theme: typeof darkTheme }>`
     padding: 0;
     font-family: 'Rokkitt', serif;
     color: #fff;
+    background-color: #000;
   }
 
   h1,
