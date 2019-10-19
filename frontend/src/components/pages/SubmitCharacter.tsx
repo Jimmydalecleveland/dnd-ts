@@ -12,6 +12,7 @@ const SubmitCharacter = () => {
       name,
       race: { ID: raceID },
       subrace: { ID: subraceID = null },
+      background: { ID: backgroundID },
     },
   } = useCharacter()
 
@@ -31,6 +32,7 @@ const SubmitCharacter = () => {
               name,
               raceID,
               subraceID,
+              backgroundID,
             },
           })
         }
@@ -48,10 +50,24 @@ const SubmitCharacter = () => {
 }
 
 const SUBMIT_CHARACTER = gql`
-  mutation SubmitCharacter($name: String!, $raceID: ID!, $subraceID: ID) {
-    createCharacter(name: $name, raceID: $raceID, subraceID: $subraceID) {
+  mutation SubmitCharacter(
+    $name: String!
+    $raceID: ID!
+    $subraceID: ID
+    $backgroundID: ID!
+  ) {
+    createCharacter(
+      name: $name
+      raceID: $raceID
+      subraceID: $subraceID
+      backgroundID: $backgroundID
+    ) {
       ID
       name
+      background {
+        ID
+        name
+      }
     }
   }
 `

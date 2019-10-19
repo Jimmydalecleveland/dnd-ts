@@ -23,16 +23,19 @@ class CharacterAPI extends DataSource {
     name,
     raceID,
     subraceID,
+    backgroundID,
   }: {
     name: string
     raceID: string
     subraceID: string
+    backgroundID: string
   }) {
     return knex('Character')
       .insert({
         name,
         raceID: Number(raceID),
         subraceID: Number(subraceID) || null,
+        backgroundID: Number(backgroundID),
       })
       .returning('*')
       .then((data: any) => data[0])
@@ -56,6 +59,14 @@ class CharacterAPI extends DataSource {
     return knex('Character')
       .select('Race.*')
       .innerJoin('Race', 'Race.ID', 'Character.subraceID')
+      .where('Character.ID', Number(ID))
+      .first()
+  }
+
+  public getCharacterBackground({ ID }: { ID: string }) {
+    return knex('Character')
+      .select('Background.*')
+      .innerJoin('Background', 'Background.ID', 'Character.backgroundID')
       .where('Character.ID', Number(ID))
       .first()
   }

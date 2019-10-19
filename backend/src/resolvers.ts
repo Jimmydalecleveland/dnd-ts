@@ -6,9 +6,21 @@ const resolvers = {
         name,
         raceID,
         subraceID,
-      }: { name: string; raceID: string; subraceID: string },
+        backgroundID,
+      }: {
+        name: string
+        raceID: string
+        subraceID: string
+        backgroundID: string
+      },
       { dataSources }: any
-    ) => dataSources.characterAPI.createCharacter({ name, raceID, subraceID }),
+    ) =>
+      dataSources.characterAPI.createCharacter({
+        name,
+        raceID,
+        subraceID,
+        backgroundID,
+      }),
     deleteCharacter: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
       dataSources.characterAPI.deleteCharacter({ ID }),
   },
@@ -51,6 +63,8 @@ const resolvers = {
       dataSources.characterAPI.getCharacterRace({ ID: Character.ID }),
     subrace: (Character: ICharacter, _: any, { dataSources }: any) =>
       dataSources.characterAPI.getCharacterSubrace({ ID: Character.ID }),
+    background: (Character: ICharacter, _: any, { dataSources }: any) =>
+      dataSources.characterAPI.getCharacterBackground({ ID: Character.ID }),
   },
 
   Race: {
