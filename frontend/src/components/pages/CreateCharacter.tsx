@@ -5,6 +5,7 @@ import BackgroundSelection from './BackgroundSelection'
 import ClassSelection from './ClassSelection'
 import RaceSelection from './RaceSelection'
 import StatSelection from './StatSelection'
+import SubmitCharacter from './SubmitCharacter'
 
 const CreateCharacter = () => {
   return (
@@ -17,6 +18,11 @@ const CreateCharacter = () => {
         component={BackgroundSelection}
       />
       <Route exact path="/create-character/stats" component={StatSelection} />
+      <Route
+        exact
+        path="/create-character/submit"
+        component={SubmitCharacter}
+      />
     </CharacterProvider>
   )
 }
