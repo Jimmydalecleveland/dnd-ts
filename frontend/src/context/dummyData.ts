@@ -4,16 +4,6 @@ const dummyCharacter: ICharacter = {
   ID: '',
   // name: 'Logen Ninefingers',
   name: 'Ravalynn woofsnake',
-  background: {
-    ID: '1',
-    features: [],
-    name: 'acolyte',
-  },
-  charClass: {
-    ID: '1',
-    features: [],
-    name: 'wizard',
-  },
   race: {
     ID: '16',
     name: 'elf',
@@ -35,6 +25,16 @@ const dummyCharacter: ICharacter = {
   subrace: {
     ID: '26',
     name: 'high elf',
+  },
+  charClass: {
+    ID: '1',
+    features: [],
+    name: 'wizard',
+  },
+  background: {
+    ID: '1',
+    features: [],
+    name: 'acolyte',
   },
   abilityScores: {
     strength: 20,

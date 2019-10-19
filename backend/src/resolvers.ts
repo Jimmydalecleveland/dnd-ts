@@ -1,5 +1,3 @@
-/* tslint:disable object-literal-sort-keys */
-// Mutations and Query should remain at the top of this object for proper visual hierarchy
 const resolvers = {
   Mutation: {
     createCharacter: (

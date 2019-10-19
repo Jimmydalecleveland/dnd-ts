@@ -2,6 +2,6 @@
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
     "ordered-imports": false,
-    "object-literal-sort-keys": [true, "shorthand-first"]
+    "object-literal-sort-keys": [false, "shorthand-first"]
   }
 }
