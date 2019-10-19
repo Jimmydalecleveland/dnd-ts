@@ -4,8 +4,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import 'typeface-barlow'
-import 'typeface-rokkitt'
 import darkTheme from './theme'
 
 import Character from './components/Character'

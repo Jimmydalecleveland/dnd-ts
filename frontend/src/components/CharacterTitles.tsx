@@ -45,6 +45,7 @@ const Background = styled.h3`
   color: ${({ theme }) => theme.colors.highlight};
   opacity: 0.5;
   font-size: 16px;
+  font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
 `

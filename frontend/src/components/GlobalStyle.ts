@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 import darkTheme from '../theme'
+import 'typeface-barlow'
+import 'typeface-cambay'
 
 export default createGlobalStyle<{ theme: typeof darkTheme }>`
   html {
@@ -13,7 +15,8 @@ export default createGlobalStyle<{ theme: typeof darkTheme }>`
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Rokkitt', serif;
+    font-family: 'Cambay', serif;
+    line-height: 1.2;
     color: #fff;
     background-color: #000;
   }
@@ -38,11 +41,16 @@ export default createGlobalStyle<{ theme: typeof darkTheme }>`
     margin-top: 0;
   }
 
+  h2 {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
   h3 {
     margin-bottom: 6px;
     text-transform: capitalize;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 400;
     color: ${({ theme }) => theme.colors.outline};
   }
 `

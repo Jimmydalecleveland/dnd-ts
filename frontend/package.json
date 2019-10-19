@@ -40,6 +40,6 @@
     "style-loader": "^1.0.0",
     "styled-components": "^4.4.0",
     "typeface-barlow": "0.0.71",
-    "typeface-rokkitt": "0.0.72"
+    "typeface-cambay": "0.0.71"
   }
 }

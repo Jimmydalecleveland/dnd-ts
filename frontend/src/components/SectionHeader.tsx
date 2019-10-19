@@ -9,8 +9,6 @@ const StyledSectionHeader = styled.h2`
   margin: 0 0 10px;
   padding-bottom: 3px;
   text-align: center;
-  font-size: 16px;
-  font-weight: 400;
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.primary};
   border-bottom: solid 1px ${({ theme }) => theme.colors.primaryTransparent};

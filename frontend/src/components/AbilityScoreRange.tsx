@@ -33,7 +33,7 @@ const AbilityScoreRange = ({
       <ModifierHexagon modifier={modifier}>
         <svg width="auto" height="100%" viewBox="0 0 114 120">
           <polygon points="60,120 112,90 112,30 60,0 8,30 8,90"></polygon>
-          <text x="52%" y="55%" dominantBaseline="middle" textAnchor="middle">
+          <text x="50%" y="54%" dominantBaseline="middle" textAnchor="middle">
             {modifier >= 0 && '+'}
             {modifier}
           </text>
@@ -42,8 +42,8 @@ const AbilityScoreRange = ({
 
       <Main>
         <div className="name-and-score">
-          <h3 className="name">{ability}</h3>
-          <h3 className="score">{score}</h3>
+          <p className="name">{ability}</p>
+          <p className="score">{score}</p>
         </div>
         <Divider></Divider>
         <ScoreBlockGrid>{createScoreBlocks()}</ScoreBlockGrid>
@@ -82,7 +82,7 @@ const ModifierHexagon = styled.div<{ modifier: number }>`
   display: flex;
   width: 48px;
   height: 54px;
-  margin-top: 5px;
+  margin-top: -5px;
 
   svg {
     polygon {
@@ -100,8 +100,8 @@ const ModifierHexagon = styled.div<{ modifier: number }>`
         }
         return 'white'
       }};
-      font-size: 68px;
-      font-weight: bold;
+      font-size: 62px;
+      font-weight: 600;
     }
   }
 `
@@ -119,18 +119,20 @@ const Main = styled.div`
   .name,
   .score {
     margin: 0;
-    font-size: 20px;
+    line-height: 0.6;
     font-weight: bold;
-    text-transform: uppercase;
   }
 
   .name {
     color: ${({ theme }) => theme.colors.outline};
+    font-size: 20px;
+    text-transform: uppercase;
   }
 
   .score {
     color: white;
     margin-left: auto;
+    font-size: 22px;
   }
 `
 
