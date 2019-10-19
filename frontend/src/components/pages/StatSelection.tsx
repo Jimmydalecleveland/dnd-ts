@@ -1,7 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import { useCharacter } from '../../context'
-import SectionHeader from '../SectionHeader'
 import AbilityScoreRange from '../AbilityScoreRange'
 import CharacterTitles from '../CharacterTitles'
 
@@ -23,7 +23,7 @@ const StatSelection = () => {
     <div>
       <CharacterTitles />
 
-      <section>
+      <AbilityScoresWrapper>
         {Object.entries(character.abilityScores).map((ability) => (
           <AbilityScoreRange
             ability={ability[0]}
@@ -31,9 +31,14 @@ const StatSelection = () => {
             updateAbilityScore={updateAbilityScore}
           />
         ))}
-      </section>
+      </AbilityScoresWrapper>
     </div>
   )
 }
+
+const AbilityScoresWrapper = styled.section`
+  max-width: 450px;
+  margin: 0 auto;
+`
 
 export default StatSelection
