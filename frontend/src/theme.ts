@@ -1,4 +1,3 @@
-// tslint:disable: object-literal-sort-keys
 export default {
   colors: {
     primary: '#45e0c1',

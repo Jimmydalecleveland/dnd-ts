@@ -6,11 +6,13 @@ const resolvers = {
         name,
         raceID,
         subraceID,
+        charClassID,
         backgroundID,
       }: {
         name: string
         raceID: string
         subraceID: string
+        charClassID: string
         backgroundID: string
       },
       { dataSources }: any
@@ -19,6 +21,7 @@ const resolvers = {
         name,
         raceID,
         subraceID,
+        charClassID,
         backgroundID,
       }),
     deleteCharacter: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
@@ -63,6 +66,8 @@ const resolvers = {
       dataSources.characterAPI.getCharacterRace({ ID: Character.ID }),
     subrace: (Character: ICharacter, _: any, { dataSources }: any) =>
       dataSources.characterAPI.getCharacterSubrace({ ID: Character.ID }),
+    charClass: (Character: ICharacter, _: any, { dataSources }: any) =>
+      dataSources.characterAPI.getCharClass({ ID: Character.ID }),
     background: (Character: ICharacter, _: any, { dataSources }: any) =>
       dataSources.characterAPI.getCharacterBackground({ ID: Character.ID }),
   },

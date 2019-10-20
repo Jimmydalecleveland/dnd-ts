@@ -6,6 +6,7 @@ const typeDefs = gql`
       name: String!
       raceID: ID!
       subraceID: ID
+      charClassID: ID!
       backgroundID: ID!
     ): Character!
     deleteCharacter(ID: ID!): Int
@@ -33,9 +34,10 @@ const typeDefs = gql`
   type Character {
     ID: ID!
     name: String!
-    race: Race
+    race: Race!
     subrace: Subrace
-    background: Background
+    charClass: CharClass!
+    background: Background!
   }
 
   type Race {

@@ -12,6 +12,7 @@ const SubmitCharacter = () => {
       name,
       race: { ID: raceID },
       subrace: { ID: subraceID = null },
+      charClass: { ID: charClassID },
       background: { ID: backgroundID },
     },
   } = useCharacter()
@@ -32,6 +33,7 @@ const SubmitCharacter = () => {
               name,
               raceID,
               subraceID,
+              charClassID,
               backgroundID,
             },
           })
@@ -54,16 +56,22 @@ const SUBMIT_CHARACTER = gql`
     $name: String!
     $raceID: ID!
     $subraceID: ID
+    $charClassID: ID!
     $backgroundID: ID!
   ) {
     createCharacter(
       name: $name
       raceID: $raceID
       subraceID: $subraceID
+      charClassID: $charClassID
       backgroundID: $backgroundID
     ) {
       ID
       name
+      charClass {
+        ID
+        name
+      }
       background {
         ID
         name
