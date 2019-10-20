@@ -37,7 +37,7 @@ class CharacterAPI extends DataSource {
         name,
         raceID: Number(raceID),
         subraceID: Number(subraceID) || null,
-        classID: Number(charClassID),
+        charClassID: Number(charClassID),
         backgroundID: Number(backgroundID),
       })
       .returning('*')
@@ -69,7 +69,7 @@ class CharacterAPI extends DataSource {
   public getCharClass({ ID }: { ID: string }) {
     return knex('Character')
       .select('CharClass.*')
-      .innerJoin('CharClass', 'CharClass.ID', 'Character.classID')
+      .innerJoin('CharClass', 'CharClass.ID', 'Character.charClassID')
       .where('Character.ID', Number(ID))
       .first()
   }
