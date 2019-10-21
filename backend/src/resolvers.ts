@@ -1,20 +1,16 @@
+import {
+  ICharacter,
+  ICreateCharacter,
+  IRace,
+  ICharClass,
+  IBackground,
+} from './interfaces'
+
 const resolvers = {
   Mutation: {
     createCharacter: (
       _: any,
-      {
-        name,
-        raceID,
-        subraceID,
-        charClassID,
-        backgroundID,
-      }: {
-        name: string
-        raceID: string
-        subraceID: string
-        charClassID: string
-        backgroundID: string
-      },
+      { name, raceID, subraceID, charClassID, backgroundID }: ICreateCharacter,
       { dataSources }: any
     ) =>
       dataSources.characterAPI.createCharacter({
@@ -88,27 +84,6 @@ const resolvers = {
     features: (Background: IBackground, _: any, { dataSources }: any) =>
       dataSources.backgroundAPI.getFeatures({ backgroundID: Background.ID }),
   },
-}
-
-interface ICharClass {
-  ID: number
-  name: string
-}
-
-interface ICharacter {
-  ID: number
-  name: string
-}
-
-interface IRace {
-  ID: number
-  name: string
-  parentRaceID: number | null
-}
-
-interface IBackground {
-  ID: number
-  name: string
 }
 
 export default resolvers

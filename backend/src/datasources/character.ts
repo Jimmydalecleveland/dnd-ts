@@ -1,5 +1,6 @@
 import { DataSource } from 'apollo-datasource'
 import knex from '../db'
+import { ICreateCharacter } from '../interfaces'
 
 class CharacterAPI extends DataSource {
   public context: any
@@ -25,13 +26,7 @@ class CharacterAPI extends DataSource {
     subraceID,
     charClassID,
     backgroundID,
-  }: {
-    name: string
-    raceID: string
-    subraceID: string
-    charClassID: string
-    backgroundID: string
-  }) {
+  }: ICreateCharacter) {
     return knex('Character')
       .insert({
         name,
