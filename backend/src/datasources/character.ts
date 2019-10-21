@@ -1,5 +1,6 @@
 import { DataSource } from 'apollo-datasource'
 import knex from '../db'
+import db from '../pg'
 import { ICreateCharacter } from '../interfaces'
 
 class CharacterAPI extends DataSource {
@@ -10,14 +11,15 @@ class CharacterAPI extends DataSource {
   }
 
   public getCharacter({ ID }: { ID: string }) {
-    return knex('Character')
-      .select()
-      .where('ID', Number(ID))
-      .first()
+    return db
+      .query('SELECT * FROM "Character" WHERE "ID" = $1', [Number(ID)])
+      .then((response) => response.rows[0])
   }
 
   public getCharacters() {
-    return knex('Character').select()
+    return db
+      .query('SELECT * FROM "Character"')
+      .then((response) => response.rows)
   }
 
   public createCharacter({
@@ -27,22 +29,25 @@ class CharacterAPI extends DataSource {
     charClassID,
     backgroundID,
   }: ICreateCharacter) {
-    return knex('Character')
-      .insert({
-        name,
-        raceID: Number(raceID),
-        subraceID: Number(subraceID) || null,
-        charClassID: Number(charClassID),
-        backgroundID: Number(backgroundID),
-      })
-      .returning('*')
-      .then((data: any) => data[0])
+    return db
+      .query(
+        `INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID") 
+        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+        [
+          name,
+          Number(raceID),
+          Number(subraceID) || null,
+          Number(charClassID),
+          Number(backgroundID),
+        ]
+      )
+      .then((response) => response.rows[0])
   }
 
   public deleteCharacter({ ID }: { ID: string }) {
-    return knex('Character')
-      .where('ID', Number(ID))
-      .del()
+    return db
+      .query('DELETE FROM "Character" WHERE "ID" = $1', [Number(ID)])
+      .then((response) => response.rowCount)
   }
 
   public getCharacterRace({ ID }: { ID: string }) {
