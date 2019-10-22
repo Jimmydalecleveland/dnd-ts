@@ -31,8 +31,10 @@ class CharacterAPI extends DataSource {
   }: ICreateCharacter) {
     return db
       .query(
-        `INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID") 
-        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+        `
+        INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID") 
+        VALUES ($1, $2, $3, $4, $5) RETURNING *
+        `,
         [
           name,
           Number(raceID),
@@ -51,35 +53,61 @@ class CharacterAPI extends DataSource {
   }
 
   public getCharacterRace({ ID }: { ID: string }) {
-    return knex('Character')
-      .select('Race.*')
-      .innerJoin('Race', 'Race.ID', 'Character.raceID')
-      .where('Character.ID', Number(ID))
-      .first()
+    return db
+      .query(
+        `
+        SELECT "Race".* FROM "Character"
+        INNER JOIN "Race" ON "Race"."ID" = "Character"."raceID"
+        WHERE "Character"."ID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows[0])
   }
 
   public getCharacterSubrace({ ID }: { ID: string }) {
-    return knex('Character')
-      .select('Race.*')
-      .innerJoin('Race', 'Race.ID', 'Character.subraceID')
-      .where('Character.ID', Number(ID))
-      .first()
+    return db
+      .query(
+        `
+        SELECT "Race".* FROM "Character"
+        INNER JOIN "Race" ON "Race"."ID" = "Character"."subraceID"
+        WHERE "Character"."ID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows[0])
   }
 
   public getCharClass({ ID }: { ID: string }) {
-    return knex('Character')
-      .select('CharClass.*')
-      .innerJoin('CharClass', 'CharClass.ID', 'Character.charClassID')
-      .where('Character.ID', Number(ID))
-      .first()
-  }
-
-  public getCharacterBackground({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT "CharClass".* FROM "Character"
+        INNER JOIN "CharClass" ON "CharClass"."ID" = "Character"."charClassID"
+        WHERE "Character"."ID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows[0])
+    // TODO: remove after complete knex replacement
     return knex('Character')
       .select('Background.*')
       .innerJoin('Background', 'Background.ID', 'Character.backgroundID')
       .where('Character.ID', Number(ID))
       .first()
+  }
+
+  public getCharacterBackground({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT "Background".* FROM "Character"
+        INNER JOIN "Background" ON "Background"."ID" = "Character"."backgroundID"
+        WHERE "Character"."ID" = $1
+        `,
+        ['woof']
+      )
+      .then((response) => response.rows[0])
   }
 }
 

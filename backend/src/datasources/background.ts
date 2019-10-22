@@ -1,5 +1,5 @@
 import { DataSource } from 'apollo-datasource'
-import knex from '../db'
+import db from '../pg'
 
 class BackgroundAPI extends DataSource {
   public context: any
@@ -9,20 +9,23 @@ class BackgroundAPI extends DataSource {
   }
 
   public getBackgrounds() {
-    return knex('Background').select()
+    return db
+      .query('SELECT * FROM "Background"')
+      .then((response) => response.rows)
   }
 
   public getBackground({ ID }: { ID: string }) {
-    return knex('Background')
-      .select()
-      .where('ID', Number(ID))
-      .first()
+    return db
+      .query('SELECT * FROM "Background" WHERE "ID" = $1', [Number(ID)])
+      .then((response) => response.rows[0])
   }
 
   public getFeatures({ backgroundID }: { backgroundID: string }) {
-    return knex('BackgroundFeature')
-      .select()
-      .where('backgroundID', Number(backgroundID))
+    return db
+      .query('SELECT * FROM "BackgroundFeature" WHERE "backgroundID" = $1', [
+        Number(backgroundID),
+      ])
+      .then((response) => response.rows)
   }
 }
 
