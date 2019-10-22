@@ -1,5 +1,4 @@
 import { DataSource } from 'apollo-datasource'
-import knex from '../db'
 import db from '../pg'
 import { ICreateCharacter } from '../interfaces'
 
@@ -89,12 +88,6 @@ class CharacterAPI extends DataSource {
         [Number(ID)]
       )
       .then((response) => response.rows[0])
-    // TODO: remove after complete knex replacement
-    return knex('Character')
-      .select('Background.*')
-      .innerJoin('Background', 'Background.ID', 'Character.backgroundID')
-      .where('Character.ID', Number(ID))
-      .first()
   }
 
   public getCharacterBackground({ ID }: { ID: string }) {
