@@ -1,5 +1,5 @@
 import { DataSource } from 'apollo-datasource'
-import knex from '../db'
+import db from '../pg'
 
 class RaceAPI extends DataSource {
   public context: any
@@ -8,29 +8,26 @@ class RaceAPI extends DataSource {
     this.context = config.context
   }
 
+  public getRaces() {
+    return db.query('SELECT * FROM "Race"').then((response) => response.rows)
+  }
+
   public getRace({ ID }: { ID: string }) {
-    return knex('Race')
-      .select()
-      .where('ID', Number(ID))
-      .first()
+    return db
+      .query('SELECT * FROM "Race" WHERE "ID" = $1', [Number(ID)])
+      .then((response) => response.rows[0])
   }
 
   public getSubraces({ ID }: { ID: string }) {
-    return knex('Race')
-      .select()
-      .where('parentRaceID', Number(ID))
-  }
-
-  public getRaces() {
-    return knex('Race')
-      .select()
-      .whereNull('parentRaceID')
+    return db
+      .query('SELECT * FROM "Race" WHERE "parentRaceID" = $1', [Number(ID)])
+      .then((response) => response.rows)
   }
 
   public getRaceTraits({ raceID }: { raceID: string }) {
-    return knex('RaceTrait')
-      .select()
-      .where('raceID', Number(raceID))
+    return db
+      .query('SELECT * FROM "RaceTrait" WHERE "raceID" = $1', [Number(raceID)])
+      .then((response) => response.rows)
   }
 }
 

@@ -1,5 +1,5 @@
 import { DataSource } from 'apollo-datasource'
-import knex from '../db'
+import db from '../pg'
 
 class SpellAPI extends DataSource {
   public context: any
@@ -9,14 +9,13 @@ class SpellAPI extends DataSource {
   }
 
   public getSpells() {
-    return knex('Spell').select()
+    return db.query('SELECT * FROM "Spell"').then((response) => response.rows)
   }
 
   public getSpell({ ID }: { ID: string }) {
-    return knex('Spell')
-      .select()
-      .where('ID', Number(ID))
-      .first()
+    return db
+      .query('SELECT * FROM "Spell" WHERE "ID" = $1', [Number(ID)])
+      .then((response) => response.rows[0])
   }
 }
 
