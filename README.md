@@ -9,7 +9,6 @@ This is a for fun/practice side project. The goal is to have a character creatio
 * GraphQL
 * Apollo Client & Server
 * PostgreSQL
-* Knex
 * Styled Components
 * Framer Motion
 * TSLint

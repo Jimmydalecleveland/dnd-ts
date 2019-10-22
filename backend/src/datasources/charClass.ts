@@ -1,5 +1,5 @@
 import { DataSource } from 'apollo-datasource'
-import knex from '../db'
+import db from '../pg'
 
 class CharClassAPI extends DataSource {
   public context: any
@@ -9,26 +9,29 @@ class CharClassAPI extends DataSource {
   }
 
   public getCharClass({ ID }: { ID: string }) {
-    return knex('CharClass')
-      .select()
-      .where('ID', Number(ID))
-      .first()
+    return db
+      .query('SELECT * FROM "CharClass" WHERE "ID" = $1', [Number(ID)])
+      .then((response) => response.rows[0])
   }
 
   public getCharClasses() {
-    return knex('CharClass').select()
+    return db
+      .query('SELECT * FROM "CharClass"')
+      .then((response) => response.rows)
   }
 
   public getFeatures({ ID }: { ID: string }) {
-    return knex('ClassLevelFeature')
-      .select('ClassLevelFeature.*', 'ClassLevel.classLevel as level')
-      .innerJoin(
-        'ClassLevel',
-        'ClassLevel.ID',
-        'ClassLevelFeature.classLevelID'
+    return db
+      .query(
+        `
+        SELECT "ClassLevelFeature".*, "ClassLevel"."classLevel" AS "level" FROM "ClassLevel"
+        INNER JOIN "ClassLevelFeature" ON "ClassLevel"."ID" = "ClassLevelFeature"."classLevelID"
+        WHERE "classID" = $1
+        ORDER BY "level" ASC
+        `,
+        [Number(ID)]
       )
-      .where('classID', Number(ID))
-      .orderBy('level', 'asc')
+      .then((response) => response.rows)
   }
 }
 
