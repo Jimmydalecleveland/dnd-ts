@@ -1,5 +1,5 @@
 import { DataSource } from 'apollo-datasource'
-import db from '../pg'
+import db from '../db'
 
 class BackgroundAPI extends DataSource {
   public context: any
