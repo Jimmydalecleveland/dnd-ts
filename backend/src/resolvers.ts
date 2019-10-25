@@ -10,7 +10,14 @@ const resolvers = {
   Mutation: {
     createCharacter: (
       _: any,
-      { name, raceID, subraceID, charClassID, backgroundID }: ICreateCharacter,
+      {
+        name,
+        raceID,
+        subraceID,
+        charClassID,
+        backgroundID,
+        abilityScores,
+      }: ICreateCharacter,
       { dataSources }: any
     ) =>
       dataSources.characterAPI.createCharacter({
@@ -19,6 +26,7 @@ const resolvers = {
         subraceID,
         charClassID,
         backgroundID,
+        abilityScores,
       }),
     deleteCharacter: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
       dataSources.characterAPI.deleteCharacter({ ID }),

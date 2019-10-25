@@ -10,6 +10,7 @@ const SubmitCharacter = () => {
   const {
     character: {
       name,
+      abilityScores,
       race: { ID: raceID },
       subrace: { ID: subraceID = null },
       charClass: { ID: charClassID },
@@ -35,6 +36,7 @@ const SubmitCharacter = () => {
               subraceID,
               charClassID,
               backgroundID,
+              abilityScores,
             },
           })
         }
@@ -58,6 +60,7 @@ const SUBMIT_CHARACTER = gql`
     $subraceID: ID
     $charClassID: ID!
     $backgroundID: ID!
+    $abilityScores: AbilityScoresInput
   ) {
     createCharacter(
       name: $name
@@ -65,6 +68,7 @@ const SUBMIT_CHARACTER = gql`
       subraceID: $subraceID
       charClassID: $charClassID
       backgroundID: $backgroundID
+      abilityScores: $abilityScores
     ) {
       ID
       name

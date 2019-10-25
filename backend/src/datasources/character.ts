@@ -30,12 +30,14 @@ class CharacterAPI extends DataSource {
     subraceID,
     charClassID,
     backgroundID,
+    abilityScores,
   }: ICreateCharacter) {
+    const { str, dex, con, wis, int, cha } = abilityScores
     return db
       .query(
         `
-        INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID") 
-        VALUES ($1, $2, $3, $4, $5) RETURNING *
+        INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID", str, dex, con, wis, int, cha) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *
         `,
         [
           name,
@@ -43,6 +45,12 @@ class CharacterAPI extends DataSource {
           Number(subraceID) || null,
           Number(charClassID),
           Number(backgroundID),
+          str,
+          dex,
+          con,
+          wis,
+          int,
+          cha,
         ]
       )
       .then((response) => response.rows[0])

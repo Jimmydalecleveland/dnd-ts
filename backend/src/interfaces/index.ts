@@ -4,6 +4,7 @@ export interface ICreateCharacter {
   subraceID?: string
   charClassID: string
   backgroundID: string
+  abilityScores: IAbilityScores
 }
 
 export interface ICharClass {
@@ -25,4 +26,13 @@ export interface IRace {
 export interface IBackground {
   ID: number
   name: string
+}
+
+export interface IAbilityScores {
+  str: number
+  dex: number
+  con: number
+  int: number
+  wis: number
+  cha: number
 }
