@@ -38,6 +38,9 @@ const typeDefs = gql`
     subrace: Subrace
     charClass: CharClass!
     background: Background!
+    abilityScores: AbilityScores!
+    HP: String
+    maxHP: String
   }
 
   type Race {
@@ -82,6 +85,15 @@ const typeDefs = gql`
     ID: ID!
     name: String!
     features: [CharClassFeature]!
+  }
+
+  type AbilityScores {
+    str: Int!
+    dex: Int!
+    con: Int!
+    int: Int!
+    wis: Int!
+    cha: Int!
   }
 `
 

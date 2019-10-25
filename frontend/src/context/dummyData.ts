@@ -37,12 +37,12 @@ const dummyCharacter: ICharacter = {
     name: 'acolyte',
   },
   abilityScores: {
-    strength: 20,
-    dexterity: 8,
-    constitution: 11,
-    intelligence: 15,
-    wisdom: 18,
-    charisma: 12,
+    str: 20,
+    dex: 8,
+    con: 11,
+    int: 15,
+    wis: 18,
+    cha: 12,
   },
 }
 

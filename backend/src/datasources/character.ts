@@ -12,7 +12,10 @@ class CharacterAPI extends DataSource {
   public getCharacter({ ID }: { ID: string }) {
     return db
       .query('SELECT * FROM "Character" WHERE "ID" = $1', [Number(ID)])
-      .then((response) => response.rows[0])
+      .then((response) => {
+        const { str, dex, con, int, wis, cha, ...rest } = response.rows[0]
+        return { abilityScores: { str, dex, con, int, wis, cha }, ...rest }
+      })
   }
 
   public getCharacters() {
@@ -98,7 +101,7 @@ class CharacterAPI extends DataSource {
         INNER JOIN "Background" ON "Background"."ID" = "Character"."backgroundID"
         WHERE "Character"."ID" = $1
         `,
-        ['woof']
+        [Number(ID)]
       )
       .then((response) => response.rows[0])
   }
