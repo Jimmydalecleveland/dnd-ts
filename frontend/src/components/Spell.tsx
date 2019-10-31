@@ -1,11 +1,13 @@
 import { useQuery } from '@apollo/react-hooks'
-import { ApolloError, gql } from 'apollo-boost'
+import { gql } from 'apollo-boost'
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
+import { SpellQuery } from '../graphql-types'
+
 const Spell = ({ match }: RouteComponentProps<IProps>) => {
   const { id: spellID } = match.params
-  const { loading, data } = useQuery<IData, IVariables>(SPELL_QUERY, {
+  const { loading, data } = useQuery<SpellQuery, IVariables>(SPELL_QUERY, {
     variables: {
       ID: spellID,
     },
@@ -30,13 +32,6 @@ const SPELL_QUERY = gql`
     }
   }
 `
-
-interface IData {
-  spell: {
-    ID: string
-    name: string
-  }
-}
 
 interface IVariables {
   ID: string

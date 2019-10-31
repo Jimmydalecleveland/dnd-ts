@@ -18,7 +18,6 @@ export interface IRaceTrait {
 export interface IBackground {
   ID: string
   name: string
-  features: IBackgroundFeature[]
 }
 
 export interface IBackgroundFeature {
@@ -30,7 +29,6 @@ export interface IBackgroundFeature {
 export interface ICharClass {
   ID: string
   name: string
-  features: ICharClassFeature[]
 }
 
 export interface ICharClassFeature {

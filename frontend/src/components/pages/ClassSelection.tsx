@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import { animationContainer } from '../FeatureItem'
 import { useCharacter } from '../../context'
-import { ICharClass } from '../../interfaces'
+import { CharClasses, CharClassFeaturesPrefetch } from '../../graphql-types'
 import ActivityButton from '../ActivityButton'
 import ClassFeatures from '../ClassFeatures'
 import SectionHeader from '../SectionHeader'
@@ -15,10 +15,10 @@ import ToggleButton from '../ToggleButton'
 
 const ClassSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
-  const { loading, error, data } = useQuery<IQueryData>(CLASSES_QUERY)
-  const [getClassFeatures, { data: charClassData }] = useLazyQuery<
-    ICharClassQueryData
-  >(CLASS_FEATURES_QUERY)
+  const { loading, error, data } = useQuery<CharClasses>(CLASSES_QUERY)
+  const [getClassFeatures] = useLazyQuery<CharClassFeaturesPrefetch>(
+    CLASS_FEATURES_QUERY
+  )
 
   const [showModal, setShowModal] = useState(false)
 
@@ -93,23 +93,6 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
       </StyledBottomWrapper>
     </div>
   )
-}
-
-interface IQueryData {
-  charClasses: ICharClass[]
-}
-
-interface ICharClassQueryData {
-  charClass: {
-    features: IFeature[]
-  }
-}
-
-interface IFeature {
-  ID: string
-  name: string
-  description: string
-  level: number
 }
 
 const ClassList = styled.div`

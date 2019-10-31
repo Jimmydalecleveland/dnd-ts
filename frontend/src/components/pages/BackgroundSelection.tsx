@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import { animationContainer } from '../FeatureItem'
 import { useCharacter } from '../../context'
-import { IBackground, IBackgroundFeature } from '../../interfaces'
+import { Backgrounds, BackgroundFeaturesPrefetch } from '../../graphql-types'
 import SectionHeader from '../SectionHeader'
 import ToggleButton from '../ToggleButton'
 import ActivityButton from '../ActivityButton'
@@ -15,8 +15,8 @@ import BackgroundFeatures from '../BackgroundFeatures'
 
 const BackgroundSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
-  const { loading, error, data } = useQuery<IBackgroundsData>(BACKGROUNDS_QUERY)
-  const [getBackgroundFeatures] = useLazyQuery<IBackgroundData>(
+  const { loading, error, data } = useQuery<Backgrounds>(BACKGROUNDS_QUERY)
+  const [getBackgroundFeatures] = useLazyQuery<BackgroundFeaturesPrefetch>(
     BACKGROUND_FEATURES_QUERY
   )
 
@@ -145,16 +145,6 @@ const Modal = styled(motion.section)`
     );
   }
 `
-
-interface IBackgroundsData {
-  backgrounds: IBackground[]
-}
-
-interface IBackgroundData {
-  background: {
-    features: IBackgroundFeature[]
-  }
-}
 
 const BACKGROUNDS_QUERY = gql`
   query Backgrounds {

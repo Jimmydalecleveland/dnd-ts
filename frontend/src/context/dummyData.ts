@@ -28,12 +28,10 @@ const dummyCharacter: ICharacter = {
   },
   charClass: {
     ID: '1',
-    features: [],
     name: 'wizard',
   },
   background: {
     ID: '1',
-    features: [],
     name: 'acolyte',
   },
   abilityScores: {

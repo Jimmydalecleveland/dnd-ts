@@ -2,12 +2,12 @@ import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
-import { ICharClass } from '../interfaces'
+import { CharClassFeatures } from '../graphql-types'
 import SectionHeader from './SectionHeader'
 import FeatureItem from './FeatureItem'
 
 const ClassFeatures = ({ charClassID, headline }: IProps) => {
-  const { loading, data } = useQuery<IQueryData, IQueryVariables>(
+  const { loading, data } = useQuery<CharClassFeatures, IQueryVariables>(
     CLASS_FEATURES_QUERY,
     { variables: { charClassID } }
   )
@@ -45,10 +45,6 @@ const CLASS_FEATURES_QUERY = gql`
 interface IProps {
   charClassID: string
   headline: string
-}
-
-interface IQueryData {
-  charClass: ICharClass
 }
 
 interface IQueryVariables {

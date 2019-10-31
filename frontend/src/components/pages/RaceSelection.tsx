@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import { animationContainer } from '../FeatureItem'
 import { useCharacter } from '../../context'
-import { IRace } from '../../interfaces'
+import { Races } from '../../graphql-types'
 import ActivityButton from '../ActivityButton'
 import RaceTraits from '../RaceTraits'
 import SectionHeader from '../SectionHeader'
@@ -15,7 +15,7 @@ import ToggleButton from '../ToggleButton'
 
 const RaceSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
-  const { loading, error, data } = useQuery<IQueryData>(RACES_QUERY)
+  const { data, loading, error } = useQuery<Races>(RACES_QUERY)
 
   const [showModal, setShowModal] = useState(false)
 
@@ -47,7 +47,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
     return true
   }
 
-  const setChosenRace = (value: string, races: IQueryData['races']): void => {
+  const setChosenRace = (value: string, races: Races['races']): void => {
     const raceObj = races.filter((race) => race.ID === value)[0]
     setCharacter({ ...character, race: raceObj, subrace: null })
   }
@@ -170,10 +170,6 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
   )
 }
 
-interface IQueryData {
-  races: IRace[]
-}
-
 const StyledGridSection = styled.section`
   display: grid;
   grid-template-rows: 70px 1fr 1fr;
@@ -269,14 +265,6 @@ const RACETRAITS_QUERY = gql`
       ID
       name
       description
-    }
-  }
-`
-
-const CREATE_CHARACTER = gql`
-  mutation CreateCharacter($name: String!, $raceID: ID!, $subraceID: ID!) {
-    createCharacter(name: $name, raceID: $raceID, subraceID: $subraceID) {
-      ID
     }
   }
 `
