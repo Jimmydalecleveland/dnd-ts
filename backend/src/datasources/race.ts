@@ -9,7 +9,9 @@ class RaceAPI extends DataSource {
   }
 
   public getRaces() {
-    return db.query('SELECT * FROM "Race"').then((response) => response.rows)
+    return db
+      .query('SELECT * FROM "Race" WHERE "parentRaceID" IS NULL')
+      .then((response) => response.rows)
   }
 
   public getRace({ ID }: { ID: string }) {
