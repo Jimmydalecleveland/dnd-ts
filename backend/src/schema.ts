@@ -25,6 +25,7 @@ const typeDefs = gql`
     background(ID: ID!): Background
     charClasses: [CharClass]!
     charClass(ID: ID!): CharClass
+    skills: [Skill]!
   }
 
   type Spell {
@@ -104,6 +105,12 @@ const typeDefs = gql`
     int: Int!
     wis: Int!
     cha: Int!
+  }
+
+  type Skill {
+    ID: ID!
+    name: String!
+    ability: String!
   }
 `
 

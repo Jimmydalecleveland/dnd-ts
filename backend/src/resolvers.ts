@@ -58,6 +58,8 @@ const resolvers = {
       dataSources.charClassAPI.getCharClasses(),
     charClass: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
       dataSources.charClassAPI.getCharClass({ ID }),
+    skills: (_: any, __: any, { dataSources }: any) =>
+      dataSources.skillAPI.getSkills(),
   },
 
   CharClass: {
