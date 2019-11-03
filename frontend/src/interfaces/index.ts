@@ -45,6 +45,7 @@ export interface IAbilityScores {
   int: number
   wis: number
   cha: number
+  [key: string]: number
 }
 
 export interface ICharacter {
