@@ -7,7 +7,7 @@ import AbilityScoreRange from '../AbilityScoreRange'
 import CharacterTitles from '../CharacterTitles'
 import ActivityButton from '../ActivityButton'
 
-const StatSelection = ({ history }: RouteComponentProps) => {
+const AbilityScoreSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
 
   const updateAbilityScore = (ability: string, score: number) => {
@@ -48,4 +48,4 @@ const AbilityScoresWrapper = styled.section`
   margin: 0 auto;
 `
 
-export default StatSelection
+export default AbilityScoreSelection

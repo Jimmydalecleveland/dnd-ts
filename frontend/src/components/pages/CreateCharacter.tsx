@@ -4,7 +4,7 @@ import CharacterProvider from '../../context'
 import BackgroundSelection from './BackgroundSelection'
 import ClassSelection from './ClassSelection'
 import RaceSelection from './RaceSelection'
-import StatSelection from './StatSelection'
+import AbilityScoreSelection from './AbilityScoreSelection'
 import SubmitCharacter from './SubmitCharacter'
 
 const CreateCharacter = () => {
@@ -17,7 +17,11 @@ const CreateCharacter = () => {
         path="/create-character/background"
         component={BackgroundSelection}
       />
-      <Route exact path="/create-character/stats" component={StatSelection} />
+      <Route
+        exact
+        path="/create-character/ability-scores"
+        component={AbilityScoreSelection}
+      />
       <Route
         exact
         path="/create-character/submit"
