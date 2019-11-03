@@ -14,9 +14,9 @@ class RaceAPI extends DataSource {
       .then((response) => response.rows)
   }
 
-  public getRace({ raceID }: { raceID: string }) {
+  public getRace({ ID }: { ID: string }) {
     return db
-      .query('SELECT * FROM "Race" WHERE "ID" = $1', [Number(raceID)])
+      .query('SELECT * FROM "Race" WHERE "ID" = $1', [Number(ID)])
       .then((response) => response.rows[0])
   }
 

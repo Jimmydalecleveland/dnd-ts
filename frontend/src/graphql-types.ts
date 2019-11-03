@@ -327,6 +327,16 @@ export interface Skills_skills {
   ability: string;
 }
 
+export interface Skills_race_skills {
+  __typename: "Skill";
+  ID: string;
+}
+
+export interface Skills_race {
+  __typename: "Race";
+  skills: (Skills_race_skills | null)[] | null;
+}
+
 export interface Skills_background_skills {
   __typename: "Skill";
   ID: string;
@@ -339,10 +349,12 @@ export interface Skills_background {
 
 export interface Skills {
   skills: (Skills_skills | null)[];
+  race: Skills_race | null;
   background: Skills_background | null;
 }
 
 export interface SkillsVariables {
+  raceID: string;
   backgroundID: string;
 }
 

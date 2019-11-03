@@ -7,6 +7,7 @@ import {
   Skills,
   Skills_skills,
   Skills_background_skills,
+  Skills_race_skills,
 } from '../../graphql-types'
 import ActivityButton from '../ActivityButton'
 import CharacterTitles from '../CharacterTitles'
@@ -17,13 +18,16 @@ import { IAbilityScores } from '../../interfaces'
 const generateSkillSet = (
   skills: Skills_skills[],
   backgroundSkills: Skills_background_skills[],
+  raceSkills: Skills_race_skills[],
   characterAbilityScores: IAbilityScores
 ) => {
   const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
+  const raceSkillIDs = raceSkills.map((skill) => skill.ID)
+  const allSkillIDs = [...backgroundSkillIDs, ...raceSkillIDs]
 
   return skills.map((skill) => {
     const value = Math.floor((characterAbilityScores[skill.ability] - 10) / 2)
-    const proficient = backgroundSkillIDs.includes(skill.ID)
+    const proficient = allSkillIDs.includes(skill.ID)
     return { ID: skill.ID, name: skill.name, proficient, value }
   })
 }
@@ -31,7 +35,10 @@ const generateSkillSet = (
 const SkillSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
   const { data } = useQuery<Skills>(SKILLS_QUERY, {
-    variables: { backgroundID: character.background.ID },
+    variables: {
+      raceID: character.race.ID,
+      backgroundID: character.background.ID,
+    },
   })
 
   return (
@@ -42,6 +49,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
           list={generateSkillSet(
             data.skills,
             data.background.skills,
+            data.race.skills,
             character.abilityScores
           )}
         />
@@ -56,11 +64,16 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
 }
 
 const SKILLS_QUERY = gql`
-  query Skills($backgroundID: ID!) {
+  query Skills($raceID: ID!, $backgroundID: ID!) {
     skills {
       ID
       name
       ability
+    }
+    race(ID: $raceID) {
+      skills {
+        ID
+      }
     }
     background(ID: $backgroundID) {
       skills {
