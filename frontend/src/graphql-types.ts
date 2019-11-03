@@ -317,6 +317,25 @@ export interface RaceTraitsPrefetchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Skills
+// ====================================================
+
+export interface Skills_skills {
+  __typename: "Skill";
+  ID: string;
+  name: string;
+  ability: string;
+}
+
+export interface Skills {
+  skills: (Skills_skills | null)[];
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: SubmitCharacter
 // ====================================================
 
