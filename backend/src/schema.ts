@@ -50,6 +50,7 @@ const typeDefs = gql`
     name: String!
     subraces: [Subrace]
     traits: [RaceTrait]!
+    skills: [Skill]
   }
 
   type Subrace {
@@ -68,6 +69,7 @@ const typeDefs = gql`
     ID: ID!
     name: String!
     features: [BackgroundFeature]!
+    skills: [Skill]
   }
 
   type BackgroundFeature {
@@ -87,6 +89,7 @@ const typeDefs = gql`
     ID: ID!
     name: String!
     features: [CharClassFeature]!
+    skills: [Skill]
   }
 
   type AbilityScores {

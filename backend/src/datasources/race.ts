@@ -14,21 +14,34 @@ class RaceAPI extends DataSource {
       .then((response) => response.rows)
   }
 
-  public getRace({ ID }: { ID: string }) {
+  public getRace({ raceID }: { raceID: string }) {
     return db
-      .query('SELECT * FROM "Race" WHERE "ID" = $1', [Number(ID)])
+      .query('SELECT * FROM "Race" WHERE "ID" = $1', [Number(raceID)])
       .then((response) => response.rows[0])
   }
 
-  public getSubraces({ ID }: { ID: string }) {
+  public getSubraces({ raceID }: { raceID: string }) {
     return db
-      .query('SELECT * FROM "Race" WHERE "parentRaceID" = $1', [Number(ID)])
+      .query('SELECT * FROM "Race" WHERE "parentRaceID" = $1', [Number(raceID)])
       .then((response) => response.rows)
   }
 
   public getRaceTraits({ raceID }: { raceID: string }) {
     return db
       .query('SELECT * FROM "RaceTrait" WHERE "raceID" = $1', [Number(raceID)])
+      .then((response) => response.rows)
+  }
+
+  public getSkills({ raceID }: { raceID: string }) {
+    return db
+      .query(
+        `
+        SELECT * FROM "Skill" 
+        INNER JOIN "RaceSkillProficiency" ON "RaceSkillProficiency"."skillID" = "Skill"."ID" 
+        WHERE "RaceSkillProficiency"."raceID" = $1
+        `,
+        [Number(raceID)]
+      )
       .then((response) => response.rows)
   }
 }

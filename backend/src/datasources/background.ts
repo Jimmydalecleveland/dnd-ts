@@ -27,6 +27,19 @@ class BackgroundAPI extends DataSource {
       ])
       .then((response) => response.rows)
   }
+
+  public getSkills({ backgroundID }: { backgroundID: string }) {
+    return db
+      .query(
+        `
+        SELECT * FROM "Skill" 
+        INNER JOIN "BackgroundSkillProficiency" ON "BackgroundSkillProficiency"."skillID" = "Skill"."ID" 
+        WHERE "BackgroundSkillProficiency"."backgroundID" = $1
+        `,
+        [Number(backgroundID)]
+      )
+      .then((response) => response.rows)
+  }
 }
 
 export default BackgroundAPI

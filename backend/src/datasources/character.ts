@@ -62,7 +62,7 @@ class CharacterAPI extends DataSource {
       .then((response) => response.rowCount)
   }
 
-  public getCharacterRace({ ID }: { ID: string }) {
+  public getCharacterRace({ characterID }: { characterID: string }) {
     return db
       .query(
         `
@@ -70,12 +70,12 @@ class CharacterAPI extends DataSource {
         INNER JOIN "Race" ON "Race"."ID" = "Character"."raceID"
         WHERE "Character"."ID" = $1
         `,
-        [Number(ID)]
+        [Number(characterID)]
       )
       .then((response) => response.rows[0])
   }
 
-  public getCharacterSubrace({ ID }: { ID: string }) {
+  public getCharacterSubrace({ characterID }: { characterID: string }) {
     return db
       .query(
         `
@@ -83,12 +83,12 @@ class CharacterAPI extends DataSource {
         INNER JOIN "Race" ON "Race"."ID" = "Character"."subraceID"
         WHERE "Character"."ID" = $1
         `,
-        [Number(ID)]
+        [Number(characterID)]
       )
       .then((response) => response.rows[0])
   }
 
-  public getCharClass({ ID }: { ID: string }) {
+  public getCharClass({ characterID }: { characterID: string }) {
     return db
       .query(
         `
@@ -96,12 +96,12 @@ class CharacterAPI extends DataSource {
         INNER JOIN "CharClass" ON "CharClass"."ID" = "Character"."charClassID"
         WHERE "Character"."ID" = $1
         `,
-        [Number(ID)]
+        [Number(characterID)]
       )
       .then((response) => response.rows[0])
   }
 
-  public getCharacterBackground({ ID }: { ID: string }) {
+  public getCharacterBackground({ characterID }: { characterID: string }) {
     return db
       .query(
         `
@@ -109,7 +109,7 @@ class CharacterAPI extends DataSource {
         INNER JOIN "Background" ON "Background"."ID" = "Character"."backgroundID"
         WHERE "Character"."ID" = $1
         `,
-        [Number(ID)]
+        [Number(characterID)]
       )
       .then((response) => response.rows[0])
   }

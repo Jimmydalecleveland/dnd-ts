@@ -20,7 +20,7 @@ class CharClassAPI extends DataSource {
       .then((response) => response.rows)
   }
 
-  public getFeatures({ ID }: { ID: string }) {
+  public getFeatures({ classID }: { classID: string }) {
     return db
       .query(
         `
@@ -29,7 +29,20 @@ class CharClassAPI extends DataSource {
         WHERE "classID" = $1
         ORDER BY "level" ASC
         `,
-        [Number(ID)]
+        [Number(classID)]
+      )
+      .then((response) => response.rows)
+  }
+
+  public getSkills({ classID }: { classID: string }) {
+    return db
+      .query(
+        `
+        SELECT * FROM "Skill" 
+        INNER JOIN "ClassSkillProficiency" ON "ClassSkillProficiency"."skillID" = "Skill"."ID" 
+        WHERE "ClassSkillProficiency"."classID" = $1
+        `,
+        [Number(classID)]
       )
       .then((response) => response.rows)
   }

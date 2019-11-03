@@ -64,25 +64,33 @@ const resolvers = {
 
   CharClass: {
     features: (CharClass: ICharClass, _: any, { dataSources }: any) =>
-      dataSources.charClassAPI.getFeatures({ ID: CharClass.ID }),
+      dataSources.charClassAPI.getFeatures({ classID: CharClass.ID }),
+    skills: (CharClass: ICharClass, _: any, { dataSources }: any) =>
+      dataSources.charClassAPI.getSkills({ classID: CharClass.ID }),
   },
 
   Character: {
     race: (Character: ICharacter, _: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacterRace({ ID: Character.ID }),
+      dataSources.characterAPI.getCharacterRace({ characterID: Character.ID }),
     subrace: (Character: ICharacter, _: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacterSubrace({ ID: Character.ID }),
+      dataSources.characterAPI.getCharacterSubrace({
+        characterID: Character.ID,
+      }),
     charClass: (Character: ICharacter, _: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharClass({ ID: Character.ID }),
+      dataSources.characterAPI.getCharClass({ characterID: Character.ID }),
     background: (Character: ICharacter, _: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacterBackground({ ID: Character.ID }),
+      dataSources.characterAPI.getCharacterBackground({
+        characterID: Character.ID,
+      }),
   },
 
   Race: {
     subraces: (Race: IRace, _: any, { dataSources }: any) =>
-      dataSources.raceAPI.getSubraces({ ID: Race.ID }),
+      dataSources.raceAPI.getSubraces({ raceID: Race.ID }),
     traits: (Race: IRace, _: any, { dataSources }: any) =>
       dataSources.raceAPI.getRaceTraits({ raceID: Race.ID }),
+    skills: (Race: IRace, _: any, { dataSources }: any) =>
+      dataSources.raceAPI.getSkills({ raceID: Race.ID }),
   },
 
   Subrace: {
@@ -93,6 +101,8 @@ const resolvers = {
   Background: {
     features: (Background: IBackground, _: any, { dataSources }: any) =>
       dataSources.backgroundAPI.getFeatures({ backgroundID: Background.ID }),
+    skills: (Background: IBackground, _: any, { dataSources }: any) =>
+      dataSources.backgroundAPI.getSkills({ backgroundID: Background.ID }),
   },
 }
 
