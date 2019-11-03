@@ -88,7 +88,7 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
         )}
         <ActivityButton
           disabled={character.background.ID ? false : true}
-          handleClick={() => history.push('/create-character/stats')}
+          handleClick={() => history.push('/create-character/ability-scores')}
         >
           Next: Ability Scores
         </ActivityButton>

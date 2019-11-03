@@ -22,7 +22,7 @@ const AbilityScoreSelection = ({ history }: RouteComponentProps) => {
   }
 
   return (
-    <div>
+    <section>
       <CharacterTitles />
 
       <AbilityScoresWrapper>
@@ -35,11 +35,11 @@ const AbilityScoreSelection = ({ history }: RouteComponentProps) => {
         ))}
       </AbilityScoresWrapper>
       <ActivityButton
-        handleClick={() => history.push('/create-character/submit')}
+        handleClick={() => history.push('/create-character/skills')}
       >
-        NEXT: CLASS
+        NEXT: SKILLS
       </ActivityButton>
-    </div>
+    </section>
   )
 }
 
