@@ -16,18 +16,27 @@ import { useCharacter } from '../../context'
 import { IAbilityScores } from '../../interfaces'
 
 const generateSkillSet = (
-  skills: Skills_skills[],
-  backgroundSkills: Skills_background_skills[],
-  raceSkills: Skills_race_skills[],
-  characterAbilityScores: IAbilityScores
+  characterAbilityScores: IAbilityScores,
+  {
+    skills,
+    backgroundSkills,
+    raceSkills,
+  }: {
+    skills: Skills_skills[]
+    backgroundSkills: Skills_background_skills[]
+    raceSkills: Skills_race_skills[]
+  }
 ) => {
   const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
   const raceSkillIDs = raceSkills.map((skill) => skill.ID)
-  const allSkillIDs = [...backgroundSkillIDs, ...raceSkillIDs]
+  const allProficientSkillIDs = [...backgroundSkillIDs, ...raceSkillIDs]
 
   return skills.map((skill) => {
-    const value = Math.floor((characterAbilityScores[skill.ability] - 10) / 2)
-    const proficient = allSkillIDs.includes(skill.ID)
+    const proficient = allProficientSkillIDs.includes(skill.ID)
+    let value = Math.floor((characterAbilityScores[skill.ability] - 10) / 2)
+    if (proficient) {
+      value = value + 2
+    }
     return { ID: skill.ID, name: skill.name, proficient, value }
   })
 }
@@ -46,12 +55,11 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
       <CharacterTitles />
       {data && (
         <ProficiencyList
-          list={generateSkillSet(
-            data.skills,
-            data.background.skills,
-            data.race.skills,
-            character.abilityScores
-          )}
+          list={generateSkillSet(character.abilityScores, {
+            skills: data.skills,
+            raceSkills: data.race.skills,
+            backgroundSkills: data.background.skills,
+          })}
         />
       )}
       <ActivityButton
