@@ -3,7 +3,11 @@ import { RouteComponentProps } from 'react-router-dom'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
 
-import { Skills, Skills_skills } from '../../graphql-types'
+import {
+  Skills,
+  Skills_skills,
+  Skills_background_skills,
+} from '../../graphql-types'
 import ActivityButton from '../ActivityButton'
 import CharacterTitles from '../CharacterTitles'
 import ProficiencyList from '../ProficiencyList'
@@ -12,23 +16,34 @@ import { IAbilityScores } from '../../interfaces'
 
 const generateSkillSet = (
   skills: Skills_skills[],
+  backgroundSkills: Skills_background_skills[],
   characterAbilityScores: IAbilityScores
-) =>
-  skills.map((skill) => {
+) => {
+  const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
+
+  return skills.map((skill) => {
     const value = Math.floor((characterAbilityScores[skill.ability] - 10) / 2)
-    return { ID: skill.ID, name: skill.name, proficient: true, value }
+    const proficient = backgroundSkillIDs.includes(skill.ID)
+    return { ID: skill.ID, name: skill.name, proficient, value }
   })
+}
 
 const SkillSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
-  const { data, loading, error } = useQuery<Skills>(SKILLS_QUERY)
+  const { data } = useQuery<Skills>(SKILLS_QUERY, {
+    variables: { backgroundID: character.background.ID },
+  })
 
   return (
     <section>
       <CharacterTitles />
-      {!loading && !error && (
+      {data && (
         <ProficiencyList
-          list={generateSkillSet(data.skills, character.abilityScores)}
+          list={generateSkillSet(
+            data.skills,
+            data.background.skills,
+            character.abilityScores
+          )}
         />
       )}
       <ActivityButton
@@ -41,11 +56,16 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
 }
 
 const SKILLS_QUERY = gql`
-  query Skills {
+  query Skills($backgroundID: ID!) {
     skills {
       ID
       name
       ability
+    }
+    background(ID: $backgroundID) {
+      skills {
+        ID
+      }
     }
   }
 `

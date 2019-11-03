@@ -327,8 +327,23 @@ export interface Skills_skills {
   ability: string;
 }
 
+export interface Skills_background_skills {
+  __typename: "Skill";
+  ID: string;
+}
+
+export interface Skills_background {
+  __typename: "Background";
+  skills: (Skills_background_skills | null)[] | null;
+}
+
 export interface Skills {
   skills: (Skills_skills | null)[];
+  background: Skills_background | null;
+}
+
+export interface SkillsVariables {
+  backgroundID: string;
 }
 
 
