@@ -56,4 +56,5 @@ export interface ICharacter {
   charClass: ICharClass
   background: IBackground
   abilityScores: IAbilityScores
+  skills: string[]
 }

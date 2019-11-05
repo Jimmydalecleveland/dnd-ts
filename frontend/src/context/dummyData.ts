@@ -42,6 +42,7 @@ const dummyCharacter: ICharacter = {
     wis: 18,
     cha: 12,
   },
+  skills: [],
 }
 
 export default dummyCharacter

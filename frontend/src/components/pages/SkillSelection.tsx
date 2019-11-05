@@ -9,11 +9,12 @@ import {
   Skills_background_skills,
   Skills_race_skills,
 } from '../../graphql-types'
+import { useCharacter } from '../../context'
+import { IAbilityScores } from '../../interfaces'
 import ActivityButton from '../ActivityButton'
 import CharacterTitles from '../CharacterTitles'
 import ProficiencyList from '../ProficiencyList'
-import { useCharacter } from '../../context'
-import { IAbilityScores } from '../../interfaces'
+import ToggleButton from '../ToggleButton'
 
 const generateSkillSet = (
   characterAbilityScores: IAbilityScores,
@@ -45,10 +46,30 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
   const { data } = useQuery<Skills>(SKILLS_QUERY, {
     variables: {
+      charClassID: character.charClass.ID,
       raceID: character.race.ID,
       backgroundID: character.background.ID,
     },
   })
+
+  const toggleSkill = (skillID: string) => {
+    const skills = [...character.skills]
+
+    // Remove skill if it already exists in skills array
+    if (skills.includes(skillID)) {
+      skills.splice(skills.indexOf(skillID), 1)
+      setCharacter({ ...character, skills: [...skills] })
+      return
+    }
+
+    // Do nothing if skill limit is reached, otherwise
+    if (skills.length >= 2) {
+      return
+    } else {
+      skills.push(skillID)
+      setCharacter({ ...character, skills: [...skills] })
+    }
+  }
 
   return (
     <section>
@@ -56,6 +77,14 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
       {data && (
         <>
           <section>
+            {data.charClass.skills.map((skill) => (
+              <ToggleButton
+                isActive={character.skills.includes(skill.ID)}
+                handleClick={() => toggleSkill(skill.ID)}
+              >
+                {skill.name}
+              </ToggleButton>
+            ))}
             {data.race.skills.length > 0 && (
               <>
                 <h3>{character.race.name}</h3>
@@ -92,11 +121,17 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
 }
 
 const SKILLS_QUERY = gql`
-  query Skills($raceID: ID!, $backgroundID: ID!) {
+  query Skills($charClassID: ID!, $raceID: ID!, $backgroundID: ID!) {
     skills {
       ID
       name
       ability
+    }
+    charClass(ID: $charClassID) {
+      skills {
+        ID
+        name
+      }
     }
     race(ID: $raceID) {
       skills {
