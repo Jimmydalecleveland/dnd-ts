@@ -22,15 +22,21 @@ const generateSkillSet = (
     skills,
     backgroundSkills,
     raceSkills,
+    charClassSkills,
   }: {
     skills: Skills_skills[]
     backgroundSkills: Skills_background_skills[]
     raceSkills: Skills_race_skills[]
+    charClassSkills: string[]
   }
 ) => {
   const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
   const raceSkillIDs = raceSkills.map((skill) => skill.ID)
-  const allProficientSkillIDs = [...backgroundSkillIDs, ...raceSkillIDs]
+  const allProficientSkillIDs = [
+    ...backgroundSkillIDs,
+    ...raceSkillIDs,
+    ...charClassSkills,
+  ]
 
   return skills.map((skill) => {
     const proficient = allProficientSkillIDs.includes(skill.ID)
@@ -107,6 +113,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
               skills: data.skills,
               raceSkills: data.race.skills,
               backgroundSkills: data.background.skills,
+              charClassSkills: character.skills,
             })}
           />
         </>
