@@ -85,6 +85,14 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
           <section>
             {data.charClass.skills.map((skill) => (
               <ToggleButton
+                disabled={
+                  data.race.skills
+                    .map((raceSkill) => raceSkill.ID)
+                    .includes(skill.ID) ||
+                  data.background.skills
+                    .map((backgroundSkill) => backgroundSkill.ID)
+                    .includes(skill.ID)
+                }
                 isActive={character.skills.includes(skill.ID)}
                 handleClick={() => toggleSkill(skill.ID)}
               >
