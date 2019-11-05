@@ -54,13 +54,33 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
     <section>
       <CharacterTitles />
       {data && (
-        <ProficiencyList
-          list={generateSkillSet(character.abilityScores, {
-            skills: data.skills,
-            raceSkills: data.race.skills,
-            backgroundSkills: data.background.skills,
-          })}
-        />
+        <>
+          <section>
+            {data.race.skills.length > 0 && (
+              <>
+                <h3>{character.race.name}</h3>
+                {data.race.skills.map((skill) => (
+                  <p>{skill.name}</p>
+                ))}
+              </>
+            )}
+            {data.background.skills.length > 0 && (
+              <>
+                <h3>{character.background.name}</h3>
+                {data.background.skills.map((skill) => (
+                  <p>{skill.name}</p>
+                ))}
+              </>
+            )}
+          </section>
+          <ProficiencyList
+            list={generateSkillSet(character.abilityScores, {
+              skills: data.skills,
+              raceSkills: data.race.skills,
+              backgroundSkills: data.background.skills,
+            })}
+          />
+        </>
       )}
       <ActivityButton
         handleClick={() => history.push('/create-character/submit')}
@@ -81,11 +101,13 @@ const SKILLS_QUERY = gql`
     race(ID: $raceID) {
       skills {
         ID
+        name
       }
     }
     background(ID: $backgroundID) {
       skills {
         ID
+        name
       }
     }
   }

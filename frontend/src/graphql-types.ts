@@ -330,6 +330,7 @@ export interface Skills_skills {
 export interface Skills_race_skills {
   __typename: "Skill";
   ID: string;
+  name: string;
 }
 
 export interface Skills_race {
@@ -340,6 +341,7 @@ export interface Skills_race {
 export interface Skills_background_skills {
   __typename: "Skill";
   ID: string;
+  name: string;
 }
 
 export interface Skills_background {
