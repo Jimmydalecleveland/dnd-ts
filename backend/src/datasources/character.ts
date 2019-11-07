@@ -1,5 +1,6 @@
 import { DataSource } from 'apollo-datasource'
 import db from '../db'
+import logger from '../logger'
 import { ICreateCharacter } from '../interfaces'
 
 class CharacterAPI extends DataSource {
@@ -10,11 +11,16 @@ class CharacterAPI extends DataSource {
   }
 
   public getCharacter({ ID }: { ID: string }) {
+    logger.info('getCharacter request started:', { ID })
+
     return db
       .query('SELECT * FROM "Character" WHERE "ID" = $1', [Number(ID)])
       .then((response) => {
         const { str, dex, con, int, wis, cha, ...rest } = response.rows[0]
         return { abilityScores: { str, dex, con, int, wis, cha }, ...rest }
+      })
+      .catch((error) => {
+        logger.error(`getCharacter request returned an error: ${error.message}`)
       })
   }
 
