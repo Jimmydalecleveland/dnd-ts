@@ -1,4 +1,5 @@
 import { DataSource } from 'apollo-datasource'
+import logger from '../logger'
 import db from '../db'
 
 class RaceAPI extends DataSource {
@@ -15,9 +16,13 @@ class RaceAPI extends DataSource {
   }
 
   public getRace({ ID }: { ID: string }) {
+    logger.info('getRace request sent:', { ID })
     return db
       .query('SELECT * FROM "Race" WHERE "ID" = $1', [Number(ID)])
       .then((response) => response.rows[0])
+      .catch((error) => {
+        logger.error(`getRace request returned an error: ${error.message}`)
+      })
   }
 
   public getSubraces({ raceID }: { raceID: string }) {

@@ -9,6 +9,7 @@ import {
   Skills_background_skills,
   Skills_race_skills,
 } from '../../graphql-types'
+import logger from '../../logger'
 import { useCharacter } from '../../context'
 import { IAbilityScores } from '../../interfaces'
 import ActivityButton from '../ActivityButton'
@@ -50,13 +51,26 @@ const generateSkillSet = (
 
 const SkillSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
-  const { data } = useQuery<Skills>(SKILLS_QUERY, {
+  const { data, error } = useQuery<Skills>(SKILLS_QUERY, {
     variables: {
       charClassID: character.charClass.ID,
       raceID: character.race.ID,
       backgroundID: character.background.ID,
     },
   })
+
+  if (error) {
+    logger(
+      'Skills Query returned an error.',
+      {
+        charClassID: character.charClass.ID,
+        raceID: character.race.ID,
+        backgroundID: character.background.ID,
+      },
+      error
+    )
+    return null
+  }
 
   const toggleSkill = (skillID: string) => {
     const skills = [...character.skills]
@@ -80,11 +94,12 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
   return (
     <section>
       <CharacterTitles />
-      {data && (
+      {data && data.race && data.skills && data.background && (
         <>
           <section>
             {data.charClass.skills.map((skill) => (
               <ToggleButton
+                key={skill.ID}
                 disabled={
                   data.race.skills
                     .map((raceSkill) => raceSkill.ID)
@@ -103,7 +118,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
               <>
                 <h3>{character.race.name}</h3>
                 {data.race.skills.map((skill) => (
-                  <p>{skill.name}</p>
+                  <p key={skill.ID}>{skill.name}</p>
                 ))}
               </>
             )}
@@ -111,7 +126,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
               <>
                 <h3>{character.background.name}</h3>
                 {data.background.skills.map((skill) => (
-                  <p>{skill.name}</p>
+                  <p key={skill.ID}>{skill.name}</p>
                 ))}
               </>
             )}
