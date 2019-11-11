@@ -16,6 +16,8 @@ import ActivityButton from '../ActivityButton'
 import CharacterTitles from '../CharacterTitles'
 import ProficiencyList from '../ProficiencyList'
 import ToggleButton from '../ToggleButton'
+import MultiToggle from '../MultiToggle'
+import TitledList from '../TitledList'
 
 const generateSkillSet = (
   characterAbilityScores: IAbilityScores,
@@ -91,36 +93,31 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
     }
   }
 
+  const items = () => {
+    const result = data.charClass.skills.map(({ ID, name }) => {
+      const disabled =
+        data.race.skills.map((raceSkill) => raceSkill.ID).includes(ID) ||
+        data.background.skills
+          .map((backgroundSkill) => backgroundSkill.ID)
+          .includes(ID)
+      const isActive = character.skills.includes(ID)
+      return { ID, name, disabled, isActive }
+    })
+    return result
+  }
+
   return (
     <section>
       <CharacterTitles />
       {data && data.race && data.skills && data.background && (
         <>
           <section>
-            {data.charClass.skills.map((skill) => (
-              <ToggleButton
-                key={skill.ID}
-                disabled={
-                  data.race.skills
-                    .map((raceSkill) => raceSkill.ID)
-                    .includes(skill.ID) ||
-                  data.background.skills
-                    .map((backgroundSkill) => backgroundSkill.ID)
-                    .includes(skill.ID)
-                }
-                isActive={character.skills.includes(skill.ID)}
-                handleClick={() => toggleSkill(skill.ID)}
-              >
-                {skill.name}
-              </ToggleButton>
-            ))}
+            <MultiToggle items={items()} onChange={toggleSkill} />
             {data.race.skills.length > 0 && (
-              <>
-                <h3>{character.race.name}</h3>
-                {data.race.skills.map((skill) => (
-                  <p key={skill.ID}>{skill.name}</p>
-                ))}
-              </>
+              <TitledList
+                title={character.race.name}
+                list={data.race.skills}
+              ></TitledList>
             )}
             {data.background.skills.length > 0 && (
               <>
