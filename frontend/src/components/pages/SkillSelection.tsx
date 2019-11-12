@@ -2,6 +2,7 @@ import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
+import styled from 'styled-components'
 
 import {
   Skills,
@@ -15,7 +16,6 @@ import { IAbilityScores } from '../../interfaces'
 import ActivityButton from '../ActivityButton'
 import CharacterTitles from '../CharacterTitles'
 import ProficiencyList from '../ProficiencyList'
-import ToggleButton from '../ToggleButton'
 import MultiToggle from '../MultiToggle'
 import TitledList from '../TitledList'
 
@@ -85,7 +85,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
     }
 
     // Do nothing if skill limit is reached, otherwise
-    if (skills.length >= 2) {
+    if (skills.length >= character.charClass.numSkillProficiencies) {
       return
     } else {
       skills.push(skillID)
@@ -110,22 +110,24 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
     <section>
       <CharacterTitles />
       {data && data.race && data.skills && data.background && (
-        <>
+        <Grid>
           <section>
-            <MultiToggle items={items()} onChange={toggleSkill} />
+            <MultiToggle
+              items={items()}
+              remaining={
+                character.charClass.numSkillProficiencies -
+                character.skills.length
+              }
+              onChange={toggleSkill}
+            />
             {data.race.skills.length > 0 && (
-              <TitledList
-                title={character.race.name}
-                list={data.race.skills}
-              ></TitledList>
+              <TitledList title={character.race.name} list={data.race.skills} />
             )}
             {data.background.skills.length > 0 && (
-              <>
-                <h3>{character.background.name}</h3>
-                {data.background.skills.map((skill) => (
-                  <p key={skill.ID}>{skill.name}</p>
-                ))}
-              </>
+              <TitledList
+                title={character.background.name}
+                list={data.background.skills}
+              />
             )}
           </section>
           <ProficiencyList
@@ -136,7 +138,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
               charClassSkills: character.skills,
             })}
           />
-        </>
+        </Grid>
       )}
       <ActivityButton
         handleClick={() => history.push('/create-character/submit')}
@@ -173,6 +175,14 @@ const SKILLS_QUERY = gql`
       }
     }
   }
+`
+
+const Grid = styled.section`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  max-width: 600px;
+  margin: 0 auto;
 `
 
 export default SkillSelection

@@ -88,6 +88,7 @@ const typeDefs = gql`
   type CharClass {
     ID: ID!
     name: String!
+    numSkillProficiencies: Int!
     features: [CharClassFeature]!
     skills: [Skill]
   }

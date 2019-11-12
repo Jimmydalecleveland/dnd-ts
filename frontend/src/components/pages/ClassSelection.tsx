@@ -149,6 +149,7 @@ const CLASSES_QUERY = gql`
     charClasses {
       ID
       name
+      numSkillProficiencies
     }
   }
 `

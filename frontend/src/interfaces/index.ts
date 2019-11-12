@@ -29,6 +29,7 @@ export interface IBackgroundFeature {
 export interface ICharClass {
   ID: string
   name: string
+  numSkillProficiencies: number
 }
 
 export interface ICharClassFeature {

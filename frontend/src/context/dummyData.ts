@@ -29,6 +29,7 @@ const dummyCharacter: ICharacter = {
   charClass: {
     ID: '1',
     name: 'wizard',
+    numSkillProficiencies: 2,
   },
   background: {
     ID: '1',

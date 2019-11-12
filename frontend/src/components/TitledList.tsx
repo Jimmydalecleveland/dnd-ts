@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import SectionHeader from './SectionHeader'
 
 const TitledList: React.FC<IProps> = ({ title, list }) => {
   return (
     <List>
-      <h3>{title}</h3>
+      <SectionHeader>{title}</SectionHeader>
       {list.map(({ ID, name }) => (
-        <div key={ID}>{name}</div>
+        <p key={ID}>{name}</p>
       ))}
     </List>
   )
@@ -20,6 +21,13 @@ interface IProps {
   }>
 }
 
-const List = styled.div``
+const List = styled.div`
+  margin-bottom: 40px;
+
+  p {
+    text-align: center;
+    text-transform: uppercase;
+  }
+`
 
 export default TitledList

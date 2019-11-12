@@ -7,18 +7,24 @@ const ProficiencyList: React.FC<IProps> = ({ list }) => {
   return (
     <section>
       <SectionHeader>Skills</SectionHeader>
-      {list.map((proficiency) => (
-        <Proficiency key={proficiency.ID} proficient={proficiency.proficient}>
-          <span className="name">{proficiency.name}</span>
-          <span className="value">
-            {proficiency.value >= 0 && '+'}
-            {proficiency.value}
-          </span>
-        </Proficiency>
-      ))}
+      <ListWrapper>
+        {list.map((proficiency) => (
+          <Proficiency key={proficiency.ID} proficient={proficiency.proficient}>
+            <span className="name">{proficiency.name}</span>
+            <span className="value">
+              {proficiency.value >= 0 && '+'}
+              {proficiency.value}
+            </span>
+          </Proficiency>
+        ))}
+      </ListWrapper>
     </section>
   )
 }
+
+const ListWrapper = styled.div`
+  padding: 20px;
+`
 
 const Proficiency = styled.div<{ proficient: boolean }>`
   display: flex;
