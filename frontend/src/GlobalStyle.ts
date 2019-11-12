@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import darkTheme from '../theme'
+import darkTheme from './theme'
 import 'typeface-barlow'
 import 'typeface-cambay'
 
