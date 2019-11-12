@@ -3,6 +3,18 @@ import styled from 'styled-components'
 
 import ToggleButton from './ToggleButton'
 
+/**
+ * One or more selectable options as a group of {@link ToggleButton} components
+ * @param {Object[]} items - Each item will become a ToggleButton
+ * @param {string} items[].ID - Used for key value in map
+ * @param {string} items[].name - ToggleButton's text
+ * @param {boolean} items[].disabled - Disables and styles ToggleButton when true
+ * @param {boolean} items[].isActive - Display ToggleButton with selected style
+ *
+ * @param {number} remaining - Value to show for remaining ToggleButtons that can be active
+ * @param {function(): void} onChange - Passed to ToggleButton with current items[].ID
+ */
+
 const MultiToggle: React.FC<IProps> = ({ items, remaining, onChange }) => {
   return (
     <>
