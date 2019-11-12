@@ -2,7 +2,6 @@ import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
-import styled from 'styled-components'
 
 import {
   Skills,
@@ -13,6 +12,7 @@ import {
 import logger from '../logger'
 import { useCharacter } from '../context'
 import { IAbilityScores } from '../interfaces'
+import * as Styled from './SkillSelection.styles'
 import ActivityButton from '../components/ActivityButton'
 import CharacterTitles from '../components/CharacterTitles'
 import ProficiencyList from '../components/ProficiencyList'
@@ -78,7 +78,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
     <section>
       <CharacterTitles />
       {data && data.race && data.skills && data.background && (
-        <Grid>
+        <Styled.Grid>
           <section>
             <MultiToggle
               items={items()}
@@ -106,7 +106,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
               charClassSkills: character.skills,
             })}
           />
-        </Grid>
+        </Styled.Grid>
       )}
       <ActivityButton
         handleClick={() => history.push('/create-character/submit')}
@@ -188,14 +188,6 @@ const SKILLS_QUERY = gql`
       }
     }
   }
-`
-
-const Grid = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  max-width: 600px;
-  margin: 0 auto;
 `
 
 export default SkillSelection
