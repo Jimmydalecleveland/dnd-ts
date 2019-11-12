@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import * as Styled from './CharacterTitles.styles'
 import { useCharacter } from '../context'
 
 /**
@@ -11,47 +11,18 @@ const CharacterTitles: React.FC = () => {
   const { character } = useCharacter()
 
   return (
-    <Wrapper>
-      <Race>
+    <Styled.Wrapper>
+      <Styled.Race>
         {character.subrace ? character.subrace.name : character.race.name}
-      </Race>
-      {character.charClass && <CharClass>{character.charClass.name}</CharClass>}
-      {character.background && (
-        <Background>{character.background.name}</Background>
+      </Styled.Race>
+      {character.charClass && (
+        <Styled.CharClass>{character.charClass.name}</Styled.CharClass>
       )}
-    </Wrapper>
+      {character.background && (
+        <Styled.Background>{character.background.name}</Styled.Background>
+      )}
+    </Styled.Wrapper>
   )
 }
 
-const Wrapper = styled.section`
-  margin-bottom: 8px;
-  text-align: center;
-`
-
-const Race = styled.h3`
-  color: white;
-  opacity: 0.6;
-  font-size: 18px;
-  line-height: 1;
-  text-transform: uppercase;
-`
-
-const CharClass = styled.h3`
-  color: ${({ theme }) => theme.colors.outline};
-  opacity: 0.6;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.25ch;
-`
-
-const Background = styled.h3`
-  color: ${({ theme }) => theme.colors.highlight};
-  opacity: 0.5;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1;
-  text-transform: uppercase;
-`
 export default CharacterTitles
