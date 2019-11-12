@@ -2,7 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { useCharacter } from '../context'
 
-const CharacterTitles = () => {
+/**
+ * Displays a stylized character's race/subrace, class, and background
+ * @remarks
+ * useCharacter context is used to obtain character information
+ */
+const CharacterTitles: React.FC = () => {
   const { character } = useCharacter()
 
   return (

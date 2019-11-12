@@ -9,15 +9,15 @@ import {
   Skills_skills,
   Skills_background_skills,
   Skills_race_skills,
-} from '../../graphql-types'
-import logger from '../../logger'
-import { useCharacter } from '../../context'
-import { IAbilityScores } from '../../interfaces'
-import ActivityButton from '../ActivityButton'
-import CharacterTitles from '../CharacterTitles'
-import ProficiencyList from '../ProficiencyList'
-import MultiToggle from '../MultiToggle'
-import TitledList from '../TitledList'
+} from '../graphql-types'
+import logger from '../logger'
+import { useCharacter } from '../context'
+import { IAbilityScores } from '../interfaces'
+import ActivityButton from '../components/ActivityButton'
+import CharacterTitles from '../components/CharacterTitles'
+import ProficiencyList from '../components/ProficiencyList'
+import MultiToggle from '../components/MultiToggle'
+import TitledList from '../components/TitledList'
 
 const generateSkillSet = (
   characterAbilityScores: IAbilityScores,

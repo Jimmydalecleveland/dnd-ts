@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import CharacterProvider from '../../context'
+import CharacterProvider from '../context'
 import BackgroundSelection from './BackgroundSelection'
 import ClassSelection from './ClassSelection'
 import RaceSelection from './RaceSelection'

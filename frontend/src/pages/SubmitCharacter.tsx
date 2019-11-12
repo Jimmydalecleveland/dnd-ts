@@ -1,7 +1,7 @@
 import React from 'react'
 import { gql } from 'apollo-boost'
 import { useMutation } from '@apollo/react-hooks'
-import { useCharacter } from '../../context'
+import { useCharacter } from '../context'
 
 const SubmitCharacter = () => {
   const [submitCharacter, { data, error, loading }] = useMutation(

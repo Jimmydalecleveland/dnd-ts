@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router-dom'
 
-import { useCharacter } from '../../context'
-import AbilityScoreRange from '../AbilityScoreRange'
-import CharacterTitles from '../CharacterTitles'
-import ActivityButton from '../ActivityButton'
+import { useCharacter } from '../context'
+import AbilityScoreRange from '../components/AbilityScoreRange'
+import CharacterTitles from '../components/CharacterTitles'
+import ActivityButton from '../components/ActivityButton'
 
 const AbilityScoreSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()

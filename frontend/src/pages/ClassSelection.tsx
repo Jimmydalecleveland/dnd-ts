@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { useLazyQuery, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
-import { useQuery, useLazyQuery } from '@apollo/react-hooks'
 import { AnimatePresence, motion } from 'framer-motion'
 import styled from 'styled-components'
 
-import { animationContainer } from '../FeatureItem'
-import { useCharacter } from '../../context'
-import { Backgrounds, BackgroundFeaturesPrefetch } from '../../graphql-types'
-import SectionHeader from '../SectionHeader'
-import ToggleButton from '../ToggleButton'
-import ActivityButton from '../ActivityButton'
-import BackgroundFeatures from '../BackgroundFeatures'
+import { useCharacter } from '../context'
+import { CharClasses, CharClassFeaturesPrefetch } from '../graphql-types'
+import { animationContainer } from '../components/FeatureItem'
+import ActivityButton from '../components/ActivityButton'
+import ClassFeatures from '../components/ClassFeatures'
+import SectionHeader from '../components/SectionHeader'
+import ToggleButton from '../components/ToggleButton'
 
-const BackgroundSelection = ({ history }: RouteComponentProps) => {
+const ClassSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
-  const { loading, error, data } = useQuery<Backgrounds>(BACKGROUNDS_QUERY)
-  const [getBackgroundFeatures] = useLazyQuery<BackgroundFeaturesPrefetch>(
-    BACKGROUND_FEATURES_QUERY
+  const { loading, error, data } = useQuery<CharClasses>(CLASSES_QUERY)
+  const [getClassFeatures] = useLazyQuery<CharClassFeaturesPrefetch>(
+    CLASS_FEATURES_QUERY
   )
 
   const [showModal, setShowModal] = useState(false)
@@ -31,33 +31,31 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
 
       {!loading && !error && (
         <section>
-          <SectionHeader>BACKGROUND</SectionHeader>
-          <BackgroundList>
-            {data.backgrounds.map((background) => (
+          <SectionHeader>CLASS</SectionHeader>
+          <ClassList>
+            {data.charClasses.map((charClass) => (
               <ToggleButton
-                key={background.ID}
-                isActive={character.background.ID === background.ID}
+                key={charClass.ID}
+                isActive={character.charClass.ID === charClass.ID}
                 handleClick={() => {
-                  getBackgroundFeatures({
-                    variables: { backgroundID: background.ID },
-                  })
-                  setCharacter({ ...character, background })
+                  getClassFeatures({ variables: { charClassID: charClass.ID } })
+                  setCharacter({ ...character, charClass })
                 }}
               >
-                {background.name}
+                {charClass.name}
               </ToggleButton>
             ))}
-          </BackgroundList>
+          </ClassList>
         </section>
       )}
 
       <StyledBottomWrapper>
         <ToggleButton
-          disabled={!character.background.ID}
+          disabled={!character.charClass}
           isActive={showModal}
           handleClick={() => setShowModal(true)}
         >
-          {`${character.background.name} details`}
+          {`${character.charClass.name} details`}
         </ToggleButton>
         {showModal && (
           <AnimatePresence>
@@ -76,10 +74,10 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
               <div>
                 {character.charClass && (
                   <div>
-                    <BackgroundFeatures
-                      backgroundID={character.background.ID}
-                      headline={`${character.background.name} Features`}
-                    ></BackgroundFeatures>
+                    <ClassFeatures
+                      charClassID={character.charClass.ID}
+                      headline={`${character.charClass.name} Features`}
+                    ></ClassFeatures>
                   </div>
                 )}
               </div>
@@ -87,17 +85,17 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
           </AnimatePresence>
         )}
         <ActivityButton
-          disabled={character.background.ID ? false : true}
-          handleClick={() => history.push('/create-character/ability-scores')}
+          disabled={character.charClass.ID ? false : true}
+          handleClick={() => history.push('/create-character/background')}
         >
-          Next: Ability Scores
+          Next: Background
         </ActivityButton>
       </StyledBottomWrapper>
     </div>
   )
 }
 
-const BackgroundList = styled.div`
+const ClassList = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 5px;
@@ -146,25 +144,27 @@ const Modal = styled(motion.section)`
   }
 `
 
-const BACKGROUNDS_QUERY = gql`
-  query Backgrounds {
-    backgrounds {
+const CLASSES_QUERY = gql`
+  query CharClasses {
+    charClasses {
       ID
       name
+      numSkillProficiencies
     }
   }
 `
 
-const BACKGROUND_FEATURES_QUERY = gql`
-  query BackgroundFeaturesPrefetch($backgroundID: ID!) {
-    background(ID: $backgroundID) {
+const CLASS_FEATURES_QUERY = gql`
+  query CharClassFeaturesPrefetch($charClassID: ID!) {
+    charClass(ID: $charClassID) {
       features {
         ID
         name
         description
+        level
       }
     }
   }
 `
 
-export default BackgroundSelection
+export default ClassSelection

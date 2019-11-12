@@ -5,13 +5,13 @@ import { gql } from 'apollo-boost'
 import { AnimatePresence, motion } from 'framer-motion'
 import styled from 'styled-components'
 
-import { animationContainer } from '../FeatureItem'
-import { useCharacter } from '../../context'
-import { Races } from '../../graphql-types'
-import ActivityButton from '../ActivityButton'
-import RaceTraits from '../RaceTraits'
-import SectionHeader from '../SectionHeader'
-import ToggleButton from '../ToggleButton'
+import { animationContainer } from '../components/FeatureItem'
+import { useCharacter } from '../context'
+import { Races } from '../graphql-types'
+import ActivityButton from '../components/ActivityButton'
+import RaceTraits from '../components/RaceTraits'
+import SectionHeader from '../components/SectionHeader'
+import ToggleButton from '../components/ToggleButton'
 
 const RaceSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
