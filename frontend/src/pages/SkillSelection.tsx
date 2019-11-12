@@ -19,38 +19,6 @@ import ProficiencyList from '../components/ProficiencyList'
 import MultiToggle from '../components/MultiToggle'
 import TitledList from '../components/TitledList'
 
-const generateSkillSet = (
-  characterAbilityScores: IAbilityScores,
-  {
-    skills,
-    backgroundSkills,
-    raceSkills,
-    charClassSkills,
-  }: {
-    skills: Skills_skills[]
-    backgroundSkills: Skills_background_skills[]
-    raceSkills: Skills_race_skills[]
-    charClassSkills: string[]
-  }
-) => {
-  const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
-  const raceSkillIDs = raceSkills.map((skill) => skill.ID)
-  const allProficientSkillIDs = [
-    ...backgroundSkillIDs,
-    ...raceSkillIDs,
-    ...charClassSkills,
-  ]
-
-  return skills.map((skill) => {
-    const proficient = allProficientSkillIDs.includes(skill.ID)
-    let value = Math.floor((characterAbilityScores[skill.ability] - 10) / 2)
-    if (proficient) {
-      value = value + 2
-    }
-    return { ID: skill.ID, name: skill.name, proficient, value }
-  })
-}
-
 const SkillSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
   const { data, error } = useQuery<Skills>(SKILLS_QUERY, {
@@ -147,6 +115,51 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
       </ActivityButton>
     </section>
   )
+}
+
+/**
+ * Takes in Character's ability scores and the skills pertaining to each choice the user has made
+ * thus far and gives back a list of every possible skill and the character's current value for each.
+ * @param {Object} characterAbilityScores - str,dex,con,int,wis,cha values
+ * @param {Object} skillProficiencies - Object comprised of every skill, and character's skills
+ * from choices thus far
+ * @param {Object[]} skillProficiencies[].skills - Every skill
+ * @param {Object[]} skillProficiencies[].backgroundSkills - Skills from user's background choice
+ * @param {Object[]} skillProficiencies[].raceSkills - Skills from user's race choice
+ * @param {string[]} skillProficiencies[].charClassSkills - Character's currently selected skill IDs
+ * @returns {Object[]} An array of every skill, each containing a skill's ID, name, proficient boolean,
+ * and numeric value
+ */
+const generateSkillSet = (
+  characterAbilityScores: IAbilityScores,
+  {
+    skills,
+    backgroundSkills,
+    raceSkills,
+    charClassSkills,
+  }: {
+    skills: Skills_skills[]
+    backgroundSkills: Skills_background_skills[]
+    raceSkills: Skills_race_skills[]
+    charClassSkills: string[]
+  }
+) => {
+  const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
+  const raceSkillIDs = raceSkills.map((skill) => skill.ID)
+  const allProficientSkillIDs = [
+    ...backgroundSkillIDs,
+    ...raceSkillIDs,
+    ...charClassSkills,
+  ]
+
+  return skills.map((skill) => {
+    const proficient = allProficientSkillIDs.includes(skill.ID)
+    let value = Math.floor((characterAbilityScores[skill.ability] - 10) / 2)
+    if (proficient) {
+      value = value + 2
+    }
+    return { ID: skill.ID, name: skill.name, proficient, value }
+  })
 }
 
 const SKILLS_QUERY = gql`
