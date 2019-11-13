@@ -130,7 +130,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
  * @returns {Object[]} An array of every skill, each containing a skill's ID, name, proficient boolean,
  * and numeric value
  */
-const generateSkillSet = (
+export const generateSkillSet = (
   characterAbilityScores: IAbilityScores,
   {
     skills,
