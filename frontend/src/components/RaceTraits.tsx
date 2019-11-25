@@ -1,7 +1,6 @@
 import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
-import { motion } from 'framer-motion'
 
 import { IRaceTrait } from '../interfaces'
 import SectionHeader from './SectionHeader'
@@ -32,16 +31,6 @@ const RaceTraits = ({ raceID, headline }: IProps) => {
   )
 }
 
-const RACETRAITS_QUERY = gql`
-  query RaceTraits($raceID: ID!) {
-    raceTraits(raceID: $raceID) {
-      ID
-      name
-      description
-    }
-  }
-`
-
 interface IProps {
   raceID: string
   headline: string
@@ -54,5 +43,15 @@ interface IQueryData {
 interface IQueryVariables {
   raceID: string
 }
+
+const RACETRAITS_QUERY = gql`
+  query RaceTraits($raceID: ID!) {
+    raceTraits(raceID: $raceID) {
+      ID
+      name
+      description
+    }
+  }
+`
 
 export default RaceTraits

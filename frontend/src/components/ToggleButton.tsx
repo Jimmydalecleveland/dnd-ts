@@ -1,5 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
+
+import * as Styled from './ToggleButton.styles'
 
 const ToggleButton: React.FC<IProps> = ({
   disabled = false,
@@ -7,30 +8,14 @@ const ToggleButton: React.FC<IProps> = ({
   handleClick,
   children,
 }) => (
-  <StyledToggleButton
+  <Styled.ToggleButton
     disabled={disabled}
     className={isActive && 'active'}
     onClick={handleClick}
   >
     {children}
-  </StyledToggleButton>
+  </Styled.ToggleButton>
 )
-
-const StyledToggleButton = styled.button`
-  color: ${({ theme, disabled }) => (disabled ? theme.colors.outline : '#fff')};
-  border: ${({ theme }) => `solid 1px ${theme.colors.outline}`};
-  padding: 10px;
-  text-transform: uppercase;
-  font-size: 18px;
-  font-weight: 500;
-  background-color: transparent;
-  transition: background-color 0.3s, border-color 0.3s;
-
-  &.active {
-    background-color: ${({ theme }) => theme.colors.primaryTransparent};
-    border-color: transparent;
-  }
-`
 
 interface IProps {
   children: string

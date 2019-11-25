@@ -1,7 +1,8 @@
+import React from 'react'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
-import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+
 import { ICharacter } from '../interfaces'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
@@ -39,6 +40,22 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   )
 }
 
+interface IProps {
+  id: string
+}
+
+interface IQueryData {
+  character: ICharacter
+}
+
+interface IQueryVariables {
+  ID: string
+}
+
+interface IMutationVariables {
+  ID: string
+}
+
 const CHARACTER_QUERY = gql`
   query CharacterQuery($ID: ID!) {
     character(ID: $ID) {
@@ -61,21 +78,5 @@ const DELETE_CHARACTER = gql`
     deleteCharacter(ID: $ID)
   }
 `
-
-interface IProps {
-  id: string
-}
-
-interface IQueryData {
-  character: ICharacter
-}
-
-interface IQueryVariables {
-  ID: string
-}
-
-interface IMutationVariables {
-  ID: string
-}
 
 export default Character
