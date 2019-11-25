@@ -2,8 +2,7 @@ import { ICharacter } from '../interfaces'
 
 const dummyCharacter: ICharacter = {
   ID: '',
-  // name: 'Logen Ninefingers',
-  name: 'Ravalynn woofsnake',
+  name: 'Logen Ninefingers',
   race: {
     ID: '16',
     name: 'elf',
@@ -23,25 +22,25 @@ const dummyCharacter: ICharacter = {
     ],
   },
   subrace: {
-    ID: '26',
-    name: 'high elf',
+    ID: '27',
+    name: 'wood elf',
   },
   charClass: {
-    ID: '1',
-    name: 'wizard',
+    ID: '5',
+    name: 'barbarian',
     numSkillProficiencies: 2,
   },
   background: {
-    ID: '1',
-    name: 'acolyte',
+    ID: '10',
+    name: 'sailor',
   },
   abilityScores: {
     str: 20,
-    dex: 8,
-    con: 11,
-    int: 15,
-    wis: 18,
-    cha: 12,
+    dex: 17,
+    con: 12,
+    int: 9,
+    wis: 6,
+    cha: 0,
   },
   skills: [],
 }
