@@ -24,11 +24,13 @@ class WeaponAPI extends DataSource {
           queryText += ' AND '
         }
 
-        queryText += `"${key}" = '${filter[key]}'`
+        queryText += `"${key}" = $${index + 1}`
       })
     }
 
-    return db.query(queryText).then((response) => response.rows)
+    return db
+      .query(queryText, filter && Object.values(filter))
+      .then((response) => response.rows)
   }
 
   public getWeaponsByType(skillType: string) {
