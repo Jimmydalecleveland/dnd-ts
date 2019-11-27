@@ -26,6 +26,7 @@ const typeDefs = gql`
     charClasses: [CharClass]!
     charClass(ID: ID!): CharClass
     skills: [Skill]!
+    weapons(filter: WeaponFilter): [Weapon]!
   }
 
   type Spell {
@@ -115,6 +116,21 @@ const typeDefs = gql`
     ID: ID!
     name: String!
     ability: String!
+  }
+
+  type Weapon {
+    ID: ID!
+    name: String!
+    damage: String!
+    const: String!
+    weight: String
+    skillType: String!
+    rangeType: String!
+  }
+
+  input WeaponFilter {
+    skillType: String
+    rangeType: String
   }
 `
 

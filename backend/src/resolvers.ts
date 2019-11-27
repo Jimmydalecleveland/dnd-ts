@@ -60,6 +60,11 @@ const resolvers = {
       dataSources.charClassAPI.getCharClass({ ID }),
     skills: (_: any, __: any, { dataSources }: any) =>
       dataSources.skillAPI.getSkills(),
+    weapons: (
+      _: any,
+      { filter }: { filter?: { skillType?: string; rangeType?: string } },
+      { dataSources }: any
+    ) => dataSources.weaponAPI.getWeapons(filter),
   },
 
   CharClass: {
