@@ -25,7 +25,7 @@ const MultiToggle: React.FC<IProps> = ({ items, remaining, onChange }) => {
           <span>Remaining</span>
         </Styled.Title>
         <Styled.RemainingHexagon remaining={remaining}>
-          <svg width="auto" height="100%" viewBox="0 0 114 120">
+          <svg width="100%" height="100%" viewBox="0 0 114 120">
             <polygon points="60,120 112,90 112,30 60,0 8,30 8,90"></polygon>
             <text x="53%" y="53%" dominantBaseline="middle" textAnchor="middle">
               {remaining}
