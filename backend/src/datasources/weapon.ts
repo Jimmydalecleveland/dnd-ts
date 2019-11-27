@@ -32,10 +32,6 @@ class WeaponAPI extends DataSource {
       .query(queryText, filter && Object.values(filter))
       .then((response) => response.rows)
   }
-
-  public getWeaponsByType(skillType: string) {
-    return db.query('SELECT * FROM "Weapon" WHERE type = $1', [skillType])
-  }
 }
 
 export default WeaponAPI
