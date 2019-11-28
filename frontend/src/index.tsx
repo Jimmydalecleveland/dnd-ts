@@ -1,11 +1,11 @@
 import { ApolloProvider } from '@apollo/react-hooks'
-import ApolloClient from 'apollo-boost'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import darkTheme from './theme'
 
+import client from './apolloClient'
 import Character from './components/Character'
 import Characters from './components/Characters'
 import GlobalStyle from './GlobalStyle'
@@ -13,10 +13,6 @@ import Main from './components/Main'
 import MobileNav from './components/MobileNav'
 import CreateCharacter from './pages/CreateCharacter'
 import Spell from './components/Spell'
-
-const client = new ApolloClient({
-  uri: 'http://localhost:4000',
-})
 
 ReactDOM.render(
   <ApolloProvider client={client}>
