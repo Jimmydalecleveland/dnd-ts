@@ -3,18 +3,26 @@ import client from './apolloClient'
 import logger from './logger'
 
 async function determineEquipmentChoices(charClassName: string): Promise<any> {
-  const {
-    data: { weapons: allMartialMeleeWeapons },
-  } = await client.query({
-    query: gql`
-      query AllMartialMeleeWeapons {
-        weapons(filter: { skillType: "martial", rangeType: "melee" }) {
-          ID
-          name
+  let allMartialMeleeWeapons
+
+  try {
+    const {
+      data: { weapons },
+    } = await client.query({
+      query: gql`
+        query AllMartialMeleeWeapons {
+          weapons(filter: { skillType: "martial", rangeType: "melee" }) {
+            ID
+            name
+          }
         }
-      }
-    `,
-  })
+      `,
+    })
+
+    allMartialMeleeWeapons = weapons
+  } catch (error) {
+    logger('allMartialMeleeWeapons query returned an error', error)
+  }
 
   const equipmentChoices: { [key: string]: any[] } = {
     barbarian: [
@@ -34,8 +42,6 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
       ],
     ],
   }
-
-  console.log({ allMartialMeleeWeapons })
 
   return equipmentChoices[charClassName]
   // return equipmentChoices[charClassName].map(choice => {
