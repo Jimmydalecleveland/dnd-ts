@@ -1,42 +1,42 @@
-import { useQuery, useLazyQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
+import client from './apolloClient'
+import logger from './logger'
 
-// const allWeapons = WEAPONS_QUERY()
-// const allMartialWeapons = MARTIAL_WEAPONS_QUERY()
+async function determineEquipmentChoices(charClassName: string): Promise<any> {
+  const {
+    data: { weapons: allMartialMeleeWeapons },
+  } = await client.query({
+    query: gql`
+      query AllMartialMeleeWeapons {
+        weapons(filter: { skillType: "martial", rangeType: "melee" }) {
+          ID
+          name
+        }
+      }
+    `,
+  })
 
-// const equipmentChoices = {
-//   barbarian: [
-//     [
-//       { amount: 1, info: allWeapons.Greataxe },
-//       { amount: 1, info:  allMartialWeapons, multipleChoice: true },
-//     ],
-//     [
-//       { amount: 2, name: 'Handaxe' },
-//       { amount: 1, name: 'Simple Weapon' },
-//     ],
-//   ],
-// }
-
-const equipmentChoices: { [key: string]: any[] } = {
-  barbarian: [
-    // choose one
-    [
-      // Choice 1
-      {
-        text: 'Greataxe',
-        amount: 1,
-      },
-      // Choice 2 (select)
-      {
-        text: 'Any Martial Melee Weapon',
-        choices: ['Short Sword', 'Battle Axe', 'Maul', 'Pike', 'Lance', 'Whip'],
-        amount: 1,
-      },
+  const equipmentChoices: { [key: string]: any[] } = {
+    barbarian: [
+      // choose one
+      [
+        // Choice 1
+        {
+          text: 'Greataxe',
+          amount: 1,
+        },
+        // Choice 2 (select)
+        {
+          text: 'Any Martial Melee Weapon',
+          choices: allMartialMeleeWeapons,
+          amount: 1,
+        },
+      ],
     ],
-  ],
-}
+  }
 
-function determineEquipmentChoices(charClassName: string): any {
+  console.log({ allMartialMeleeWeapons })
+
   return equipmentChoices[charClassName]
   // return equipmentChoices[charClassName].map(choice => {
   //   if (choice.multipleChoice) {
