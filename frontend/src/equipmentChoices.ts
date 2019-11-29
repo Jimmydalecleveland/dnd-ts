@@ -66,7 +66,10 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
  * @param {string} skillType - "simple" or "martial"
  * @param {string} rangeType - "melee" or "ranged"
  */
-async function getWeapons(skillType?: string, rangeType?: string) {
+async function getWeapons(
+  skillType?: 'simple' | 'martial',
+  rangeType?: 'melee' | 'ranged'
+) {
   try {
     const {
       data: { weapons },
