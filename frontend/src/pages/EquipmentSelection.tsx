@@ -20,17 +20,33 @@ const EquipmentSelection = () => {
           {choices.map((choice, choiceIndex) => (
             <form key={choiceIndex}>
               <h3>Choose one:</h3>
-              {choice.map((option: { text: string; amount: number }) => (
-                <div key={option.text}>
-                  <input
-                    type="radio"
-                    id={option.text}
-                    value={option.text}
-                    name={choiceIndex.toString()}
-                  />
-                  <label htmlFor={option.text}>{option.text}</label>
-                </div>
-              ))}
+              {choice.map(
+                (option: { text: string; amount: number; choices?: [] }) => (
+                  <div key={option.text}>
+                    <input
+                      type="radio"
+                      id={option.text}
+                      value={option.text}
+                      name={choiceIndex.toString()}
+                    />
+                    <label htmlFor={option.text}>{option.text}</label>
+                    {option.choices && (
+                      <select>
+                        {option.choices.map(
+                          (optionChoice: { ID: string; name: string }) => (
+                            <option
+                              key={optionChoice.ID}
+                              value={optionChoice.ID}
+                            >
+                              {optionChoice.name}
+                            </option>
+                          )
+                        )}
+                      </select>
+                    )}
+                  </div>
+                )
+              )}
             </form>
           ))}
         </div>
