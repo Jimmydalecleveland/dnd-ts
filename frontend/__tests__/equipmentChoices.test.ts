@@ -19,12 +19,12 @@ const expected = [
   [
     // Option 1
     {
-      text: 'Greataxe',
+      text: 'a greataxe',
       amount: 1,
     },
     // Option 2 (select)
     {
-      text: 'Any Martial Melee Weapon',
+      text: 'any martial melee weapon',
       choices: mockMartialMeleeWeapons.data.weapons,
       amount: 1,
     },
