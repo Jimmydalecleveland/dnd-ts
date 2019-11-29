@@ -11,8 +11,27 @@ const mockMartialMeleeWeapons = {
   },
 }
 
+const mockSimpleWeapons = {
+  data: {
+    weapons: [
+      {
+        ID: '1',
+        name: 'dagger',
+      },
+    ],
+  },
+}
+
 jest.mock('../src/apolloClient', () => ({
-  query: () => Promise.resolve(mockMartialMeleeWeapons),
+  query: ({ variables }: { variables: { skillType: string } }) => {
+    if (variables.skillType === 'simple') {
+      return Promise.resolve(mockSimpleWeapons)
+    }
+
+    if (variables.skillType === 'martial') {
+      return Promise.resolve(mockMartialMeleeWeapons)
+    }
+  },
 }))
 
 const expected = [
@@ -27,6 +46,17 @@ const expected = [
       text: 'any martial melee weapon',
       choices: mockMartialMeleeWeapons.data.weapons,
       amount: 1,
+    },
+  ],
+  [
+    {
+      text: 'two handaxes',
+      amount: 2,
+    },
+    {
+      text: 'any simple weapon',
+      amount: 1,
+      choices: mockSimpleWeapons.data.weapons,
     },
   ],
 ]

@@ -5,12 +5,12 @@ import logger from './logger'
 /**
  * Used for the first level equipment choices step in creating a character.
  * The GraphQL server will be hit for the various equipment types and a large
- * map (with each class as a key) will be used to look up the appropriate questions and options. 
+ * map (with each class as a key) will be used to look up the appropriate questions and options.
  * @param {string} charClassName  - The character class to look up
  */
 async function determineEquipmentChoices(charClassName: string): Promise<any> {
-  const allMartialMeleeWeapons = await getWeapons("martial", "melee")
-  const allSimpleWeapons = await getWeapons("simple")
+  const allMartialMeleeWeapons = await getWeapons('martial', 'melee')
+  const allSimpleWeapons = await getWeapons('simple')
 
   const equipmentChoices: { [key: string]: any[] } = {
     barbarian: [
@@ -24,8 +24,19 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
         // Option 2 (select)
         {
           text: 'any martial melee weapon',
-          choices: allMartialMeleeWeapons,
           amount: 1,
+          choices: allMartialMeleeWeapons,
+        },
+      ],
+      [
+        {
+          text: 'two handaxes',
+          amount: 2,
+        },
+        {
+          text: 'any simple weapon',
+          amount: 1,
+          choices: allSimpleWeapons,
         },
       ],
     ],
@@ -40,18 +51,18 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
         // Option 2
         {
           text: 'any simple weapon',
+          amount: 1,
           choices: allSimpleWeapons,
-          amount: 1
-        }
-      ]
-    ]
+        },
+      ],
+    ],
   }
 
   return equipmentChoices[charClassName]
 }
 
 /**
- *  Gets all weapons from the GraphQL server, and allows 2 filter options to be passed. 
+ *  Gets all weapons from the GraphQL server, and allows 2 filter options to be passed.
  * @param {string} skillType - "simple" or "martial"
  * @param {string} rangeType - "melee" or "ranged"
  */
@@ -65,7 +76,7 @@ async function getWeapons(skillType?: string, rangeType?: string) {
         rangeType,
       },
       query: gql`
-        query AllMartialMeleeWeapons($skillType: String, $rangeType: String) {
+        query allWeaponsFiltered($skillType: String, $rangeType: String) {
           weapons(filter: { skillType: $skillType, rangeType: $rangeType }) {
             ID
             name
@@ -79,6 +90,5 @@ async function getWeapons(skillType?: string, rangeType?: string) {
     logger('allMartialMeleeWeapons query returned an error', error)
   }
 }
-
 
 export default determineEquipmentChoices

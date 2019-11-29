@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --hot",
     "dev:broadcast": "webpack-dev-server --hot --host 0.0.0.0",
     "generate": "apollo-codegen generate ./src/**/*.tsx --addTypename --tag-name gql --schema schema.json --target typescript --output ./src/graphql-types.ts",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "",
