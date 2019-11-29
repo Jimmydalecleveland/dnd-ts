@@ -109,9 +109,9 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
         </Styled.Grid>
       )}
       <ActivityButton
-        handleClick={() => history.push('/create-character/submit')}
+        handleClick={() => history.push('/create-character/equipment')}
       >
-        NEXT: SUBMIT
+        NEXT: EQUIPMENT
       </ActivityButton>
     </section>
   )
