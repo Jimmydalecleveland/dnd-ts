@@ -43,6 +43,14 @@ const dummyCharacter: ICharacter = {
     cha: 0,
   },
   skills: [],
+  startingEquipment: [
+    {
+      tableName: 'Weapon',
+      // ID: '1',
+      name: 'dagger',
+      amount: 1,
+    },
+  ],
 }
 
 export default dummyCharacter

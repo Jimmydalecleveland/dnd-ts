@@ -38,11 +38,13 @@ const expected = [
   [
     // Option 1
     {
+      tableName: 'Weapon',
       text: 'a greataxe',
       amount: 1,
     },
     // Option 2 (select)
     {
+      tableName: 'Weapon',
       text: 'any martial melee weapon',
       choices: mockMartialMeleeWeapons.data.weapons,
       amount: 1,
@@ -50,10 +52,12 @@ const expected = [
   ],
   [
     {
+      tableName: 'Weapon',
       text: 'two handaxes',
       amount: 2,
     },
     {
+      tableName: 'Weapon',
       text: 'any simple weapon',
       amount: 1,
       choices: mockSimpleWeapons.data.weapons,

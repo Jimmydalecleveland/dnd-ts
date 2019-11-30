@@ -122,7 +122,7 @@ const typeDefs = gql`
     ID: ID!
     name: String!
     damage: String!
-    const: String!
+    cost: String!
     weight: String
     skillType: String!
     rangeType: String!
