@@ -50,8 +50,9 @@ const EquipmentSelection = () => {
                         })
                       }}
                       checked={
-                        form[`choice${choiceIndex}`] &&
-                        form[`choice${choiceIndex}`].text === option.text
+                        !form[`choice${choiceIndex}`]
+                          ? false
+                          : form[`choice${choiceIndex}`].text === option.text
                       }
                     />
                     <label htmlFor={option.text}>{option.text}</label>
