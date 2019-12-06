@@ -38,6 +38,7 @@ const expected = [
   [
     // Option 1
     {
+      ID: '21',
       tableName: 'Weapon',
       text: 'a greataxe',
       amount: 1,
@@ -52,6 +53,7 @@ const expected = [
   ],
   [
     {
+      ID: '13',
       tableName: 'Weapon',
       text: 'two handaxes',
       amount: 2,

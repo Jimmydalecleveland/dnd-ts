@@ -18,6 +18,7 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
       [
         // Option 1
         {
+          ID: '21',
           tableName: 'Weapon',
           text: 'a greataxe',
           amount: 1,
@@ -32,6 +33,7 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
       ],
       [
         {
+          ID: '13',
           tableName: 'Weapon',
           text: 'two handaxes',
           amount: 2,

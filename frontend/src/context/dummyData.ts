@@ -46,8 +46,8 @@ const dummyCharacter: ICharacter = {
   startingEquipment: [
     {
       tableName: 'Weapon',
-      // ID: '1',
-      name: 'dagger',
+      ID: '1',
+      text: 'a dagger',
       amount: 1,
     },
   ],

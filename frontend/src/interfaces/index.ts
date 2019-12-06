@@ -49,9 +49,9 @@ export interface IAbilityScores {
   [key: string]: number
 }
 
-export interface IWeapon {
+export interface IEquipment {
   tableName: string
-  // ID: string
+  ID?: string
   text: string
   amount: number
 }
@@ -65,5 +65,5 @@ export interface ICharacter {
   background: IBackground
   abilityScores: IAbilityScores
   skills: string[]
-  startingEquipment: IWeapon[]
+  startingEquipment: IEquipment[]
 }
