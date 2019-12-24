@@ -137,6 +137,11 @@ const resolvers = {
       dataSources.characterAPI.getBackground({
         ID: Character.ID,
       }),
+    skills: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getSkills({ ID: Character.ID }),
   },
 
   Race: {

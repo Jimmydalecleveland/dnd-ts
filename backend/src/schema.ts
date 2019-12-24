@@ -43,6 +43,7 @@ const typeDefs = gql`
     charClass: CharClass!
     background: Background!
     abilityScores: AbilityScores!
+    skills: [Skill]!
     HP: String
     maxHP: String
   }
