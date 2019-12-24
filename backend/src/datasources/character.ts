@@ -1,7 +1,8 @@
 import { DataSource } from 'apollo-datasource'
 import db from '../db'
+import format from 'pg-format'
 import logger from '../logger'
-import { ICreateCharacter } from '../interfaces'
+import { ICreateCharacter, ICharacter } from '../interfaces'
 
 export interface ICharacterAPI extends DataSource {
   context: any
@@ -49,20 +50,26 @@ class CharacterAPI implements ICharacterAPI {
       })
   }
 
-  public createCharacter({
-    name,
-    raceID,
-    subraceID,
-    charClassID,
-    backgroundID,
-    abilityScores,
-  }: ICreateCharacter) {
+  public createCharacter(characterData: ICreateCharacter) {
+    // characterData is destructed outside of params to easily pass to logger
+    const {
+      name,
+      raceID,
+      subraceID,
+      charClassID,
+      backgroundID,
+      abilityScores,
+      skills,
+    } = characterData
     const { str, dex, con, wis, int, cha } = abilityScores
+
+    logger.info('createCharacter request started:', characterData)
     return db
       .query(
         `
         INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID", str, dex, con, wis, int, cha) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        RETURNING *
         `,
         [
           name,
@@ -78,7 +85,27 @@ class CharacterAPI implements ICharacterAPI {
           cha,
         ]
       )
-      .then((response) => response.rows[0])
+      .then((response) => {
+        const { ID } = response.rows[0]
+        // The character that is returned will need a row per skill associated with their ID
+        const skillValues = skills.map((skillID) => [ID, skillID])
+
+        // pg-format is required for parsed params when entering multiple rows to pg
+        const query = format(
+          `
+          INSERT INTO "CharSkillProficiency" ("charID", "skillID")
+          VALUES %L
+          RETURNING "charID"
+          `,
+          skillValues
+        )
+        return db.query(query)
+      })
+      .then((response) => response.rows[0].charID)
+      .catch((error) => {
+        logger.error('createCharacter returned an error:', error)
+        throw new Error(error)
+      })
   }
 
   public deleteByID({ ID }: { ID: string }) {

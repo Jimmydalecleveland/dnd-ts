@@ -8,8 +8,9 @@ const typeDefs = gql`
       subraceID: ID
       charClassID: ID!
       backgroundID: ID!
-      abilityScores: AbilityScoresInput
-    ): Character!
+      abilityScores: AbilityScoresInput!
+      skills: [ID]!
+    ): ID!
     deleteCharacter(ID: ID!): Int
   }
 

@@ -1,4 +1,3 @@
-import { DataSource } from 'apollo-datasource'
 import { ISkillAPI } from '../datasources/skill'
 import { IBackgroundAPI } from '../datasources/background'
 import { ICharacterAPI } from '../datasources/character'
@@ -14,6 +13,7 @@ export interface ICreateCharacter {
   charClassID: string
   backgroundID: string
   abilityScores: IAbilityScores
+  skills: string[]
 }
 
 export interface ICharClass {
