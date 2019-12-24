@@ -1,14 +1,19 @@
 import { DataSource } from 'apollo-datasource'
 import db from '../db'
 
-class SkillAPI extends DataSource {
+export interface ISkillAPI extends DataSource {
+  context: any
+  getAll(): Promise<object[]>
+}
+
+class SkillAPI implements ISkillAPI {
   public context: any
 
   public initialize(config: any) {
     this.context = config.context
   }
 
-  public getSkills() {
+  public getAll() {
     return db.query('SELECT * FROM "Skill"').then((response) => response.rows)
   }
 }

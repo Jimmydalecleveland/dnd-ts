@@ -1,26 +1,34 @@
 import { DataSource } from 'apollo-datasource'
 import db from '../db'
 
-class CharClassAPI extends DataSource {
+export interface ICharClassAPI extends DataSource {
+  context: any
+  getAll(): Promise<object[]>
+  getByID({ ID }: { ID: string }): Promise<object>
+  getFeatures({ ID }: { ID: string }): Promise<object[]>
+  getSkills({ ID }: { ID: string }): Promise<object[]>
+}
+
+class CharClassAPI implements ICharClassAPI {
   public context: any
 
   public initialize(config: any) {
     this.context = config.context
   }
 
-  public getCharClass({ ID }: { ID: string }) {
-    return db
-      .query('SELECT * FROM "CharClass" WHERE "ID" = $1', [Number(ID)])
-      .then((response) => response.rows[0])
-  }
-
-  public getCharClasses() {
+  public getAll() {
     return db
       .query('SELECT * FROM "CharClass"')
       .then((response) => response.rows)
   }
 
-  public getFeatures({ classID }: { classID: string }) {
+  public getByID({ ID }: { ID: string }) {
+    return db
+      .query('SELECT * FROM "CharClass" WHERE "ID" = $1', [Number(ID)])
+      .then((response) => response.rows[0])
+  }
+
+  public getFeatures({ ID }: { ID: string }) {
     return db
       .query(
         `
@@ -29,12 +37,12 @@ class CharClassAPI extends DataSource {
         WHERE "classID" = $1
         ORDER BY "level" ASC
         `,
-        [Number(classID)]
+        [Number(ID)]
       )
       .then((response) => response.rows)
   }
 
-  public getSkills({ classID }: { classID: string }) {
+  public getSkills({ ID }: { ID: string }) {
     return db
       .query(
         `
@@ -42,7 +50,7 @@ class CharClassAPI extends DataSource {
         INNER JOIN "ClassSkillProficiency" ON "ClassSkillProficiency"."skillID" = "Skill"."ID" 
         WHERE "ClassSkillProficiency"."classID" = $1
         `,
-        [Number(classID)]
+        [Number(ID)]
       )
       .then((response) => response.rows)
   }

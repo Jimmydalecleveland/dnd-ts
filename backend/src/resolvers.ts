@@ -4,6 +4,7 @@ import {
   IRace,
   ICharClass,
   IBackground,
+  IDataSources,
 } from './interfaces'
 
 const resolvers = {
@@ -18,7 +19,7 @@ const resolvers = {
         backgroundID,
         abilityScores,
       }: ICreateCharacter,
-      { dataSources }: any
+      { dataSources }: { dataSources: IDataSources }
     ) =>
       dataSources.characterAPI.createCharacter({
         name,
@@ -28,86 +29,151 @@ const resolvers = {
         backgroundID,
         abilityScores,
       }),
-    deleteCharacter: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.characterAPI.deleteCharacter({ ID }),
+    deleteCharacter: (
+      _: any,
+      { ID }: { ID: string },
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.deleteByID({ ID }),
   },
 
   Query: {
-    characters: (_: any, __: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacters(),
-    character: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacter({ ID }),
-    races: (_: any, __: any, { dataSources }: any) =>
-      dataSources.raceAPI.getRaces(),
-    race: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.raceAPI.getRace({ ID }),
+    characters: (
+      _: any,
+      __: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getAll(),
+    character: (
+      _: any,
+      { ID }: { ID: string },
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getByID({ ID }),
+    races: (_: any, __: any, { dataSources }: { dataSources: IDataSources }) =>
+      dataSources.raceAPI.getAll(),
+    race: (
+      _: any,
+      { ID }: { ID: string },
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.raceAPI.getByID({ ID }),
     raceTraits: (
       _: any,
       { raceID }: { raceID: string },
-      { dataSources }: any
-    ) => dataSources.raceAPI.getRaceTraits({ raceID }),
-    spells: (_: any, __: any, { dataSources }: any) =>
-      dataSources.spellAPI.getSpells(),
-    spell: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.spellAPI.getSpell({ ID }),
-    backgrounds: (_: any, __: any, { dataSources }: any) =>
-      dataSources.backgroundAPI.getBackgrounds(),
-    background: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.backgroundAPI.getBackground({ ID }),
-    charClasses: (_: any, __: any, { dataSources }: any) =>
-      dataSources.charClassAPI.getCharClasses(),
-    charClass: (_: any, { ID }: { ID: string }, { dataSources }: any) =>
-      dataSources.charClassAPI.getCharClass({ ID }),
-    skills: (_: any, __: any, { dataSources }: any) =>
-      dataSources.skillAPI.getSkills(),
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.raceAPI.getTraits({ ID: raceID }),
+    spells: (_: any, __: any, { dataSources }: { dataSources: IDataSources }) =>
+      dataSources.spellAPI.getAll(),
+    spell: (
+      _: any,
+      { ID }: { ID: string },
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.spellAPI.getByID({ ID }),
+    backgrounds: (
+      _: any,
+      __: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.backgroundAPI.getAll(),
+    background: (
+      _: any,
+      { ID }: { ID: string },
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.backgroundAPI.getByID({ ID }),
+    charClasses: (
+      _: any,
+      __: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getAll(),
+    charClass: (
+      _: any,
+      { ID }: { ID: string },
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getByID({ ID }),
+    skills: (_: any, __: any, { dataSources }: { dataSources: IDataSources }) =>
+      dataSources.skillAPI.getAll(),
     weapons: (
       _: any,
       { filter }: { filter?: { skillType?: string; rangeType?: string } },
-      { dataSources }: any
-    ) => dataSources.weaponAPI.getWeapons(filter),
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.equipmentAPI.getWeapons(filter),
   },
 
   CharClass: {
-    features: (CharClass: ICharClass, _: any, { dataSources }: any) =>
-      dataSources.charClassAPI.getFeatures({ classID: CharClass.ID }),
-    skills: (CharClass: ICharClass, _: any, { dataSources }: any) =>
-      dataSources.charClassAPI.getSkills({ classID: CharClass.ID }),
+    features: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getFeatures({ ID: CharClass.ID }),
+    skills: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getSkills({ ID: CharClass.ID }),
   },
 
   Character: {
-    race: (Character: ICharacter, _: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacterRace({ characterID: Character.ID }),
-    subrace: (Character: ICharacter, _: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacterSubrace({
-        characterID: Character.ID,
+    race: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getRace({ ID: Character.ID }),
+    subrace: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) =>
+      dataSources.characterAPI.getSubrace({
+        ID: Character.ID,
       }),
-    charClass: (Character: ICharacter, _: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharClass({ characterID: Character.ID }),
-    background: (Character: ICharacter, _: any, { dataSources }: any) =>
-      dataSources.characterAPI.getCharacterBackground({
-        characterID: Character.ID,
+    charClass: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getCharClass({ ID: Character.ID }),
+    background: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) =>
+      dataSources.characterAPI.getBackground({
+        ID: Character.ID,
       }),
   },
 
   Race: {
-    subraces: (Race: IRace, _: any, { dataSources }: any) =>
-      dataSources.raceAPI.getSubraces({ raceID: Race.ID }),
-    traits: (Race: IRace, _: any, { dataSources }: any) =>
-      dataSources.raceAPI.getRaceTraits({ raceID: Race.ID }),
-    skills: (Race: IRace, _: any, { dataSources }: any) =>
-      dataSources.raceAPI.getSkills({ raceID: Race.ID }),
+    subraces: (
+      Race: IRace,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.raceAPI.getSubraces({ ID: Race.ID }),
+    traits: (
+      Race: IRace,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.raceAPI.getTraits({ ID: Race.ID }),
+    skills: (
+      Race: IRace,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.raceAPI.getSkills({ ID: Race.ID }),
   },
 
   Subrace: {
-    traits: (Subrace: IRace, _: any, { dataSources }: any) =>
-      dataSources.raceAPI.getRaceTraits({ raceID: Subrace.ID }),
+    traits: (
+      Subrace: IRace,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.raceAPI.getTraits({ ID: Subrace.ID }),
   },
 
   Background: {
-    features: (Background: IBackground, _: any, { dataSources }: any) =>
-      dataSources.backgroundAPI.getFeatures({ backgroundID: Background.ID }),
-    skills: (Background: IBackground, _: any, { dataSources }: any) =>
-      dataSources.backgroundAPI.getSkills({ backgroundID: Background.ID }),
+    features: (
+      Background: IBackground,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.backgroundAPI.getFeatures({ ID: Background.ID }),
+    skills: (
+      Background: IBackground,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.backgroundAPI.getSkills({ ID: Background.ID }),
   },
 }
 

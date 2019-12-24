@@ -5,7 +5,7 @@ import CharClassAPI from './datasources/charClass'
 import BackgroundAPI from './datasources/background'
 import SpellAPI from './datasources/spell'
 import SkillAPI from './datasources/skill'
-import WeaponAPI from './datasources/weapon'
+import EquipmentAPI from './datasources/equipment'
 import resolvers from './resolvers'
 import typeDefs from './schema'
 
@@ -19,11 +19,11 @@ const server = new ApolloServer({
     raceAPI: new RaceAPI(),
     spellAPI: new SpellAPI(),
     skillAPI: new SkillAPI(),
-    weaponAPI: new WeaponAPI(),
+    equipmentAPI: new EquipmentAPI(),
   }),
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url }: { url: string }) => {
   // tslint:disable-next-line: no-console
   console.log(`Server ready at ${url}`)
 })

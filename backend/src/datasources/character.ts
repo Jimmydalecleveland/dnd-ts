@@ -3,14 +3,39 @@ import db from '../db'
 import logger from '../logger'
 import { ICreateCharacter } from '../interfaces'
 
-class CharacterAPI extends DataSource {
+export interface ICharacterAPI extends DataSource {
+  context: any
+  getAll(): Promise<object[]>
+  getByID({ ID }: { ID: string }): Promise<object>
+  createCharacter({
+    name,
+    raceID,
+    subraceID,
+    charClassID,
+    backgroundID,
+    abilityScores,
+  }: ICreateCharacter): Promise<object>
+  deleteByID({ ID }: { ID: string }): Promise<number>
+  getRace({ ID }: { ID: string }): Promise<object>
+  getSubrace({ ID }: { ID: string }): Promise<object>
+  getCharClass({ ID }: { ID: string }): Promise<object>
+  getBackground({ ID }: { ID: string }): Promise<object>
+}
+
+class CharacterAPI implements ICharacterAPI {
   public context: any
 
   public initialize(config: any) {
     this.context = config.context
   }
 
-  public getCharacter({ ID }: { ID: string }) {
+  public getAll() {
+    return db
+      .query('SELECT * FROM "Character"')
+      .then((response) => response.rows)
+  }
+
+  public getByID({ ID }: { ID: string }) {
     logger.info('getCharacter request started:', { ID })
 
     return db
@@ -22,12 +47,6 @@ class CharacterAPI extends DataSource {
       .catch((error) => {
         logger.error(`getCharacter request returned an error: ${error.message}`)
       })
-  }
-
-  public getCharacters() {
-    return db
-      .query('SELECT * FROM "Character"')
-      .then((response) => response.rows)
   }
 
   public createCharacter({
@@ -62,13 +81,13 @@ class CharacterAPI extends DataSource {
       .then((response) => response.rows[0])
   }
 
-  public deleteCharacter({ ID }: { ID: string }) {
+  public deleteByID({ ID }: { ID: string }) {
     return db
       .query('DELETE FROM "Character" WHERE "ID" = $1', [Number(ID)])
       .then((response) => response.rowCount)
   }
 
-  public getCharacterRace({ characterID }: { characterID: string }) {
+  public getRace({ ID }: { ID: string }) {
     return db
       .query(
         `
@@ -76,12 +95,12 @@ class CharacterAPI extends DataSource {
         INNER JOIN "Race" ON "Race"."ID" = "Character"."raceID"
         WHERE "Character"."ID" = $1
         `,
-        [Number(characterID)]
+        [Number(ID)]
       )
       .then((response) => response.rows[0])
   }
 
-  public getCharacterSubrace({ characterID }: { characterID: string }) {
+  public getSubrace({ ID }: { ID: string }) {
     return db
       .query(
         `
@@ -89,12 +108,12 @@ class CharacterAPI extends DataSource {
         INNER JOIN "Race" ON "Race"."ID" = "Character"."subraceID"
         WHERE "Character"."ID" = $1
         `,
-        [Number(characterID)]
+        [Number(ID)]
       )
       .then((response) => response.rows[0])
   }
 
-  public getCharClass({ characterID }: { characterID: string }) {
+  public getCharClass({ ID }: { ID: string }) {
     return db
       .query(
         `
@@ -102,12 +121,12 @@ class CharacterAPI extends DataSource {
         INNER JOIN "CharClass" ON "CharClass"."ID" = "Character"."charClassID"
         WHERE "Character"."ID" = $1
         `,
-        [Number(characterID)]
+        [Number(ID)]
       )
       .then((response) => response.rows[0])
   }
 
-  public getCharacterBackground({ characterID }: { characterID: string }) {
+  public getBackground({ ID }: { ID: string }) {
     return db
       .query(
         `
@@ -115,7 +134,7 @@ class CharacterAPI extends DataSource {
         INNER JOIN "Background" ON "Background"."ID" = "Character"."backgroundID"
         WHERE "Character"."ID" = $1
         `,
-        [Number(characterID)]
+        [Number(ID)]
       )
       .then((response) => response.rows[0])
   }

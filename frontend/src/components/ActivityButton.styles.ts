@@ -66,6 +66,7 @@ const glowBottomRight = keyframes`
 export const ActivityButton = styled.button(({ theme, disabled }) => {
   return css`
     color: ${disabled ? theme.colors.outline : theme.colors.primary};
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;

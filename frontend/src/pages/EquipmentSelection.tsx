@@ -5,8 +5,9 @@ import CharacterTitles from '../components/CharacterTitles'
 import determineEquipmentChoices from '../equipmentChoices'
 import ActivityButton from '../components/ActivityButton'
 import { IEquipment } from '../interfaces'
+import { RouteComponentProps } from 'react-router-dom'
 
-const EquipmentSelection = () => {
+const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
   const { character, setCharacter } = useCharacter()
   const [choices, setChoices] = useState([])
   const [form, setForm] = useState<{ [key: string]: IEquipment }>({})
@@ -22,12 +23,11 @@ const EquipmentSelection = () => {
 
   const isFormValid = () => {
     const formWithIDs = Object.values(form).filter((equipment) => equipment.ID)
-    return choices.length > 0 && (formWithIDs.length === choices.length)
+    return choices.length > 0 && formWithIDs.length === choices.length
   }
 
   isFormValid()
 
-  // console.log(form, 'isvalid', choices.length === Object.keys(form).length)
   return (
     <section>
       <CharacterTitles />
@@ -43,28 +43,30 @@ const EquipmentSelection = () => {
                   amount: number
                   choices?: []
                 }) => (
-                    <div key={option.text}>
-                      <input
-                        type="radio"
-                        id={option.text}
-                        value={option.text}
-                        name={choiceIndex.toString()}
-                        onChange={() => {
-                          setForm({
-                            ...form,
-                            [`choice${choiceIndex}`]: option,
-                          })
-                        }}
-                        checked={
-                          !form[`choice${choiceIndex}`]
-                            ? false
-                            : form[`choice${choiceIndex}`].text === option.text
-                        }
-                      />
-                      <label htmlFor={option.text}>{option.text}</label>
-                      {option.choices && form[`choice${choiceIndex}`] && form[`choice${choiceIndex}`].text === option.text && (
+                  <div key={option.text}>
+                    <input
+                      type="radio"
+                      id={option.text}
+                      value={option.text}
+                      name={choiceIndex.toString()}
+                      onChange={() => {
+                        setForm({
+                          ...form,
+                          [`choice${choiceIndex}`]: option,
+                        })
+                      }}
+                      checked={
+                        !form[`choice${choiceIndex}`]
+                          ? false
+                          : form[`choice${choiceIndex}`].text === option.text
+                      }
+                    />
+                    <label htmlFor={option.text}>{option.text}</label>
+                    {option.choices &&
+                      form[`choice${choiceIndex}`] &&
+                      form[`choice${choiceIndex}`].text === option.text && (
                         <select
-                          defaultValue="unselected"
+                          defaultValue=""
                           onChange={(
                             event: React.ChangeEvent<HTMLSelectElement>
                           ) =>
@@ -77,7 +79,9 @@ const EquipmentSelection = () => {
                             })
                           }
                         >
-                          <option value="unselected" disabled>---</option>
+                          <option value="" disabled>
+                            ---
+                          </option>
                           {option.choices.map(
                             (optionChoice: { ID: string; name: string }) => (
                               <option
@@ -90,12 +94,17 @@ const EquipmentSelection = () => {
                           )}
                         </select>
                       )}
-                    </div>
-                  )
+                  </div>
+                )
               )}
             </div>
           ))}
-          <ActivityButton disabled={!isFormValid()}>Submit</ActivityButton>
+          <ActivityButton
+            disabled={!isFormValid()}
+            handleClick={() => history.push('/create-character/submit')}
+          >
+            Submit
+          </ActivityButton>
         </form>
       )}
     </section>

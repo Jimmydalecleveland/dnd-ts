@@ -1,8 +1,16 @@
 import { DataSource } from 'apollo-datasource'
 import db from '../db'
-import SkillAPI from './skill'
 
-class WeaponAPI extends DataSource {
+export interface IEquipmentAPI extends DataSource {
+  context: any
+  getWeapons(filter?: {
+    skillType?: string
+    rangeType?: string
+    [key: string]: string | undefined
+  }): Promise<object[]>
+}
+
+class EquipmentAPI implements IEquipmentAPI {
   public context: any
 
   public initialize(config: any) {
@@ -34,4 +42,4 @@ class WeaponAPI extends DataSource {
   }
 }
 
-export default WeaponAPI
+export default EquipmentAPI

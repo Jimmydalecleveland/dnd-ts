@@ -2,20 +2,29 @@ import { DataSource } from 'apollo-datasource'
 import logger from '../logger'
 import db from '../db'
 
-class RaceAPI extends DataSource {
+export interface IRaceAPI extends DataSource {
+  context: any
+  getAll(): Promise<object[]>
+  getByID({ ID }: { ID: string }): Promise<object>
+  getSubraces({ ID }: { ID: string }): Promise<object[]>
+  getTraits({ ID }: { ID: string }): Promise<object[]>
+  getSkills({ ID }: { ID: string }): Promise<object[]>
+}
+
+class RaceAPI implements IRaceAPI {
   public context: any
 
   public initialize(config: any) {
     this.context = config.context
   }
 
-  public getRaces() {
+  public getAll() {
     return db
       .query('SELECT * FROM "Race" WHERE "parentRaceID" IS NULL')
       .then((response) => response.rows)
   }
 
-  public getRace({ ID }: { ID: string }) {
+  public getByID({ ID }: { ID: string }) {
     logger.info('getRace request sent:', { ID })
     return db
       .query('SELECT * FROM "Race" WHERE "ID" = $1', [Number(ID)])
@@ -25,19 +34,19 @@ class RaceAPI extends DataSource {
       })
   }
 
-  public getSubraces({ raceID }: { raceID: string }) {
+  public getSubraces({ ID }: { ID: string }) {
     return db
-      .query('SELECT * FROM "Race" WHERE "parentRaceID" = $1', [Number(raceID)])
+      .query('SELECT * FROM "Race" WHERE "parentRaceID" = $1', [Number(ID)])
       .then((response) => response.rows)
   }
 
-  public getRaceTraits({ raceID }: { raceID: string }) {
+  public getTraits({ ID }: { ID: string }) {
     return db
-      .query('SELECT * FROM "RaceTrait" WHERE "raceID" = $1', [Number(raceID)])
+      .query('SELECT * FROM "RaceTrait" WHERE "raceID" = $1', [Number(ID)])
       .then((response) => response.rows)
   }
 
-  public getSkills({ raceID }: { raceID: string }) {
+  public getSkills({ ID }: { ID: string }) {
     return db
       .query(
         `
@@ -45,7 +54,7 @@ class RaceAPI extends DataSource {
         INNER JOIN "RaceSkillProficiency" ON "RaceSkillProficiency"."skillID" = "Skill"."ID" 
         WHERE "RaceSkillProficiency"."raceID" = $1
         `,
-        [Number(raceID)]
+        [Number(ID)]
       )
       .then((response) => response.rows)
   }
