@@ -21,6 +21,10 @@ import TitledList from '../components/TitledList'
 
 const SkillSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
+  if (!character.charClass || !character.race) {
+    return <h1>You should not be here!</h1>
+  }
+
   const { data, error } = useQuery<Skills>(SKILLS_QUERY, {
     variables: {
       charClassID: character.charClass.ID,
@@ -68,7 +72,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
         data.background.skills
           .map((backgroundSkill) => backgroundSkill.ID)
           .includes(ID)
-      const isActive = character.skills.includes(ID)
+      const isActive = character.skills && character.skills.includes(ID)
       return { ID, name, disabled, isActive }
     })
     return result

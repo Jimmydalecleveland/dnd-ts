@@ -42,15 +42,15 @@ const dummyCharacter: ICharacter = {
     wis: 6,
     cha: 0,
   },
-  skills: ['8', '18'],
-  startingEquipment: {
-    weapons: [
-      {
-        ID: '1',
-        quantity: 1,
-      },
-    ],
-  },
+  skills: [],
+  // startingEquipment: {
+  //   weapons: [
+  //     {
+  //       ID: '1',
+  //       quantity: 1,
+  //     },
+  //   ],
+  // },
 }
 
 export default dummyCharacter
