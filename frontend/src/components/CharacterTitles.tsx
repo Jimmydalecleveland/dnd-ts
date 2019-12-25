@@ -12,9 +12,11 @@ const CharacterTitles: React.FC = () => {
 
   return (
     <Styled.Wrapper>
-      <Styled.Race>
-        {character.subrace ? character.subrace.name : character.race.name}
-      </Styled.Race>
+      {character.race && (
+        <Styled.Race>
+          {character.subrace ? character.subrace.name : character.race.name}
+        </Styled.Race>
+      )}
       {character.charClass && (
         <Styled.CharClass>{character.charClass.name}</Styled.CharClass>
       )}

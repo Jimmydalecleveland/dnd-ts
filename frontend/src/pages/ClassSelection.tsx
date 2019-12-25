@@ -12,6 +12,7 @@ import ActivityButton from '../components/ActivityButton'
 import ClassFeatures from '../components/ClassFeatures'
 import SectionHeader from '../components/SectionHeader'
 import ToggleButton from '../components/ToggleButton'
+import CharacterTitles from '../components/CharacterTitles'
 
 const ClassSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
@@ -24,10 +25,7 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
 
   return (
     <div>
-      <h1>{character.name}</h1>
-      <h2>{character.race.name}</h2>
-      {character.subrace && <h3>{character.subrace.name}</h3>}
-      {character.charClass && <h3>{character.charClass.name}</h3>}
+      <CharacterTitles />
 
       {!loading && !error && (
         <section>
@@ -36,7 +34,9 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
             {data.charClasses.map((charClass) => (
               <ToggleButton
                 key={charClass.ID}
-                isActive={character.charClass.ID === charClass.ID}
+                isActive={
+                  character.charClass && character.charClass.ID === charClass.ID
+                }
                 handleClick={() => {
                   getClassFeatures({ variables: { charClassID: charClass.ID } })
                   setCharacter({ ...character, charClass })
@@ -55,7 +55,9 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
           isActive={showModal}
           handleClick={() => setShowModal(true)}
         >
-          {`${character.charClass.name} details`}
+          {character.charClass
+            ? `${character.charClass.name} details`
+            : 'Select a Class'}
         </ToggleButton>
         {showModal && (
           <AnimatePresence>
@@ -85,7 +87,9 @@ const ClassSelection = ({ history }: RouteComponentProps) => {
           </AnimatePresence>
         )}
         <ActivityButton
-          disabled={character.charClass.ID ? false : true}
+          disabled={
+            character.charClass && character.charClass.ID ? false : true
+          }
           handleClick={() => history.push('/create-character/background')}
         >
           Next: Background
