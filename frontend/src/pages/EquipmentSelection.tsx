@@ -11,7 +11,6 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
   const { character, setCharacter } = useCharacter()
   const [choices, setChoices] = useState([])
   const [form, setForm] = useState<{ [key: string]: IEquipment }>({})
-  console.log(form)
   useEffect(() => {
     determineEquipmentChoices(character.charClass.name).then(setChoices)
   }, [])
@@ -24,7 +23,6 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
     //   (equipment) => equipment.tableName === 'Armor'
     //   .map((armor) => ({ ID: armor.ID, quantity: armor.quantity }))
     // )
-    console.log('equipment', weapons)
     setCharacter({ ...character, startingEquipment: { weapons } })
     history.push('/create-character/submit')
   }
