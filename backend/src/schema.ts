@@ -10,6 +10,7 @@ const typeDefs = gql`
       backgroundID: ID!
       abilityScores: AbilityScoresInput!
       skills: [ID]!
+      weapons: [WeaponInput]!
     ): ID!
     deleteCharacter(ID: ID!): Int
   }
@@ -149,6 +150,11 @@ const typeDefs = gql`
   input WeaponFilter {
     skillType: String
     rangeType: String
+  }
+
+  input WeaponInput {
+    ID: ID!
+    quantity: Int
   }
 `
 

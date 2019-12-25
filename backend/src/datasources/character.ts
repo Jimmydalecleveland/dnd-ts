@@ -15,6 +15,8 @@ export interface ICharacterAPI extends DataSource {
     charClassID,
     backgroundID,
     abilityScores,
+    skills,
+    weapons,
   }: ICreateCharacter): Promise<object>
   deleteByID({ ID }: { ID: string }): Promise<number>
   getRace({ ID }: { ID: string }): Promise<object>
@@ -62,6 +64,7 @@ class CharacterAPI implements ICharacterAPI {
       backgroundID,
       abilityScores,
       skills,
+      weapons,
     } = characterData
     const { str, dex, con, wis, int, cha } = abilityScores
 
@@ -91,9 +94,14 @@ class CharacterAPI implements ICharacterAPI {
         const { ID } = response.rows[0]
         // The character that is returned will need a row per skill associated with their ID
         const skillValues = skills.map((skillID) => [ID, skillID])
+        const weaponValues = weapons.map((weapon) => [
+          ID,
+          weapon.ID,
+          weapon.quantity,
+        ])
 
         // pg-format is required for parsed params when entering multiple rows to pg
-        const query = format(
+        const skillsQuery = format(
           `
           INSERT INTO "CharSkillProficiency" ("charID", "skillID")
           VALUES %L
@@ -101,9 +109,17 @@ class CharacterAPI implements ICharacterAPI {
           `,
           skillValues
         )
-        return db.query(query)
+
+        const weaponsQuery = format(
+          `
+          INSERT INTO "CharHasWeapon" ("charID", "weaponID", "quantity")
+          VALUES %L
+          `,
+          weaponValues
+        )
+        return Promise.all([db.query(skillsQuery), db.query(weaponsQuery)])
       })
-      .then((response) => response.rows[0].charID)
+      .then(([skillsResponse]) => skillsResponse.rows[0].charID)
       .catch((error) => {
         logger.error('createCharacter returned an error:', error)
         throw new Error(error)

@@ -14,6 +14,10 @@ export interface ICreateCharacter {
   backgroundID: string
   abilityScores: IAbilityScores
   skills: string[]
+  weapons: Array<{
+    ID: string
+    quantity: number
+  }>
 }
 
 export interface ICharClass {

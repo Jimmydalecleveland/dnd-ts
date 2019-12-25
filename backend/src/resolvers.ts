@@ -19,6 +19,7 @@ const resolvers = {
         backgroundID,
         abilityScores,
         skills,
+        weapons,
       }: ICreateCharacter,
       { dataSources }: { dataSources: IDataSources }
     ) =>
@@ -30,6 +31,7 @@ const resolvers = {
         backgroundID,
         abilityScores,
         skills,
+        weapons,
       }),
     deleteCharacter: (
       _: any,
