@@ -35,9 +35,12 @@ class CharacterAPI implements ICharacterAPI {
   }
 
   public getAll() {
-    return db
-      .query('SELECT * FROM "Character"')
-      .then((response) => response.rows)
+    return db.query('SELECT * FROM "Character"').then((response) =>
+      response.rows.map((row) => {
+        const { str, dex, con, int, wis, cha, ...rest } = row
+        return { abilityScores: { str, dex, con, int, wis, cha }, ...rest }
+      })
+    )
   }
 
   public getByID({ ID }: { ID: string }) {
