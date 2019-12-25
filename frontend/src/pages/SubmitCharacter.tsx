@@ -15,9 +15,12 @@ const SubmitCharacter = () => {
       subrace: { ID: subraceID = null },
       charClass: { ID: charClassID },
       background: { ID: backgroundID },
+      skills,
+      startingEquipment: { weapons },
     },
   } = useCharacter()
 
+  console.log(weapons)
   if (loading) {
     return <h1>Loading . . .</h1>
   }
@@ -37,6 +40,8 @@ const SubmitCharacter = () => {
               charClassID,
               backgroundID,
               abilityScores,
+              skills,
+              weapons,
             },
           })
         }
@@ -60,7 +65,9 @@ const SUBMIT_CHARACTER = gql`
     $subraceID: ID
     $charClassID: ID!
     $backgroundID: ID!
-    $abilityScores: AbilityScoresInput
+    $abilityScores: AbilityScoresInput!
+    $skills: [ID]!
+    $weapons: [WeaponInput]!
   ) {
     createCharacter(
       name: $name
@@ -69,18 +76,9 @@ const SUBMIT_CHARACTER = gql`
       charClassID: $charClassID
       backgroundID: $backgroundID
       abilityScores: $abilityScores
-    ) {
-      ID
-      name
-      charClass {
-        ID
-        name
-      }
-      background {
-        ID
-        name
-      }
-    }
+      skills: $skills
+      weapons: $weapons
+    )
   }
 `
 

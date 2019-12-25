@@ -41,14 +41,14 @@ const expected = [
       ID: '21',
       tableName: 'Weapon',
       text: 'a greataxe',
-      amount: 1,
+      quantity: 1,
     },
     // Option 2 (select)
     {
       tableName: 'Weapon',
       text: 'any martial melee weapon',
       choices: mockMartialMeleeWeapons.data.weapons,
-      amount: 1,
+      quantity: 1,
     },
   ],
   [
@@ -56,12 +56,12 @@ const expected = [
       ID: '13',
       tableName: 'Weapon',
       text: 'two handaxes',
-      amount: 2,
+      quantity: 2,
     },
     {
       tableName: 'Weapon',
       text: 'any simple weapon',
-      amount: 1,
+      quantity: 1,
       choices: mockSimpleWeapons.data.weapons,
     },
   ],

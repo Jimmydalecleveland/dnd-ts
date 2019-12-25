@@ -105,7 +105,7 @@ class CharacterAPI implements ICharacterAPI {
           `
           INSERT INTO "CharSkillProficiency" ("charID", "skillID")
           VALUES %L
-          RETURNING "charID"
+          RETURNING "CharSkillProficiency"."charID"
           `,
           skillValues
         )
@@ -117,6 +117,7 @@ class CharacterAPI implements ICharacterAPI {
           `,
           weaponValues
         )
+
         return Promise.all([db.query(skillsQuery), db.query(weaponsQuery)])
       })
       .then(([skillsResponse]) => skillsResponse.rows[0].charID)

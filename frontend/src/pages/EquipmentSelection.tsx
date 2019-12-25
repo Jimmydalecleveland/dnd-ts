@@ -11,14 +11,22 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
   const { character, setCharacter } = useCharacter()
   const [choices, setChoices] = useState([])
   const [form, setForm] = useState<{ [key: string]: IEquipment }>({})
-
+  console.log(form)
   useEffect(() => {
     determineEquipmentChoices(character.charClass.name).then(setChoices)
   }, [])
 
-  const onSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    setCharacter({ ...character, startingEquipment: Object.values(form) })
+  const onSubmit = () => {
+    const weapons = Object.values(form)
+      .filter((equipment) => equipment.tableName === 'Weapon')
+      .map((weapon) => ({ ID: weapon.ID, quantity: weapon.quantity }))
+    // const armor = Object.values(form).filter(
+    //   (equipment) => equipment.tableName === 'Armor'
+    //   .map((armor) => ({ ID: armor.ID, quantity: armor.quantity }))
+    // )
+    console.log('equipment', weapons)
+    setCharacter({ ...character, startingEquipment: { weapons } })
+    history.push('/create-character/submit')
   }
 
   const isFormValid = () => {
@@ -32,7 +40,7 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
     <section>
       <CharacterTitles />
       {choices.length > 0 && (
-        <form onSubmit={onSubmit}>
+        <form>
           {choices.map((choice, choiceIndex) => (
             <div key={choiceIndex}>
               <h3>Choose one:</h3>
@@ -40,7 +48,7 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
                 (option: {
                   tableName: string
                   text: string
-                  amount: number
+                  quantity: number
                   choices?: []
                 }) => (
                   <div key={option.text}>
@@ -99,10 +107,7 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
               )}
             </div>
           ))}
-          <ActivityButton
-            disabled={!isFormValid()}
-            handleClick={() => history.push('/create-character/submit')}
-          >
+          <ActivityButton disabled={!isFormValid()} handleClick={onSubmit}>
             Submit
           </ActivityButton>
         </form>

@@ -21,13 +21,13 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
           ID: '21',
           tableName: 'Weapon',
           text: 'a greataxe',
-          amount: 1,
+          quantity: 1,
         },
         // Option 2 (select)
         {
           tableName: 'Weapon',
           text: 'any martial melee weapon',
-          amount: 1,
+          quantity: 1,
           choices: allMartialMeleeWeapons,
         },
       ],
@@ -36,12 +36,12 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
           ID: '13',
           tableName: 'Weapon',
           text: 'two handaxes',
-          amount: 2,
+          quantity: 2,
         },
         {
           tableName: 'Weapon',
           text: 'any simple weapon',
-          amount: 1,
+          quantity: 1,
           choices: allSimpleWeapons,
         },
       ],
@@ -53,13 +53,13 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
         {
           tableName: 'Weapon',
           text: 'a rapier',
-          amount: 1,
+          quantity: 1,
         },
         // Option 2
         {
           tableName: 'Weapon',
           text: 'any simple weapon',
-          amount: 1,
+          quantity: 1,
           choices: allSimpleWeapons,
         },
       ],
