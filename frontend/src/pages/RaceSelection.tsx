@@ -33,7 +33,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
   }
 
   const isNextButtonDisabled = () => {
-    if (character.name && character.race.ID) {
+    if (character.name && character.race && character.race.ID) {
       if (character.race.subraces.length > 0) {
         if (character.subrace) {
           return false
@@ -69,7 +69,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
         <input
           id="name"
           type="text"
-          value={character.name}
+          value={character.name || ''}
           placeholder="Enter Thy Name"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             setCharacter({ ...character, name: event.target.value })
