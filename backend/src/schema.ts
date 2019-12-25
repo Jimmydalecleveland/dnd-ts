@@ -44,6 +44,7 @@ const typeDefs = gql`
     background: Background!
     abilityScores: AbilityScores!
     skills: [Skill]!
+    weapons: [CharWeapon]!
     HP: String
     maxHP: String
   }
@@ -118,6 +119,21 @@ const typeDefs = gql`
     ID: ID!
     name: String!
     ability: String!
+  }
+
+  """
+  CharWeapon is identical to weapon except that it needs 'quantity'
+  to be bound to a character.
+  """
+  type CharWeapon {
+    ID: ID!
+    name: String!
+    damage: String!
+    cost: String!
+    weight: String
+    skillType: String!
+    rangeType: String!
+    quantity: Int!
   }
 
   type Weapon {

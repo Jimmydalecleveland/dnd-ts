@@ -22,6 +22,7 @@ export interface ICharacterAPI extends DataSource {
   getCharClass({ ID }: { ID: string }): Promise<object>
   getBackground({ ID }: { ID: string }): Promise<object>
   getSkills({ ID }: { ID: string }): Promise<object[]>
+  getWeapons({ ID }: { ID: string }): Promise<object[]>
 }
 
 class CharacterAPI implements ICharacterAPI {
@@ -174,6 +175,19 @@ class CharacterAPI implements ICharacterAPI {
         SELECT "Skill".* FROM "CharSkillProficiency"
         INNER JOIN "Skill" ON "CharSkillProficiency"."skillID" = "Skill"."ID"
         WHERE "CharSkillProficiency"."charID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows)
+  }
+
+  public getWeapons({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT "Weapon".*, "CharHasWeapon"."quantity" FROM "CharHasWeapon"
+        INNER JOIN "Weapon" ON "CharHasWeapon"."weaponID" = "Weapon"."ID"
+        WHERE "CharHasWeapon"."charID" = $1
         `,
         [Number(ID)]
       )

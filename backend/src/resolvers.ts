@@ -142,6 +142,11 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.characterAPI.getSkills({ ID: Character.ID }),
+    weapons: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getWeapons({ ID: Character.ID }),
   },
 
   Race: {
