@@ -27,6 +27,14 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     return <p>loading...</p>
   }
 
+  if (!data.character) {
+    return (
+      <p>
+        No character with ID <strong>&quot;{characterID}&quot;</strong> exists
+      </p>
+    )
+  }
+
   return (
     <div>
       <h1>{data.character.name}</h1>
