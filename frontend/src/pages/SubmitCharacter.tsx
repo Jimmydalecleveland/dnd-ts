@@ -2,10 +2,16 @@ import React from 'react'
 import { gql } from 'apollo-boost'
 import { useMutation } from '@apollo/react-hooks'
 import { useCharacter } from '../context'
+import { RouteComponentProps } from 'react-router-dom'
 
-const SubmitCharacter = () => {
+const SubmitCharacter = ({ history }: RouteComponentProps) => {
   const [submitCharacter, { data, error, loading }] = useMutation(
-    SUBMIT_CHARACTER
+    SUBMIT_CHARACTER,
+    {
+      onCompleted({ createCharacter }) {
+        history.push(`/character/${createCharacter}`)
+      },
+    }
   )
   const {
     character: {
@@ -20,7 +26,6 @@ const SubmitCharacter = () => {
     },
   } = useCharacter()
 
-  console.log(weapons)
   if (loading) {
     return <h1>Loading . . .</h1>
   }
@@ -48,12 +53,6 @@ const SubmitCharacter = () => {
       >
         Submit
       </button>
-      {data && (
-        <div>
-          <h1>{JSON.stringify(data)}</h1>
-          <h2>{data.createCharacter.ID}</h2>
-        </div>
-      )}
     </div>
   )
 }
