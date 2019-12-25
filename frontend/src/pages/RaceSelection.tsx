@@ -22,15 +22,14 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
   const [getRaceTraits] = useLazyQuery(RACETRAITS_QUERY)
 
   const detailButtonText = () => {
-    if (!character.race.ID) {
-      return 'Select a race'
-    }
     if (character.subrace) {
       return `${character.subrace.name} details`
     }
     if (character.race) {
       return `${character.race.name} details`
     }
+
+    return 'Select a race'
   }
 
   const isNextButtonDisabled = () => {
@@ -59,6 +58,11 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
     setCharacter({ ...character, subrace: subraceObj })
   }
 
+  if (loading) {
+    return <h1>Loading . . .</h1>
+  }
+  console.log(data)
+
   return (
     <Styled.GridSection>
       <Styled.Input htmlFor="name">
@@ -81,7 +85,7 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
             {data.races.map((race) => (
               <ToggleButton
                 key={race.ID}
-                isActive={character.race.ID === race.ID}
+                isActive={character.race && character.race.ID === race.ID}
                 handleClick={() => {
                   getRaceTraits({ variables: { raceID: race.ID } })
                   setChosenRace(race.ID, data.races)
@@ -92,27 +96,29 @@ const RaceSelection = ({ history }: RouteComponentProps) => {
             ))}
           </Styled.RaceList>
 
-          {character.race.subraces.length > 0 && (
-            <section>
-              <SectionHeader>SUBRACE</SectionHeader>
-              <Styled.RaceList>
-                {character.race.subraces.map((subrace) => (
-                  <ToggleButton
-                    key={subrace.ID}
-                    isActive={
-                      character.subrace && character.subrace.ID === subrace.ID
-                    }
-                    handleClick={() => {
-                      getRaceTraits({ variables: { raceID: subrace.ID } })
-                      setChosenSubrace(subrace.ID)
-                    }}
-                  >
-                    {subrace.name}
-                  </ToggleButton>
-                ))}
-              </Styled.RaceList>
-            </section>
-          )}
+          {character.race &&
+            character.race.subraces &&
+            character.race.subraces.length > 0 && (
+              <section>
+                <SectionHeader>SUBRACE</SectionHeader>
+                <Styled.RaceList>
+                  {character.race.subraces.map((subrace) => (
+                    <ToggleButton
+                      key={subrace.ID}
+                      isActive={
+                        character.subrace && character.subrace.ID === subrace.ID
+                      }
+                      handleClick={() => {
+                        getRaceTraits({ variables: { raceID: subrace.ID } })
+                        setChosenSubrace(subrace.ID)
+                      }}
+                    >
+                      {subrace.name}
+                    </ToggleButton>
+                  ))}
+                </Styled.RaceList>
+              </section>
+            )}
         </section>
       )}
 

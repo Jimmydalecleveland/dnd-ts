@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import darkTheme from './theme'
 
+import CharacterProvider from './context'
 import client from './apolloClient'
 import Character from './pages/Character'
 import Characters from './components/Characters'
@@ -20,9 +21,11 @@ ReactDOM.render(
         <GlobalStyle />
         <BrowserRouter>
           <Main>
-            <Route exact path="/characters" component={Characters} />
-            <Route path="/create-character" component={CreateCharacter} />
-            <Route exact path="/character/:id" component={Character} />
+            <CharacterProvider>
+              <Route exact path="/characters" component={Characters} />
+              <Route path="/create-character" component={CreateCharacter} />
+              <Route exact path="/character/:id" component={Character} />
+            </CharacterProvider>
             <Route exact path="/spell/:id" component={Spell} />
           </Main>
         </BrowserRouter>

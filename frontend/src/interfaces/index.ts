@@ -57,15 +57,15 @@ export interface IEquipment {
 }
 
 export interface ICharacter {
-  ID: string
-  name: string
-  race: IRace
-  subrace: ISubrace
-  charClass: ICharClass
-  background: IBackground
-  abilityScores: IAbilityScores
-  skills: string[]
-  startingEquipment: {
+  ID?: string
+  name?: string
+  race?: IRace
+  subrace?: ISubrace
+  charClass?: ICharClass
+  background?: IBackground
+  abilityScores?: IAbilityScores
+  skills?: string[]
+  startingEquipment?: {
     weapons: Array<{
       ID: string
       quantity: number

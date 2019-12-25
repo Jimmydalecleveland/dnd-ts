@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import CharacterProvider from '../context'
 import BackgroundSelection from './BackgroundSelection'
 import ClassSelection from './ClassSelection'
 import RaceSelection from './RaceSelection'
@@ -11,7 +10,7 @@ import EquipmentSelection from './EquipmentSelection'
 
 const CreateCharacter = () => {
   return (
-    <CharacterProvider>
+    <>
       <Route exact path="/create-character" component={RaceSelection} />
       <Route exact path="/create-character/class" component={ClassSelection} />
       <Route
@@ -35,7 +34,7 @@ const CreateCharacter = () => {
         path="/create-character/submit"
         component={SubmitCharacter}
       />
-    </CharacterProvider>
+    </>
   )
 }
 

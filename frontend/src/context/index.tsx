@@ -4,7 +4,7 @@ import { ICharacter } from '../interfaces'
 // TODO: remove dummyData for development
 import dummyCharacter from './dummyData'
 
-const defaultCharacterShape = dummyCharacter
+const defaultCharacterShape = {}
 
 const CharacterContext = createContext<ICharacterContext>({
   character: defaultCharacterShape,
@@ -17,7 +17,7 @@ export const useCharacter = () =>
 
 const CharacterProvider: React.FC = ({ children }) => {
   const [character, setCharacter] = useState<ICharacter>(defaultCharacterShape)
-
+  console.log({ character })
   return (
     <CharacterContext.Provider value={{ character, setCharacter }}>
       {children}
