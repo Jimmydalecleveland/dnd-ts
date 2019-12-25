@@ -6,11 +6,10 @@ import { ThemeProvider } from 'styled-components'
 import darkTheme from './theme'
 
 import client from './apolloClient'
-import Character from './components/Character'
+import Character from './pages/Character'
 import Characters from './components/Characters'
 import GlobalStyle from './GlobalStyle'
 import Main from './components/Main'
-import MobileNav from './components/MobileNav'
 import CreateCharacter from './pages/CreateCharacter'
 import Spell from './components/Spell'
 
@@ -26,7 +25,6 @@ ReactDOM.render(
             <Route exact path="/character/:id" component={Character} />
             <Route exact path="/spell/:id" component={Spell} />
           </Main>
-          <MobileNav />
         </BrowserRouter>
       </>
     </ThemeProvider>
