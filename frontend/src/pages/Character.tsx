@@ -57,8 +57,13 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
 
   return (
     <div>
-      <h1>{name}</h1>
-      <CharacterTitles />
+      <CharacterTitles
+        charName={name}
+        race={race.name}
+        subrace={subrace && subrace.name}
+        charClass={charClass.name}
+        background={background.name}
+      />
 
       <section>
         <SectionHeader>Ability Scores</SectionHeader>
