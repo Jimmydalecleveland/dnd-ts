@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
 
-import { Skills } from '../graphql-types'
+import { Skills } from './gql-types/Skills'
 import logger from '../logger'
 import { useCharacter } from '../context'
 import { IAbilityScores } from '../interfaces'

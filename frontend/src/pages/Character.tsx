@@ -3,7 +3,10 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { RouteComponentProps } from 'react-router-dom'
 
-import { CharacterPageQuery } from '../graphql-types'
+import {
+  CharacterPageQuery,
+  CharacterPageQueryVariables,
+} from './gql-types/CharacterPageQuery'
 import { useCharacter } from '../context'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
@@ -12,14 +15,14 @@ import ProficiencyList from '../components/ProficiencyList'
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const { character, setCharacter } = useCharacter()
   const { id: characterID } = match.params
-  const { loading, data } = useQuery<CharacterPageQuery, IQueryVariables>(
-    CHARACTER_PAGE_QUERY,
-    {
-      variables: {
-        ID: characterID,
-      },
-    }
-  )
+  const { loading, data } = useQuery<
+    CharacterPageQuery,
+    CharacterPageQueryVariables
+  >(CHARACTER_PAGE_QUERY, {
+    variables: {
+      ID: characterID,
+    },
+  })
   const [deleteCharacter] = useMutation<{}, IMutationVariables>(
     DELETE_CHARACTER,
     {
@@ -41,7 +44,6 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   }
 
   console.log(data.character)
-  setCharacter(data.character)
 
   const {
     name,
@@ -50,7 +52,8 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     charClass,
     background,
     abilityScores,
-  } = character
+    skills,
+  } = data.character
 
   return (
     <div>
@@ -72,13 +75,15 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
       </section>
 
       <section>
-        <SectionHeader>Skills</SectionHeader>
-        {/* <ProficiencyList
+        <ProficiencyList
           list={{
             characterAbilityScores: abilityScores,
             skills: data.skills,
+            backgroundSkills: background.skills,
+            raceSkills: race.skills,
+            charClassSkills: skills,
           }}
-        ></ProficiencyList> */}
+        ></ProficiencyList>
       </section>
 
       <button onClick={() => deleteCharacter()}>Delete</button>
@@ -88,10 +93,6 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
 
 interface IProps {
   id: string
-}
-
-interface IQueryVariables {
-  ID: string
 }
 
 interface IMutationVariables {
@@ -114,6 +115,11 @@ const CHARACTER_PAGE_QUERY = gql`
       race {
         ID
         name
+        skills {
+          ID
+          name
+          ability
+        }
       }
       subrace {
         ID
@@ -127,6 +133,11 @@ const CHARACTER_PAGE_QUERY = gql`
       background {
         ID
         name
+        skills {
+          ID
+          name
+          ability
+        }
       }
       skills {
         ID
