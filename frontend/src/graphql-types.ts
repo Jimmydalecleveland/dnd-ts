@@ -32,58 +32,6 @@ export interface BackgroundFeaturesVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: CharacterQuery
-// ====================================================
-
-export interface CharacterQuery_character_race {
-  __typename: "Race";
-  ID: string;
-  name: string;
-}
-
-export interface CharacterQuery_character_subrace {
-  __typename: "Subrace";
-  ID: string;
-  name: string;
-}
-
-export interface CharacterQuery_character {
-  __typename: "Character";
-  ID: string;
-  name: string;
-  race: CharacterQuery_character_race;
-  subrace: CharacterQuery_character_subrace | null;
-}
-
-export interface CharacterQuery {
-  character: CharacterQuery_character | null;
-}
-
-export interface CharacterQueryVariables {
-  ID: string;
-}
-
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: DeleteCharacter
-// ====================================================
-
-export interface DeleteCharacter {
-  deleteCharacter: number | null;
-}
-
-export interface DeleteCharacterVariables {
-  ID: string;
-}
-
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: CharactersQuery
 // ====================================================
 
@@ -215,6 +163,109 @@ export interface BackgroundFeaturesPrefetch {
 
 export interface BackgroundFeaturesPrefetchVariables {
   backgroundID: string;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: CharacterPageQuery
+// ====================================================
+
+export interface CharacterPageQuery_character_abilityScores {
+  __typename: "AbilityScores";
+  str: number;
+  dex: number;
+  wis: number;
+  cha: number;
+  int: number;
+  con: number;
+}
+
+export interface CharacterPageQuery_character_race {
+  __typename: "Race";
+  ID: string;
+  name: string;
+}
+
+export interface CharacterPageQuery_character_subrace {
+  __typename: "Subrace";
+  ID: string;
+  name: string;
+}
+
+export interface CharacterPageQuery_character_charClass {
+  __typename: "CharClass";
+  ID: string;
+  name: string;
+}
+
+export interface CharacterPageQuery_character_background {
+  __typename: "Background";
+  ID: string;
+  name: string;
+}
+
+export interface CharacterPageQuery_character_skills {
+  __typename: "Skill";
+  ID: string;
+  name: string;
+  ability: string;
+}
+
+export interface CharacterPageQuery_character_weapons {
+  __typename: "CharWeapon";
+  ID: string;
+  name: string;
+  damage: string;
+  skillType: string;
+  quantity: number;
+}
+
+export interface CharacterPageQuery_character {
+  __typename: "Character";
+  ID: string;
+  name: string;
+  abilityScores: CharacterPageQuery_character_abilityScores;
+  race: CharacterPageQuery_character_race;
+  subrace: CharacterPageQuery_character_subrace | null;
+  charClass: CharacterPageQuery_character_charClass;
+  background: CharacterPageQuery_character_background;
+  skills: (CharacterPageQuery_character_skills | null)[];
+  weapons: (CharacterPageQuery_character_weapons | null)[];
+}
+
+export interface CharacterPageQuery_skills {
+  __typename: "Skill";
+  ID: string;
+  name: string;
+  ability: string;
+}
+
+export interface CharacterPageQuery {
+  character: CharacterPageQuery_character | null;
+  skills: (CharacterPageQuery_skills | null)[];
+}
+
+export interface CharacterPageQueryVariables {
+  ID: string;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: DeleteCharacter
+// ====================================================
+
+export interface DeleteCharacter {
+  deleteCharacter: number | null;
+}
+
+export interface DeleteCharacterVariables {
+  ID: string;
 }
 
 
@@ -382,28 +433,8 @@ export interface SkillsVariables {
 // GraphQL mutation operation: SubmitCharacter
 // ====================================================
 
-export interface SubmitCharacter_createCharacter_charClass {
-  __typename: "CharClass";
-  ID: string;
-  name: string;
-}
-
-export interface SubmitCharacter_createCharacter_background {
-  __typename: "Background";
-  ID: string;
-  name: string;
-}
-
-export interface SubmitCharacter_createCharacter {
-  __typename: "Character";
-  ID: string;
-  name: string;
-  charClass: SubmitCharacter_createCharacter_charClass;
-  background: SubmitCharacter_createCharacter_background;
-}
-
 export interface SubmitCharacter {
-  createCharacter: SubmitCharacter_createCharacter;
+  createCharacter: string;
 }
 
 export interface SubmitCharacterVariables {
@@ -412,7 +443,9 @@ export interface SubmitCharacterVariables {
   subraceID?: string | null;
   charClassID: string;
   backgroundID: string;
-  abilityScores?: AbilityScoresInput | null;
+  abilityScores: AbilityScoresInput;
+  skills: (string | null)[];
+  weapons: (WeaponInput | null)[];
 }
 
 /* tslint:disable */
@@ -430,6 +463,12 @@ export interface AbilityScoresInput {
   int: number;
   wis: number;
   cha: number;
+}
+
+// 
+export interface WeaponInput {
+  ID: string;
+  quantity?: number | null;
 }
 
 //==============================================================

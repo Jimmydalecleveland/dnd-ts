@@ -4,7 +4,7 @@ import { ICharacter } from '../interfaces'
 // TODO: remove dummyData for development
 import dummyCharacter from './dummyData'
 
-const defaultCharacterShape = {
+const defaultCharacterShape: ICharacter = {
   // abilityScores default are required to map over the initial time on abilityScoreSelection
   abilityScores: {
     str: 10,
@@ -18,7 +18,7 @@ const defaultCharacterShape = {
 }
 
 const CharacterContext = createContext<ICharacterContext>({
-  character: dummyCharacter,
+  character: defaultCharacterShape,
   setCharacter: (f: any) => f,
 })
 CharacterContext.displayName = 'CreateCharacterContext'
@@ -27,8 +27,7 @@ export const useCharacter = () =>
   useContext<ICharacterContext>(CharacterContext)
 
 const CharacterProvider: React.FC = ({ children }) => {
-  const [character, setCharacter] = useState<ICharacter>(dummyCharacter)
-  console.log(character)
+  const [character, setCharacter] = useState<ICharacter>(defaultCharacterShape)
   return (
     <CharacterContext.Provider value={{ character, setCharacter }}>
       {children}

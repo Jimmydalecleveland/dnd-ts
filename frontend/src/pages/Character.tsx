@@ -3,16 +3,17 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { RouteComponentProps } from 'react-router-dom'
 
+import { CharacterPageQuery } from '../graphql-types'
 import { useCharacter } from '../context'
-import { ICharacter } from '../interfaces'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
+import ProficiencyList from '../components/ProficiencyList'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const { character, setCharacter } = useCharacter()
   const { id: characterID } = match.params
-  const { loading, data } = useQuery<IQueryData, IQueryVariables>(
-    CHARACTER_QUERY,
+  const { loading, data } = useQuery<CharacterPageQuery, IQueryVariables>(
+    CHARACTER_PAGE_QUERY,
     {
       variables: {
         ID: characterID,
@@ -58,11 +59,26 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
 
       <section>
         <SectionHeader>Ability Scores</SectionHeader>
-        {Object.entries(abilityScores).map((ability) => (
-          <p key={ability[0]}>
-            {ability[0]}: {ability[1]}
-          </p>
-        ))}
+        {Object.entries(abilityScores).map((ability) => {
+          if (ability[0] === '__typename') {
+            return
+          }
+          return (
+            <p key={ability[0]}>
+              {ability[0]}: {ability[1]}
+            </p>
+          )
+        })}
+      </section>
+
+      <section>
+        <SectionHeader>Skills</SectionHeader>
+        {/* <ProficiencyList
+          list={{
+            characterAbilityScores: abilityScores,
+            skills: data.skills,
+          }}
+        ></ProficiencyList> */}
       </section>
 
       <button onClick={() => deleteCharacter()}>Delete</button>
@@ -74,10 +90,6 @@ interface IProps {
   id: string
 }
 
-interface IQueryData {
-  character: ICharacter
-}
-
 interface IQueryVariables {
   ID: string
 }
@@ -86,8 +98,8 @@ interface IMutationVariables {
   ID: string
 }
 
-const CHARACTER_QUERY = gql`
-  query CharacterQuery($ID: ID!) {
+const CHARACTER_PAGE_QUERY = gql`
+  query CharacterPageQuery($ID: ID!) {
     character(ID: $ID) {
       ID
       name
@@ -110,6 +122,7 @@ const CHARACTER_QUERY = gql`
       charClass {
         ID
         name
+        numSkillProficiencies
       }
       background {
         ID
@@ -127,6 +140,11 @@ const CHARACTER_QUERY = gql`
         skillType
         quantity
       }
+    }
+    skills {
+      ID
+      name
+      ability
     }
   }
 `
