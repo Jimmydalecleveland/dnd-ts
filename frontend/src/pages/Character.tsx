@@ -11,6 +11,7 @@ import { useCharacter } from '../context'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
 import ProficiencyList from '../components/ProficiencyList'
+import ActivityButton from '../components/ActivityButton'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const { character, setCharacter } = useCharacter()
@@ -53,6 +54,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     background,
     abilityScores,
     skills,
+    weapons,
   } = data.character
 
   return (
@@ -91,7 +93,19 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         ></ProficiencyList>
       </section>
 
-      <button onClick={() => deleteCharacter()}>Delete</button>
+      <section>
+        <SectionHeader>Equipment</SectionHeader>
+        <h3>Weapons</h3>
+        {weapons.map((weapon) => (
+          <p key={weapon.ID}>
+            {weapon.quantity}x {weapon.name}
+          </p>
+        ))}
+      </section>
+
+      <ActivityButton handleClick={() => deleteCharacter()}>
+        Delete
+      </ActivityButton>
     </div>
   )
 }
