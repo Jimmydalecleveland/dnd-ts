@@ -46,7 +46,12 @@ export interface IAbilityScores {
   int: number
   wis: number
   cha: number
-  [key: string]: number
+}
+
+export interface ISkill {
+  ID: string
+  name: string
+  ability: string
 }
 
 export interface IEquipment {
