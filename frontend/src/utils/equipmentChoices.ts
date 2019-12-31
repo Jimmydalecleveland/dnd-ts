@@ -1,5 +1,5 @@
 import { gql } from 'apollo-boost'
-import client from './apolloClient'
+import client from '../apolloClient'
 import logger from './logger'
 
 /**

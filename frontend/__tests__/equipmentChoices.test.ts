@@ -1,4 +1,4 @@
-import determineEquipmentChoices from '../src/equipmentChoices'
+import determineEquipmentChoices from '../src/utils/equipmentChoices'
 
 const mockMartialMeleeWeapons = {
   data: {

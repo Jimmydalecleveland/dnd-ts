@@ -7,6 +7,7 @@ import {
   CharacterPageQuery,
   CharacterPageQueryVariables,
 } from './gql-types/CharacterPageQuery'
+import { getModifier } from '../utils/helpers'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
 import ProficiencyList from '../components/ProficiencyList'
@@ -67,11 +68,11 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
 
       <section>
         <SectionHeader>Calculated Stats</SectionHeader>
-        <h3>Speed: missing</h3>
+        <h3>Speed: {subrace ? subrace.speed : race.speed}</h3>
         <h3>Hit Die: {charClass.hitDice}</h3>
         <h3>
           Max HP:{' '}
-          {Math.floor(abilityScores.con - 10) / 2 +
+          {getModifier(abilityScores.con) +
             Number(charClass.hitDice.replace('1d', ''))}
         </h3>
         <h3>Proficiency Bonus: </h3>

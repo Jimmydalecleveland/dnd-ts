@@ -4,7 +4,7 @@ import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
 
 import { Skills } from './gql-types/Skills'
-import logger from '../logger'
+import logger from '../utils/logger'
 import { useCharacter } from '../context'
 import { IAbilityScores } from '../interfaces'
 import * as Styled from './SkillSelection.styles'

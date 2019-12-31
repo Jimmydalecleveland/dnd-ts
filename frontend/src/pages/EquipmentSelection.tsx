@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { useCharacter } from '../context'
 import CharacterTitles from '../components/CharacterTitles'
-import determineEquipmentChoices from '../equipmentChoices'
+import determineEquipmentChoices from '../utils/equipmentChoices'
 import ActivityButton from '../components/ActivityButton'
 import { IEquipment } from '../interfaces'
 import { RouteComponentProps } from 'react-router-dom'
