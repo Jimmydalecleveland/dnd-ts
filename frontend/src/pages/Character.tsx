@@ -56,6 +56,8 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     weapons,
   } = data.character
 
+  const levelSpecifics = charClass.levelSpecifics[0]
+
   return (
     <div>
       <CharacterTitles
@@ -75,7 +77,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
           {getModifier(abilityScores.con) +
             Number(charClass.hitDice.replace('1d', ''))}
         </h3>
-        <h3>Proficiency Bonus: </h3>
+        <h3>Proficiency Bonus: {levelSpecifics.proficiencyBonus}</h3>
         <h3>AC: {Math.floor(10 + (abilityScores.dex - 10) / 2)}</h3>
         <h3>
           Passive Perception: {Math.floor(10 + (abilityScores.wis - 10) / 2)}
@@ -166,6 +168,10 @@ const CHARACTER_PAGE_QUERY = gql`
         name
         numSkillProficiencies
         hitDice
+        levelSpecifics {
+          classLevel
+          proficiencyBonus
+        }
       }
       background {
         ID

@@ -38,12 +38,19 @@ export interface CharacterPageQuery_character_subrace {
   speed: number;
 }
 
+export interface CharacterPageQuery_character_charClass_levelSpecifics {
+  __typename: "LevelSpecific";
+  classLevel: number;
+  proficiencyBonus: number;
+}
+
 export interface CharacterPageQuery_character_charClass {
   __typename: "CharClass";
   ID: string;
   name: string;
   numSkillProficiencies: number;
   hitDice: string | null;
+  levelSpecifics: (CharacterPageQuery_character_charClass_levelSpecifics | null)[];
 }
 
 export interface CharacterPageQuery_character_background_skills {

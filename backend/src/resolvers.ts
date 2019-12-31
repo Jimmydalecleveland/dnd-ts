@@ -5,6 +5,7 @@ import {
   ICharClass,
   IBackground,
   IDataSources,
+  ILevelSpecific,
 } from './interfaces'
 
 const resolvers = {
@@ -110,6 +111,23 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.charClassAPI.getSkills({ ID: CharClass.ID }),
+    levelSpecifics: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getLevelSpecifics({ ID: CharClass.ID }),
+  },
+
+  LevelSpecific: {
+    features: (
+      LevelSpecific: ILevelSpecific,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) =>
+      dataSources.charClassAPI.getLevelFeatures({
+        charClassID: LevelSpecific.classID,
+        classLevel: LevelSpecific.classLevel,
+      }),
   },
 
   Character: {

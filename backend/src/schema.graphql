@@ -86,7 +86,7 @@ type CharClassFeature {
   ID: ID!
   name: String!
   description: String!
-  level: Int!
+  classLevel: Int!
 }
 
 type CharClass {
@@ -96,6 +96,13 @@ type CharClass {
   numSkillProficiencies: Int!
   features: [CharClassFeature]!
   skills: [Skill]
+  levelSpecifics: [LevelSpecific]!
+}
+
+type LevelSpecific {
+  classLevel: Int!
+  features: [CharClassFeature]!
+  proficiencyBonus: Int!
 }
 
 type AbilityScores {

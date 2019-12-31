@@ -11,7 +11,7 @@ export interface CharClassFeatures_charClass_features {
   ID: string;
   name: string;
   description: string;
-  level: number;
+  classLevel: number;
 }
 
 export interface CharClassFeatures_charClass {

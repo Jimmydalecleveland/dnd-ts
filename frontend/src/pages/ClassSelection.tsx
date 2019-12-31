@@ -116,7 +116,7 @@ const CLASS_FEATURES_QUERY = gql`
         ID
         name
         description
-        level
+        classLevel
       }
     }
   }

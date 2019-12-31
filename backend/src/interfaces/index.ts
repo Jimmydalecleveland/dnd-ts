@@ -25,6 +25,11 @@ export interface ICharClass {
   name: string
 }
 
+export interface ILevelSpecific {
+  classID: string
+  classLevel: number
+}
+
 export interface ICharacter {
   ID: string
   name: string
