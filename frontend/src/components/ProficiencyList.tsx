@@ -2,7 +2,7 @@ import React from 'react'
 
 import * as Styled from './ProficiencyList.styles'
 import SectionHeader from './SectionHeader'
-import { IAbilityScores, ISkill } from '../interfaces'
+import { ISkill } from '../interfaces'
 
 const ProficiencyList: React.FC<IProps> = ({ list }) => {
   const proficiencies = generateSkillSet(list)
@@ -38,6 +38,7 @@ const ProficiencyList: React.FC<IProps> = ({ list }) => {
  * @param {Object[]} skillData[].backgroundSkills - Skills from user's background choice
  * @param {Object[]} skillData[].raceSkills - Skills from user's race choice
  * @param {Object[]} skillData[].charClassSkills - Character's currently selected skill IDs
+ *
  * @returns {Object[]} An array of every skill, each containing a skill's ID, name, proficient boolean,
  * and numeric value
  */

@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server'
+import { importSchema } from 'graphql-import'
 import CharacterAPI from './datasources/character'
 import RaceAPI from './datasources/race'
 import CharClassAPI from './datasources/charClass'
@@ -7,11 +8,10 @@ import SpellAPI from './datasources/spell'
 import SkillAPI from './datasources/skill'
 import EquipmentAPI from './datasources/equipment'
 import resolvers from './resolvers'
-import typeDefs from './schema'
 
 const server = new ApolloServer({
   resolvers,
-  typeDefs,
+  typeDefs: importSchema(`${__dirname}/schema.graphql`),
   dataSources: () => ({
     backgroundAPI: new BackgroundAPI(),
     charClassAPI: new CharClassAPI(),

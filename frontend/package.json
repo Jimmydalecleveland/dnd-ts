@@ -7,7 +7,7 @@
     "build": "webpack",
     "dev": "webpack-dev-server --hot",
     "dev:broadcast": "webpack-dev-server --hot --host 0.0.0.0",
-    "generate": "apollo client:codegen gql-types --tagName=gql --localSchemaFile=schema.json --target=typescript",
+    "generate": "apollo client:codegen gql-types --tagName=gql --localSchemaFile=../backend/src/schema.graphql --target=typescript",
     "test": "jest --watch"
   },
   "keywords": [],

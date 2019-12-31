@@ -7,14 +7,12 @@ import {
   CharacterPageQuery,
   CharacterPageQueryVariables,
 } from './gql-types/CharacterPageQuery'
-import { useCharacter } from '../context'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
 import ProficiencyList from '../components/ProficiencyList'
 import ActivityButton from '../components/ActivityButton'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
-  const { character, setCharacter } = useCharacter()
   const { id: characterID } = match.params
   const { loading, data } = useQuery<
     CharacterPageQuery,
@@ -66,6 +64,22 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         charClass={charClass.name}
         background={background.name}
       />
+
+      <section>
+        <SectionHeader>Calculated Stats</SectionHeader>
+        <h3>Speed: missing</h3>
+        <h3>Hit Die: {charClass.hitDice}</h3>
+        <h3>
+          Max HP:{' '}
+          {Math.floor(abilityScores.con - 10) / 2 +
+            Number(charClass.hitDice.replace('1d', ''))}
+        </h3>
+        <h3>Proficiency Bonus: </h3>
+        <h3>AC: {Math.floor(10 + (abilityScores.dex - 10) / 2)}</h3>
+        <h3>
+          Passive Perception: {Math.floor(10 + (abilityScores.wis - 10) / 2)}
+        </h3>
+      </section>
 
       <section>
         <SectionHeader>Ability Scores</SectionHeader>
@@ -134,6 +148,7 @@ const CHARACTER_PAGE_QUERY = gql`
       race {
         ID
         name
+        speed
         skills {
           ID
           name
@@ -143,11 +158,13 @@ const CHARACTER_PAGE_QUERY = gql`
       subrace {
         ID
         name
+        speed
       }
       charClass {
         ID
         name
         numSkillProficiencies
+        hitDice
       }
       background {
         ID

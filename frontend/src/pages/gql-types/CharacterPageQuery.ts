@@ -27,6 +27,7 @@ export interface CharacterPageQuery_character_race {
   __typename: "Race";
   ID: string;
   name: string;
+  speed: number;
   skills: (CharacterPageQuery_character_race_skills | null)[] | null;
 }
 
@@ -34,6 +35,7 @@ export interface CharacterPageQuery_character_subrace {
   __typename: "Subrace";
   ID: string;
   name: string;
+  speed: number;
 }
 
 export interface CharacterPageQuery_character_charClass {
@@ -41,6 +43,7 @@ export interface CharacterPageQuery_character_charClass {
   ID: string;
   name: string;
   numSkillProficiencies: number;
+  hitDice: string | null;
 }
 
 export interface CharacterPageQuery_character_background_skills {
