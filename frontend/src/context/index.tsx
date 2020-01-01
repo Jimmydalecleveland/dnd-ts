@@ -27,7 +27,7 @@ export const useCharacter = () =>
   useContext<ICharacterContext>(CharacterContext)
 
 const CharacterProvider: React.FC = ({ children }) => {
-  const [character, setCharacter] = useState<ICharacter>(defaultCharacterShape)
+  const [character, setCharacter] = useState<ICharacter>(dummyCharacter)
   return (
     <CharacterContext.Provider value={{ character, setCharacter }}>
       {children}

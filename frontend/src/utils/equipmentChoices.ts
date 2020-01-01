@@ -98,7 +98,7 @@ async function getWeapons(
 
     return weapons
   } catch (error) {
-    logger('allMartialMeleeWeapons query returned an error', error)
+    logger('allWeaponsFiltered query returned an error', error)
   }
 }
 

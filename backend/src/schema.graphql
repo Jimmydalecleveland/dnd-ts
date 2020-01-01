@@ -89,6 +89,8 @@ type CharClassFeature {
   classLevel: Int!
 }
 
+union Equipment = CharWeapon | CharArmor | GearPack
+
 type CharClass {
   ID: ID!
   name: String!
@@ -97,6 +99,7 @@ type CharClass {
   features: [CharClassFeature]!
   skills: [Skill]
   levelSpecifics: [LevelSpecific]!
+  startingEquipment: [Equipment]
 }
 
 type LevelSpecific {
@@ -127,6 +130,14 @@ type Skill {
   ID: ID!
   name: String!
   ability: String!
+}
+
+type GearPack {
+  ID: ID!
+  name: String!
+  cost: String!
+  weight: String
+  quantity: Int!
 }
 
 """
@@ -162,4 +173,14 @@ input WeaponFilter {
 input WeaponInput {
   ID: ID!
   quantity: Int
+}
+
+type CharArmor {
+  ID: ID!
+  name: String!
+  category: String!
+  ac: String!
+  cost: String!
+  weight: String
+  quantity: Int!
 }

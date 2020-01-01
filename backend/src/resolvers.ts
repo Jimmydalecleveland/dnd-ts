@@ -111,6 +111,11 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.charClassAPI.getSkills({ ID: CharClass.ID }),
+    startingEquipment: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getStartingEquipment({ ID: CharClass.ID }),
     levelSpecifics: (
       CharClass: ICharClass,
       _: any,
@@ -206,6 +211,20 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.backgroundAPI.getSkills({ ID: Background.ID }),
+  },
+
+  Equipment: {
+    __resolveType(data: { equipmentType: string }) {
+      if (data.equipmentType === 'weapon') {
+        return 'CharWeapon'
+      }
+      if (data.equipmentType === 'armor') {
+        return 'CharArmor'
+      }
+      if (data.equipmentType === 'gear pack') {
+        return 'GearPack'
+      }
+    },
   },
 }
 
