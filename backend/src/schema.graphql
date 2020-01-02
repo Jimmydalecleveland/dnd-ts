@@ -89,8 +89,6 @@ type CharClassFeature {
   classLevel: Int!
 }
 
-union Equipment = CharWeapon | CharArmor | GearPack
-
 type CharClass {
   ID: ID!
   name: String!
@@ -99,7 +97,6 @@ type CharClass {
   features: [CharClassFeature]!
   skills: [Skill]
   levelSpecifics: [LevelSpecific]!
-  startingEquipment: [Equipment]
 }
 
 type LevelSpecific {

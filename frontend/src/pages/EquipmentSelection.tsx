@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { gql } from 'apollo-boost'
-import { useQuery } from '@apollo/react-hooks'
 
-import { CharClassStartingEquipment } from './gql-types/CharClassStartingEquipment'
 import { useCharacter } from '../context'
 import CharacterTitles from '../components/CharacterTitles'
 import determineEquipmentChoices from '../utils/equipmentChoices'
@@ -12,11 +9,6 @@ import { IEquipment } from '../interfaces'
 
 const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
   const { character, setCharacter } = useCharacter()
-  const { data: charClassData, loading, error } = useQuery<
-    CharClassStartingEquipment
-  >(CHARCLASS_STARTING_EQUIPMENT, {
-    variables: { ID: character.charClass.ID },
-  })
   const [choices, setChoices] = useState([])
   const [form, setForm] = useState<{ [key: string]: IEquipment }>({})
   useEffect(() => {
@@ -42,18 +34,9 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
 
   isFormValid()
 
-  if (loading) {
-    return <h1>Loading . . .</h1>
-  }
-
   return (
     <section>
       <CharacterTitles />
-      {charClassData.charClass.startingEquipment.map((equipment) => (
-        <p key={equipment.name}>
-          {equipment.quantity} {equipment.name}
-        </p>
-      ))}
 
       {choices.length > 0 && (
         <form>
@@ -131,22 +114,5 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
     </section>
   )
 }
-
-const CHARCLASS_STARTING_EQUIPMENT = gql`
-  query CharClassStartingEquipment($ID: ID!) {
-    charClass(ID: $ID) {
-      startingEquipment {
-        ... on CharWeapon {
-          name
-          quantity
-        }
-        ... on GearPack {
-          name
-          quantity
-        }
-      }
-    }
-  }
-`
 
 export default EquipmentSelection
