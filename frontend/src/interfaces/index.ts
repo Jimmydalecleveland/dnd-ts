@@ -75,6 +75,10 @@ export interface ICharacter {
       ID: string
       quantity: number
     }>
+    gear: Array<{
+      ID: string
+      quantity: number
+    }>
     // armor: Array<{
     //   ID: string
     //   quantity: number

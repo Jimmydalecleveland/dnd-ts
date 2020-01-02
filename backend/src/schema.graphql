@@ -8,6 +8,7 @@ type Mutation {
     abilityScores: AbilityScoresInput!
     skills: [ID]!
     weapons: [WeaponInput]!
+    gear: [GearInput]!
   ): ID!
   deleteCharacter(ID: ID!): Int
 }
@@ -134,7 +135,6 @@ type GearPack {
   name: String!
   cost: String!
   weight: String
-  quantity: Int!
 }
 
 """
@@ -168,6 +168,11 @@ input WeaponFilter {
 }
 
 input WeaponInput {
+  ID: ID!
+  quantity: Int
+}
+
+input GearInput {
   ID: ID!
   quantity: Int
 }

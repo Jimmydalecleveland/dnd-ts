@@ -15,6 +15,11 @@ export interface AbilityScoresInput {
   cha: number;
 }
 
+export interface GearInput {
+  ID: string;
+  quantity?: number | null;
+}
+
 export interface WeaponInput {
   ID: string;
   quantity?: number | null;

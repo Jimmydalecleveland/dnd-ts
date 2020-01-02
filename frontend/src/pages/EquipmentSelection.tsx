@@ -3,7 +3,10 @@ import { RouteComponentProps } from 'react-router-dom'
 
 import { useCharacter } from '../context'
 import CharacterTitles from '../components/CharacterTitles'
-import determineEquipmentChoices from '../utils/equipmentChoices'
+import {
+  equipmentDefaults,
+  determineEquipmentChoices,
+} from '../utils/equipmentChoices'
 import ActivityButton from '../components/ActivityButton'
 import { IEquipment } from '../interfaces'
 
@@ -16,14 +19,36 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
   }, [])
 
   const onSubmit = () => {
-    const weapons = Object.values(form)
+    const chosenWeapons = Object.values(form)
       .filter((equipment) => equipment.tableName === 'Weapon')
       .map((weapon) => ({ ID: weapon.ID, quantity: weapon.quantity }))
+    const defaultWeapons = equipmentDefaults
+      .filter((equipment) => equipment.tableName === 'Weapon')
+      .map((weapon) => ({
+        ID: weapon.ID,
+        quantity: weapon.quantity,
+      }))
+    const weapons = [...chosenWeapons, ...defaultWeapons]
+
+    const defaultGearPacks = equipmentDefaults
+      .filter((equipment) => equipment.tableName === 'GearPack')
+      .reduce(
+        (acc, cur) =>
+          acc.concat(
+            cur.gear.map((gear) => ({
+              ID: gear.ID,
+              quantity: gear.quantity,
+            }))
+          ),
+        []
+      )
+    console.log(defaultGearPacks)
+    const gear = [...defaultGearPacks]
     // const armor = Object.values(form).filter(
     //   (equipment) => equipment.tableName === 'Armor'
     //   .map((armor) => ({ ID: armor.ID, quantity: armor.quantity }))
     // )
-    setCharacter({ ...character, startingEquipment: { weapons } })
+    setCharacter({ ...character, startingEquipment: { weapons, gear } })
     history.push('/create-character/submit')
   }
 
@@ -32,11 +57,26 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
     return choices.length > 0 && formWithIDs.length === choices.length
   }
 
-  isFormValid()
-
   return (
     <section>
       <CharacterTitles />
+
+      <h3>Default Starting Equipment</h3>
+      {equipmentDefaults.map((equipment) => {
+        if (equipment.gear) {
+          return (
+            <div key={equipment.text}>
+              <p>{equipment.text}, containing:</p>
+              <ul>
+                {equipment.gear.map((gear) => (
+                  <li key={gear.text}>{gear.text}</li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        return <p key={equipment.text}>{equipment.text}</p>
+      })}
 
       {choices.length > 0 && (
         <form>

@@ -17,6 +17,7 @@ export interface ICharacterAPI extends DataSource {
     abilityScores,
     skills,
     weapons,
+    gear,
   }: ICreateCharacter): Promise<object>
   deleteByID({ ID }: { ID: string }): Promise<number>
   getRace({ ID }: { ID: string }): Promise<object>
@@ -68,6 +69,7 @@ class CharacterAPI implements ICharacterAPI {
       abilityScores,
       skills,
       weapons,
+      gear,
     } = characterData
     const { str, dex, con, wis, int, cha } = abilityScores
 
@@ -102,6 +104,7 @@ class CharacterAPI implements ICharacterAPI {
           weapon.ID,
           weapon.quantity,
         ])
+        const gearValues = gear.map((aGear) => [ID, aGear.ID, aGear.quantity])
 
         // pg-format is required for parsed params when entering multiple rows to pg
         const skillsQuery = format(
@@ -121,7 +124,19 @@ class CharacterAPI implements ICharacterAPI {
           weaponValues
         )
 
-        return Promise.all([db.query(skillsQuery), db.query(weaponsQuery)])
+        const gearQuery = format(
+          `
+          INSERT INTO "CharHasAdventuringGear" ("charID", "adventuringGearID", "quantity")
+          VALUES %L
+          `,
+          gearValues
+        )
+
+        return Promise.all([
+          db.query(skillsQuery),
+          db.query(weaponsQuery),
+          db.query(gearQuery),
+        ])
       })
       .then(([skillsResponse]) => skillsResponse.rows[0].charID)
       .catch((error) => {

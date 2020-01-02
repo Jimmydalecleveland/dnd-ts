@@ -22,7 +22,7 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
       charClass: { ID: charClassID },
       background: { ID: backgroundID },
       skills,
-      startingEquipment: { weapons },
+      startingEquipment: { weapons, gear },
     },
   } = useCharacter()
 
@@ -32,6 +32,7 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
   if (error) {
     return <p>Error: {JSON.stringify(error)}</p>
   }
+  console.log('MEW', weapons, gear)
 
   return (
     <div>
@@ -47,6 +48,7 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
               abilityScores,
               skills,
               weapons,
+              gear,
             },
           })
         }
@@ -67,6 +69,7 @@ const SUBMIT_CHARACTER = gql`
     $abilityScores: AbilityScoresInput!
     $skills: [ID]!
     $weapons: [WeaponInput]!
+    $gear: [GearInput]!
   ) {
     createCharacter(
       name: $name
@@ -77,6 +80,7 @@ const SUBMIT_CHARACTER = gql`
       abilityScores: $abilityScores
       skills: $skills
       weapons: $weapons
+      gear: $gear
     )
   }
 `

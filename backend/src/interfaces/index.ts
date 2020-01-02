@@ -18,6 +18,10 @@ export interface ICreateCharacter {
     ID: string
     quantity: number
   }>
+  gear: Array<{
+    ID: string
+    quantity: number
+  }>
 }
 
 export interface ICharClass {

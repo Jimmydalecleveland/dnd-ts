@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { AbilityScoresInput, WeaponInput } from "./../../../gql-types/globalTypes";
+import { AbilityScoresInput, WeaponInput, GearInput } from "./../../../gql-types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: SubmitCharacter
@@ -21,4 +21,5 @@ export interface SubmitCharacterVariables {
   abilityScores: AbilityScoresInput;
   skills: (string | null)[];
   weapons: (WeaponInput | null)[];
+  gear: (GearInput | null)[];
 }
