@@ -4,6 +4,7 @@ import db from '../db'
 export interface IItemAPI extends DataSource {
   context: any
   getCustomItems(): Promise<object[]>
+  getArmor(): Promise<object[]>
   getWeapons(filter?: {
     skillType?: string
     rangeType?: string
@@ -25,6 +26,14 @@ class EquipmentAPI implements IItemAPI {
         SELECT * FROM "Item"
         WHERE type = 'CustomItem'
         `
+      )
+      .then((response) => response.rows)
+  }
+
+  public getArmor() {
+    return db
+      .query(
+        `SELECT * FROM "Item" INNER JOIN "Armor" ON "Armor"."itemID" = "Item"."ID"`
       )
       .then((response) => response.rows)
   }

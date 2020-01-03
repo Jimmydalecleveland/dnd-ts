@@ -27,6 +27,7 @@ type Query {
   charClass(ID: ID!): CharClass
   skills: [Skill]!
   customItems: [CustomItem]!
+  armor: [Armor]!
   weapons(filter: WeaponFilter): [Weapon]!
 }
 
@@ -144,6 +145,18 @@ type GearPack {
   name: String!
   cost: String!
   weight: String
+}
+
+type Armor {
+  ID: ID!
+  name: String!
+  cost: String!
+  weight: String
+  category: String!
+  ac: Int!
+  isDexAdded: Boolean!
+  maxDex: Int
+  disadvantageOnStealth: Boolean!
 }
 
 """

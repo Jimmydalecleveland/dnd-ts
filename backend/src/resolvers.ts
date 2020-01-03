@@ -100,6 +100,8 @@ const resolvers = {
       __: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.itemAPI.getCustomItems(),
+    armor: (_: any, __: any, { dataSources }: { dataSources: IDataSources }) =>
+      dataSources.itemAPI.getArmor(),
     weapons: (
       _: any,
       { filter }: { filter?: { skillType?: string; rangeType?: string } },
