@@ -1,8 +1,9 @@
 import { DataSource } from 'apollo-datasource'
 import db from '../db'
 
-export interface IEquipmentAPI extends DataSource {
+export interface IItemAPI extends DataSource {
   context: any
+  getCustomItems(): Promise<object[]>
   getWeapons(filter?: {
     skillType?: string
     rangeType?: string
@@ -10,11 +11,22 @@ export interface IEquipmentAPI extends DataSource {
   }): Promise<object[]>
 }
 
-class EquipmentAPI implements IEquipmentAPI {
+class EquipmentAPI implements IItemAPI {
   public context: any
 
   public initialize(config: any) {
     this.context = config.context
+  }
+
+  public getCustomItems() {
+    return db
+      .query(
+        `
+        SELECT * FROM "Item"
+        WHERE type = 'CustomItem'
+        `
+      )
+      .then((response) => response.rows)
   }
 
   public getWeapons(filter?: {
@@ -22,7 +34,8 @@ class EquipmentAPI implements IEquipmentAPI {
     rangeType?: string
     [key: string]: string | undefined
   }) {
-    let queryText = 'SELECT * FROM "Weapon"'
+    let queryText =
+      'SELECT * FROM "Item" INNER JOIN "Weapon" ON "Weapon"."itemID" = "Item"."ID"'
 
     if (filter) {
       Object.keys(filter).forEach((key, index) => {

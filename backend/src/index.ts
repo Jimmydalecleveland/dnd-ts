@@ -6,7 +6,7 @@ import CharClassAPI from './datasources/charClass'
 import BackgroundAPI from './datasources/background'
 import SpellAPI from './datasources/spell'
 import SkillAPI from './datasources/skill'
-import EquipmentAPI from './datasources/equipment'
+import ItemAPI from './datasources/item'
 import resolvers from './resolvers'
 
 const server = new ApolloServer({
@@ -19,7 +19,7 @@ const server = new ApolloServer({
     raceAPI: new RaceAPI(),
     spellAPI: new SpellAPI(),
     skillAPI: new SkillAPI(),
-    equipmentAPI: new EquipmentAPI(),
+    itemAPI: new ItemAPI(),
   }),
 })
 

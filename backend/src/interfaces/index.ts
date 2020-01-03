@@ -3,7 +3,7 @@ import { IBackgroundAPI } from '../datasources/background'
 import { ICharacterAPI } from '../datasources/character'
 import { ICharClassAPI } from '../datasources/charClass'
 import { IRaceAPI } from '../datasources/race'
-import { IEquipmentAPI } from '../datasources/equipment'
+import { IItemAPI } from '../datasources/item'
 import { ISpellAPI } from '../datasources/spell'
 
 export interface ICreateCharacter {
@@ -66,5 +66,5 @@ export interface IDataSources {
   raceAPI: IRaceAPI
   spellAPI: ISpellAPI
   skillAPI: ISkillAPI
-  equipmentAPI: IEquipmentAPI
+  itemAPI: IItemAPI
 }

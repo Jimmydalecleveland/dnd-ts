@@ -26,6 +26,7 @@ type Query {
   charClasses: [CharClass]!
   charClass(ID: ID!): CharClass
   skills: [Skill]!
+  customItems: [CustomItem]!
   weapons(filter: WeaponFilter): [Weapon]!
 }
 
@@ -130,6 +131,14 @@ type Skill {
   ability: String!
 }
 
+type CustomItem {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+}
+
 type GearPack {
   ID: ID!
   name: String!
@@ -144,9 +153,9 @@ to be bound to a character.
 type CharWeapon {
   ID: ID!
   name: String!
-  damage: String!
   cost: String!
   weight: String
+  damage: String!
   skillType: String!
   rangeType: String!
   quantity: Int!
@@ -155,9 +164,9 @@ type CharWeapon {
 type Weapon {
   ID: ID!
   name: String!
-  damage: String!
   cost: String!
   weight: String
+  damage: String!
   skillType: String!
   rangeType: String!
 }
