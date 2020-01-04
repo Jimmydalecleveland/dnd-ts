@@ -2,45 +2,20 @@ import { gql } from 'apollo-boost'
 import client from '../apolloClient'
 import logger from './logger'
 
-export const equipmentDefaults = [
+export const defaultEquipment = [
   {
     ID: '5',
     tableName: 'Weapon',
     text: '4x javelins',
     quantity: 4,
   },
-  {
-    ID: '5',
-    tableName: 'GearPack',
-    text: "an explorer's pack",
-    gear: [
-      {
-        ID: '14',
-        tableName: 'AdventuringGear',
-        text: 'a backpack',
-        quantity: 1,
-      },
-      {
-        ID: '96',
-        tableName: 'AdventuringGear',
-        text: 'torches',
-        quantity: 10,
-      },
-      {
-        ID: '18',
-        tableName: 'AdventuringGear',
-        text: 'a bedroll',
-        quantity: 1,
-      },
-      {
-        ID: '65',
-        tableName: 'AdventuringGear',
-        text: 'a mess kit',
-        quantity: 1,
-      },
-    ],
-  },
 ]
+
+export const defaultGearPack = {
+  ID: '5',
+  tableName: 'GearPack',
+  text: "an explorer's pack",
+}
 
 /**
  * Used for the first level equipment choices step in creating a character.

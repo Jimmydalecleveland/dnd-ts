@@ -112,6 +112,11 @@ const resolvers = {
       __: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.itemAPI.getGearPacks(),
+    gearPack: (
+      _: any,
+      { ID }: { ID: string },
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.itemAPI.getGearPack({ ID }),
   },
 
   CharClass: {
@@ -230,9 +235,8 @@ const resolvers = {
     ) => dataSources.itemAPI.getGearPackItems({ ID: GearPack.ID }),
   },
 
-  FullItem: {
+  GearPackItem: {
     __resolveType(obj: any) {
-      // console.log('TYPE', obj.type)
       return obj.type
     },
   },

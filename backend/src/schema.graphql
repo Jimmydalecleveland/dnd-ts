@@ -30,6 +30,7 @@ type Query {
   armor: [Armor]!
   weapons(filter: WeaponFilter): [Weapon]!
   gearPacks: [GearPack]!
+  gearPack(ID: ID!): GearPack
 }
 
 type Spell {
@@ -136,7 +137,7 @@ type Skill {
 """
 Items
 """
-union FullItem = CustomItem | Weapon | Armor | AdventuringGear | Tool
+union GearPackItem = CustomItem | AdventuringGear | Tool
 
 type Item {
   ID: ID!
@@ -178,7 +179,7 @@ type Tool {
 type GearPack {
   ID: ID!
   name: String!
-  items: [FullItem]!
+  items: [GearPackItem]!
 }
 
 type Armor {

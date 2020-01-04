@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { useQuery } from '@apollo/react-hooks'
 
 import { useCharacter } from '../context'
 import CharacterTitles from '../components/CharacterTitles'
 import {
-  equipmentDefaults,
+  defaultEquipment,
+  defaultGearPack,
   determineEquipmentChoices,
 } from '../utils/equipmentChoices'
 import ActivityButton from '../components/ActivityButton'
 import { IEquipment } from '../interfaces'
+import { gql } from 'apollo-boost'
+import { CharClassGearPack_gearPack } from './gql-types/CharClassGearPack'
 
 const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
   const { character, setCharacter } = useCharacter()
@@ -18,11 +22,18 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
     determineEquipmentChoices(character.charClass.name).then(setChoices)
   }, [])
 
+  const { data, loading, error } = useQuery<CharClassGearPack_gearPack>(
+    CHARCLASS_GEAR_PACK,
+    {
+      variables: { ID: defaultGearPack.ID },
+    }
+  )
+
   const onSubmit = () => {
     const chosenWeapons = Object.values(form)
       .filter((equipment) => equipment.tableName === 'Weapon')
       .map((weapon) => ({ ID: weapon.ID, quantity: weapon.quantity }))
-    const defaultWeapons = equipmentDefaults
+    const defaultWeapons = defaultEquipment
       .filter((equipment) => equipment.tableName === 'Weapon')
       .map((weapon) => ({
         ID: weapon.ID,
@@ -30,25 +41,11 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
       }))
     const weapons = [...chosenWeapons, ...defaultWeapons]
 
-    const defaultGearPacks = equipmentDefaults
-      .filter((equipment) => equipment.tableName === 'GearPack')
-      .reduce(
-        (acc, cur) =>
-          acc.concat(
-            cur.gear.map((gear) => ({
-              ID: gear.ID,
-              quantity: gear.quantity,
-            }))
-          ),
-        []
-      )
-    console.log(defaultGearPacks)
-    const gear = [...defaultGearPacks]
     // const armor = Object.values(form).filter(
     //   (equipment) => equipment.tableName === 'Armor'
     //   .map((armor) => ({ ID: armor.ID, quantity: armor.quantity }))
     // )
-    setCharacter({ ...character, startingEquipment: { weapons, gear } })
+    setCharacter({ ...character, startingEquipment: { weapons } })
     history.push('/create-character/submit')
   }
 
@@ -62,21 +59,18 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
       <CharacterTitles />
 
       <h3>Default Starting Equipment</h3>
-      {equipmentDefaults.map((equipment) => {
-        if (equipment.gear) {
-          return (
-            <div key={equipment.text}>
-              <p>{equipment.text}, containing:</p>
-              <ul>
-                {equipment.gear.map((gear) => (
-                  <li key={gear.text}>{gear.text}</li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
+      {defaultEquipment.map((equipment) => {
         return <p key={equipment.text}>{equipment.text}</p>
       })}
+
+      {data &&
+        data.items.map((item) => {
+          console.log(item)
+          // switch(item.__typename) {
+          //   case "AdventuringGear":
+          // }
+          return <p>{item.name}</p>
+        })}
 
       {choices.length > 0 && (
         <form>
@@ -154,5 +148,29 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
     </section>
   )
 }
+
+const CHARCLASS_GEAR_PACK = gql`
+  query CharClassGearPack($ID: ID!) {
+    gearPack(ID: $ID) {
+      name
+      items {
+        ... on CustomItem {
+          name
+          type
+        }
+        ... on AdventuringGear {
+          name
+          description
+        }
+        ... on Tool {
+          name
+          cost
+          category
+          description
+        }
+      }
+    }
+  }
+`
 
 export default EquipmentSelection

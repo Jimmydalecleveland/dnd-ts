@@ -13,6 +13,7 @@ export interface IItemAPI extends DataSource {
     [key: string]: string | undefined
   }): Promise<object[]>
   getGearPacks(): Promise<object[]>
+  getGearPack({ ID }: { ID: string }): Promise<object>
   getGearPackItems({ ID }: { ID: string }): Promise<object[]>
 }
 
@@ -75,6 +76,17 @@ class ItemAPI implements IItemAPI {
         `
       )
       .then((response) => response.rows)
+  }
+
+  public getGearPack({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT * FROM "GearPack" WHERE "GearPack"."ID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows[0])
   }
 
   public getGearPackItems({ ID }: { ID: string }) {
