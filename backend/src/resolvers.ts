@@ -107,6 +107,11 @@ const resolvers = {
       { filter }: { filter?: { skillType?: string; rangeType?: string } },
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.itemAPI.getWeapons(filter),
+    gearPacks: (
+      _: any,
+      __: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.itemAPI.getGearPacks(),
   },
 
   CharClass: {
@@ -215,6 +220,21 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.backgroundAPI.getSkills({ ID: Background.ID }),
+  },
+
+  GearPack: {
+    items: (
+      GearPack: { ID: string; name: string },
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.itemAPI.getGearPackItems({ ID: GearPack.ID }),
+  },
+
+  FullItem: {
+    __resolveType(obj: any) {
+      // console.log('TYPE', obj.type)
+      return obj.type
+    },
   },
 }
 

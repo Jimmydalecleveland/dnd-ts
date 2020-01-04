@@ -29,6 +29,7 @@ type Query {
   customItems: [CustomItem]!
   armor: [Armor]!
   weapons(filter: WeaponFilter): [Weapon]!
+  gearPacks: [GearPack]!
 }
 
 type Spell {
@@ -132,6 +133,19 @@ type Skill {
   ability: String!
 }
 
+"""
+Items
+"""
+union FullItem = CustomItem | Weapon | Armor | AdventuringGear | Tool
+
+type Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+}
+
 type CustomItem {
   ID: ID!
   name: String!
@@ -140,11 +154,31 @@ type CustomItem {
   weight: String
 }
 
+type AdventuringGear {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  categoryDescription: String
+  description: String
+}
+
+type Tool {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  description: String
+}
+
 type GearPack {
   ID: ID!
   name: String!
-  cost: String!
-  weight: String
+  items: [FullItem]!
 }
 
 type Armor {

@@ -1,4 +1,6 @@
 import { DataSource } from 'apollo-datasource'
+import format from 'pg-format'
+
 import db from '../db'
 
 export interface IItemAPI extends DataSource {
@@ -10,9 +12,11 @@ export interface IItemAPI extends DataSource {
     rangeType?: string
     [key: string]: string | undefined
   }): Promise<object[]>
+  getGearPacks(): Promise<object[]>
+  getGearPackItems({ ID }: { ID: string }): Promise<object[]>
 }
 
-class EquipmentAPI implements IItemAPI {
+class ItemAPI implements IItemAPI {
   public context: any
 
   public initialize(config: any) {
@@ -62,6 +66,89 @@ class EquipmentAPI implements IItemAPI {
       .query(queryText, filter && Object.values(filter))
       .then((response) => response.rows)
   }
+
+  public getGearPacks() {
+    return db
+      .query(
+        `
+        SELECT * FROM "GearPack"
+        `
+      )
+      .then((response) => response.rows)
+  }
+
+  public getGearPackItems({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT "Item".*, "GearPackItem".quantity FROM "GearPack"
+        INNER JOIN "GearPackItem" ON "GearPackItem"."gearPackID" = "GearPack"."ID"
+        INNER JOIN "Item" ON "Item"."ID" = "GearPackItem"."itemID"
+        WHERE "GearPack"."ID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => {
+        const adventuringGearIDs: number[] = []
+        const toolIDs: number[] = []
+
+        const queries: Array<Promise<{ rows: Array<{ ID: number }> }>> = []
+
+        const allItems: Array<{ ID: number }> = []
+
+        response.rows.forEach((item) => {
+          switch (item.type) {
+            case 'AdventuringGear':
+              adventuringGearIDs.push(item.ID)
+              break
+            case 'Tool':
+              toolIDs.push(item.ID)
+              break
+            case 'CustomItem':
+              allItems.push(item)
+          }
+        })
+
+        if (adventuringGearIDs.length > 0) {
+          // pg-format is required for parsed params when passing an array as a single argument
+          queries.push(
+            db.query(
+              format(
+                `
+                SELECT * FROM "AdventuringGear" 
+                INNER JOIN "Item" ON "Item"."ID" = "AdventuringGear"."itemID"
+                WHERE "Item"."ID" IN (%L)
+                `,
+                adventuringGearIDs
+              )
+            )
+          )
+        }
+
+        if (toolIDs.length > 0) {
+          queries.push(
+            db.query(
+              format(
+                `
+                SELECT * FROM "Tool" 
+                INNER JOIN "Item" ON "Item"."ID" = "Tool"."itemID"
+                WHERE "Item"."ID" IN (%L)
+                `,
+                toolIDs
+              )
+            )
+          )
+        }
+
+        return Promise.all(queries)
+          .then((results) =>
+            results.forEach((result) => {
+              allItems.push(...result.rows)
+            })
+          )
+          .then(() => allItems)
+      })
+  }
 }
 
-export default EquipmentAPI
+export default ItemAPI
