@@ -5,7 +5,7 @@ import logger from './logger'
 export const defaultEquipment: { [key: string]: any[] } = {
   barbarian: [
     {
-      ID: '5',
+      ID: '170',
       tableName: 'Weapon',
       text: '4x javelins',
       quantity: 4,
@@ -41,7 +41,7 @@ export async function determineEquipmentChoices(
       [
         // Option 1
         {
-          ID: '21',
+          ID: '177',
           tableName: 'Weapon',
           text: 'a greataxe',
           quantity: 1,
@@ -56,7 +56,7 @@ export async function determineEquipmentChoices(
       ],
       [
         {
-          ID: '13',
+          ID: '169',
           tableName: 'Weapon',
           text: 'two handaxes',
           quantity: 2,

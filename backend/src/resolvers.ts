@@ -184,6 +184,26 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.characterAPI.getWeapons({ ID: Character.ID }),
+    armor: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getArmor({ ID: Character.ID }),
+    customItems: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getCustomItems({ ID: Character.ID }),
+    adventuringGear: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getAdventuringGear({ ID: Character.ID }),
+    tools: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getTools({ ID: Character.ID }),
   },
 
   Race: {

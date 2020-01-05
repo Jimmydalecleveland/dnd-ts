@@ -46,7 +46,11 @@ type Character {
   background: Background!
   abilityScores: AbilityScores!
   skills: [Skill]!
-  weapons: [CharWeapon]!
+  weapons: [QuantifiedWeapon]!
+  armor: [QuantifiedArmor]
+  adventuringGear: [QuantifiedAdventuringGear]
+  customItems: [QuantifiedCustomItem]
+  tools: [QuantifiedTool]
   HP: String
   maxHP: String
 }
@@ -154,6 +158,15 @@ type CustomItem {
   weight: String
 }
 
+type QuantifiedCustomItem {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  quantity: Int!
+}
+
 type GearPackCustomItem {
   ID: ID!
   name: String!
@@ -172,6 +185,18 @@ type AdventuringGear {
   category: String
   categoryDescription: String
   description: String
+}
+
+type QuantifiedAdventuringGear {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  categoryDescription: String
+  description: String
+  quantity: Int!
 }
 
 type GearPackAdventuringGear {
@@ -194,6 +219,17 @@ type Tool {
   weight: String
   category: String
   description: String
+}
+
+type QuantifiedTool {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  description: String
+  quantity: Int!
 }
 
 type GearPackTool {
@@ -225,11 +261,21 @@ type Armor {
   disadvantageOnStealth: Boolean!
 }
 
+type QuantifiedArmor {
+  ID: ID!
+  name: String!
+  category: String!
+  ac: String!
+  cost: String!
+  weight: String
+  quantity: Int!
+}
+
 """
-CharWeapon is identical to weapon except that it needs 'quantity'
-to be bound to a character.
+QuantifiedWeapon is identical to weapon except that it needs 'quantity'
+to be bound to a character or a gear pack.
 """
-type CharWeapon {
+type QuantifiedWeapon {
   ID: ID!
   name: String!
   cost: String!
@@ -258,14 +304,4 @@ input WeaponFilter {
 input ItemInput {
   ID: ID!
   quantity: Int
-}
-
-type CharArmor {
-  ID: ID!
-  name: String!
-  category: String!
-  ac: String!
-  cost: String!
-  weight: String
-  quantity: Int!
 }
