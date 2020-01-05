@@ -40,7 +40,12 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
         ID: weapon.ID,
         quantity: weapon.quantity,
       }))
-    const items = [...chosenWeapons, ...defaultWeapons, ...data.gearPack.items]
+    const gearPackItems = data.gearPack.items.map((item) => ({
+      ID: item.ID,
+      quantity: item.quantity,
+    }))
+
+    const items = [...chosenWeapons, ...defaultWeapons, ...gearPackItems]
 
     // const armor = Object.values(form).filter(
     //   (equipment) => equipment.tableName === 'Armor'
@@ -165,22 +170,25 @@ const CHARCLASS_GEAR_PACK = gql`
     gearPack(ID: $ID) {
       name
       items {
-        ... on CustomItem {
+        ... on GearPackCustomItem {
           ID
           name
           type
+          quantity
         }
-        ... on AdventuringGear {
+        ... on GearPackAdventuringGear {
           ID
           name
           description
+          quantity
         }
-        ... on Tool {
+        ... on GearPackTool {
           ID
           name
           cost
           category
           description
+          quantity
         }
       }
     }

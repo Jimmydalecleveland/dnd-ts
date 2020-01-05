@@ -97,11 +97,7 @@ class CharacterAPI implements ICharacterAPI {
         const { ID } = response.rows[0]
         // The character that is returned will need a row per skill associated with their ID
         const skillValues = skills.map((skillID) => [ID, skillID])
-        const itemValues = items.map((item) => [
-          ID,
-          item.ID,
-          item.quantity || 1,
-        ])
+        const itemValues = items.map((item) => [ID, item.ID, item.quantity])
 
         // pg-format is required for parsed params when entering multiple rows to pg
         const skillsQuery = format(
@@ -115,7 +111,7 @@ class CharacterAPI implements ICharacterAPI {
 
         const itemsQuery = format(
           `
-          INSERT INTO "CharacterItem" ("charID", "itemID", "quantity")
+          INSERT INTO "CharacterItem" ("characterID", "itemID", "quantity")
           VALUES %L
           `,
           itemValues

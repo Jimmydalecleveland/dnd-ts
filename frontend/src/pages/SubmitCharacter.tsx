@@ -32,7 +32,6 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
   if (error) {
     return <p>Error: {JSON.stringify(error)}</p>
   }
-  console.log('MEW', startingEquipment)
 
   return (
     <div>
@@ -47,7 +46,7 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
               backgroundID,
               abilityScores,
               skills,
-              startingEquipment,
+              items: startingEquipment,
             },
           })
         }
