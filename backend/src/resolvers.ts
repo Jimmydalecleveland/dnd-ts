@@ -237,7 +237,14 @@ const resolvers = {
 
   GearPackItem: {
     __resolveType(obj: any) {
-      return obj.type
+      switch (obj.type) {
+        case 'CustomItem':
+          return 'GearPackCustomItem'
+        case 'AdventuringGear':
+          return 'GearPackAdventuringGear'
+        case 'Tool':
+          return 'GearPackTool'
+      }
     },
   },
 }

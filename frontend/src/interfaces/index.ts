@@ -70,14 +70,8 @@ export interface ICharacter {
   background?: IBackground
   abilityScores?: IAbilityScores
   skills?: string[]
-  startingEquipment?: {
-    weapons: Array<{
-      ID: string
-      quantity: number
-    }>
-    // armor: Array<{
-    //   ID: string
-    //   quantity: number
-    // }>
-  }
+  startingEquipment?: Array<{
+    ID: string
+    quantity: number
+  }>
 }

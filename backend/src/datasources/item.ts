@@ -103,10 +103,10 @@ class ItemAPI implements IItemAPI {
       .then((response) => {
         const adventuringGearIDs: number[] = []
         const toolIDs: number[] = []
-
-        const queries: Array<Promise<{ rows: Array<{ ID: number }> }>> = []
-
-        const allItems: Array<{ ID: number }> = []
+        const queries: Array<Promise<{
+          rows: Array<{ ID: number; quantity: number }>
+        }>> = []
+        const allItems: Array<{ ID: number; quantity: number }> = []
 
         response.rows.forEach((item) => {
           switch (item.type) {
@@ -127,11 +127,13 @@ class ItemAPI implements IItemAPI {
             db.query(
               format(
                 `
-                SELECT * FROM "AdventuringGear" 
+                SELECT "Item".*, "AdventuringGear".*, "GearPackItem".quantity FROM "AdventuringGear" 
                 INNER JOIN "Item" ON "Item"."ID" = "AdventuringGear"."itemID"
-                WHERE "Item"."ID" IN (%L)
+                INNER JOIN "GearPackItem" ON "GearPackItem"."itemID" = "Item"."ID"
+                WHERE "Item"."ID" IN (%L) AND "GearPackItem"."gearPackID" = %L
                 `,
-                adventuringGearIDs
+                adventuringGearIDs,
+                Number(ID)
               )
             )
           )
@@ -142,11 +144,13 @@ class ItemAPI implements IItemAPI {
             db.query(
               format(
                 `
-                SELECT * FROM "Tool" 
+                SELECT "Item".*, "Tool".*, "GearPackItem".quantity FROM "Tool" 
                 INNER JOIN "Item" ON "Item"."ID" = "Tool"."itemID"
-                WHERE "Item"."ID" IN (%L)
+                INNER JOIN "GearPackItem" ON "GearPackItem"."itemID" = "Item"."ID"
+                WHERE "Item"."ID" IN (%L) AND "GearPackItem"."gearPackID" = %L
                 `,
-                toolIDs
+                toolIDs,
+                Number(ID)
               )
             )
           )
@@ -154,9 +158,7 @@ class ItemAPI implements IItemAPI {
 
         return Promise.all(queries)
           .then((results) =>
-            results.forEach((result) => {
-              allItems.push(...result.rows)
-            })
+            results.forEach((result) => allItems.push(...result.rows))
           )
           .then(() => allItems)
       })

@@ -40,13 +40,13 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
         ID: weapon.ID,
         quantity: weapon.quantity,
       }))
-    const weapons = [...chosenWeapons, ...defaultWeapons]
+    const items = [...chosenWeapons, ...defaultWeapons, ...data.gearPack.items]
 
     // const armor = Object.values(form).filter(
     //   (equipment) => equipment.tableName === 'Armor'
     //   .map((armor) => ({ ID: armor.ID, quantity: armor.quantity }))
     // )
-    setCharacter({ ...character, startingEquipment: { weapons } })
+    setCharacter({ ...character, startingEquipment: items })
     history.push('/create-character/submit')
   }
 

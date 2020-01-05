@@ -16,8 +16,7 @@ export interface ICharacterAPI extends DataSource {
     backgroundID,
     abilityScores,
     skills,
-    weapons,
-    gear,
+    items,
   }: ICreateCharacter): Promise<object>
   deleteByID({ ID }: { ID: string }): Promise<number>
   getRace({ ID }: { ID: string }): Promise<object>
@@ -68,8 +67,7 @@ class CharacterAPI implements ICharacterAPI {
       backgroundID,
       abilityScores,
       skills,
-      weapons,
-      gear,
+      items,
     } = characterData
     const { str, dex, con, wis, int, cha } = abilityScores
 
@@ -99,12 +97,11 @@ class CharacterAPI implements ICharacterAPI {
         const { ID } = response.rows[0]
         // The character that is returned will need a row per skill associated with their ID
         const skillValues = skills.map((skillID) => [ID, skillID])
-        const weaponValues = weapons.map((weapon) => [
+        const itemValues = items.map((item) => [
           ID,
-          weapon.ID,
-          weapon.quantity,
+          item.ID,
+          item.quantity || 1,
         ])
-        const gearValues = gear.map((aGear) => [ID, aGear.ID, aGear.quantity])
 
         // pg-format is required for parsed params when entering multiple rows to pg
         const skillsQuery = format(
@@ -116,27 +113,15 @@ class CharacterAPI implements ICharacterAPI {
           skillValues
         )
 
-        const weaponsQuery = format(
+        const itemsQuery = format(
           `
-          INSERT INTO "CharHasWeapon" ("charID", "weaponID", "quantity")
+          INSERT INTO "CharacterItem" ("charID", "itemID", "quantity")
           VALUES %L
           `,
-          weaponValues
+          itemValues
         )
 
-        const gearQuery = format(
-          `
-          INSERT INTO "CharHasAdventuringGear" ("charID", "adventuringGearID", "quantity")
-          VALUES %L
-          `,
-          gearValues
-        )
-
-        return Promise.all([
-          db.query(skillsQuery),
-          db.query(weaponsQuery),
-          db.query(gearQuery),
-        ])
+        return Promise.all([db.query(skillsQuery), db.query(itemsQuery)])
       })
       .then(([skillsResponse]) => skillsResponse.rows[0].charID)
       .catch((error) => {
