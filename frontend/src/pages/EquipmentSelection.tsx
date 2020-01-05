@@ -12,7 +12,7 @@ import {
 import ActivityButton from '../components/ActivityButton'
 import { IEquipment } from '../interfaces'
 import { gql } from 'apollo-boost'
-import { CharClassGearPack_gearPack } from './gql-types/CharClassGearPack'
+import { CharClassGearPack } from './gql-types/CharClassGearPack'
 
 const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
   const { character, setCharacter } = useCharacter()
@@ -22,7 +22,7 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
     determineEquipmentChoices(character.charClass.name).then(setChoices)
   }, [])
 
-  const { data, loading, error } = useQuery<CharClassGearPack_gearPack>(
+  const { data, loading, error } = useQuery<CharClassGearPack>(
     CHARCLASS_GEAR_PACK,
     {
       variables: { ID: defaultGearPack.ID },
@@ -54,6 +54,14 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
     return choices.length > 0 && formWithIDs.length === choices.length
   }
 
+  if (loading) {
+    return <h1>Loading ...</h1>
+  }
+
+  if (error) {
+    return <h1>An Error Occured: {JSON.stringify(error)}</h1>
+  }
+
   return (
     <section>
       <CharacterTitles />
@@ -63,14 +71,16 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
         return <p key={equipment.text}>{equipment.text}</p>
       })}
 
-      {data &&
-        data.items.map((item) => {
-          console.log(item)
-          // switch(item.__typename) {
-          //   case "AdventuringGear":
-          // }
-          return <p>{item.name}</p>
-        })}
+      {data && (
+        <section>
+          <h4>{data.gearPack.name} containing:</h4>
+          <ul>
+            {data.gearPack.items.map((item) => (
+              <li key={item.ID}>{item.name}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {choices.length > 0 && (
         <form>
@@ -155,14 +165,17 @@ const CHARCLASS_GEAR_PACK = gql`
       name
       items {
         ... on CustomItem {
+          ID
           name
           type
         }
         ... on AdventuringGear {
+          ID
           name
           description
         }
         ... on Tool {
+          ID
           name
           cost
           category

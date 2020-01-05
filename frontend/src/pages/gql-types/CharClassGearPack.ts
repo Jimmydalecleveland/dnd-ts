@@ -8,18 +8,21 @@
 
 export interface CharClassGearPack_gearPack_items_CustomItem {
   __typename: "CustomItem";
+  ID: string;
   name: string;
   type: string;
 }
 
 export interface CharClassGearPack_gearPack_items_AdventuringGear {
   __typename: "AdventuringGear";
+  ID: string;
   name: string;
   description: string | null;
 }
 
 export interface CharClassGearPack_gearPack_items_Tool {
   __typename: "Tool";
+  ID: string;
   name: string;
   cost: string | null;
   category: string | null;
