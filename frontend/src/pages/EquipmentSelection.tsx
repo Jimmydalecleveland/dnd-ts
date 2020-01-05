@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { useQuery } from '@apollo/react-hooks'
+import { useLazyQuery } from '@apollo/react-hooks'
 
 import { useCharacter } from '../context'
 import CharacterTitles from '../components/CharacterTitles'
@@ -18,22 +18,23 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
   const { character, setCharacter } = useCharacter()
   const [choices, setChoices] = useState([])
   const [form, setForm] = useState<{ [key: string]: IEquipment }>({})
+  const [getCharClassGearPack, { data, loading, error }] = useLazyQuery<
+    CharClassGearPack
+  >(CHARCLASS_GEAR_PACK, {
+    variables: { ID: defaultGearPack[character.charClass.name].ID },
+  })
+
   useEffect(() => {
+    // this relies on `character` being loaded from useCharacter()
+    getCharClassGearPack()
     determineEquipmentChoices(character.charClass.name).then(setChoices)
   }, [])
-
-  const { data, loading, error } = useQuery<CharClassGearPack>(
-    CHARCLASS_GEAR_PACK,
-    {
-      variables: { ID: defaultGearPack.ID },
-    }
-  )
 
   const onSubmit = () => {
     const chosenWeapons = Object.values(form)
       .filter((equipment) => equipment.tableName === 'Weapon')
       .map((weapon) => ({ ID: weapon.ID, quantity: weapon.quantity }))
-    const defaultWeapons = defaultEquipment
+    const defaultWeapons = defaultEquipment[character.charClass.name]
       .filter((equipment) => equipment.tableName === 'Weapon')
       .map((weapon) => ({
         ID: weapon.ID,
@@ -67,7 +68,7 @@ const EquipmentSelection: React.FC<RouteComponentProps> = ({ history }) => {
       <CharacterTitles />
 
       <h3>Default Starting Equipment</h3>
-      {defaultEquipment.map((equipment) => {
+      {defaultEquipment[character.charClass.name].map((equipment) => {
         return <p key={equipment.text}>{equipment.text}</p>
       })}
 

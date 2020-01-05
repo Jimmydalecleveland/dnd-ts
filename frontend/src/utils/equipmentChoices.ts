@@ -2,19 +2,25 @@ import { gql } from 'apollo-boost'
 import client from '../apolloClient'
 import logger from './logger'
 
-export const defaultEquipment = [
-  {
-    ID: '5',
-    tableName: 'Weapon',
-    text: '4x javelins',
-    quantity: 4,
-  },
-]
+export const defaultEquipment: { [key: string]: any[] } = {
+  barbarian: [
+    {
+      ID: '5',
+      tableName: 'Weapon',
+      text: '4x javelins',
+      quantity: 4,
+    },
+  ],
+}
 
-export const defaultGearPack = {
-  ID: '5',
-  tableName: 'GearPack',
-  text: "an explorer's pack",
+export const defaultGearPack: {
+  [key: string]: { ID: string; tableName: string; text: string }
+} = {
+  barbarian: {
+    ID: '5',
+    tableName: 'GearPack',
+    text: "an explorer's pack",
+  },
 }
 
 /**
