@@ -75,11 +75,59 @@ export interface CharacterPageQuery_character_skills {
 }
 
 export interface CharacterPageQuery_character_weapons {
-  __typename: "CharWeapon";
+  __typename: "QuantifiedWeapon";
   ID: string;
   name: string;
+  type: string;
+  cost: string;
+  weight: string | null;
   damage: string;
   skillType: string;
+  rangeType: string;
+  quantity: number;
+}
+
+export interface CharacterPageQuery_character_armor {
+  __typename: "QuantifiedArmor";
+  ID: string;
+  name: string;
+  type: string;
+  category: string;
+  ac: string;
+  cost: string;
+  weight: string | null;
+  quantity: number;
+}
+
+export interface CharacterPageQuery_character_customItems {
+  __typename: "QuantifiedCustomItem";
+  ID: string;
+  type: string;
+  name: string;
+  quantity: number;
+}
+
+export interface CharacterPageQuery_character_adventuringGear {
+  __typename: "QuantifiedAdventuringGear";
+  ID: string;
+  name: string;
+  type: string;
+  cost: string | null;
+  weight: string | null;
+  category: string | null;
+  categoryDescription: string | null;
+  quantity: number;
+}
+
+export interface CharacterPageQuery_character_tools {
+  __typename: "QuantifiedTool";
+  ID: string;
+  name: string;
+  type: string;
+  cost: string | null;
+  weight: string | null;
+  category: string | null;
+  description: string | null;
   quantity: number;
 }
 
@@ -94,6 +142,10 @@ export interface CharacterPageQuery_character {
   background: CharacterPageQuery_character_background;
   skills: (CharacterPageQuery_character_skills | null)[];
   weapons: (CharacterPageQuery_character_weapons | null)[];
+  armor: (CharacterPageQuery_character_armor | null)[] | null;
+  customItems: (CharacterPageQuery_character_customItems | null)[] | null;
+  adventuringGear: (CharacterPageQuery_character_adventuringGear | null)[] | null;
+  tools: (CharacterPageQuery_character_tools | null)[] | null;
 }
 
 export interface CharacterPageQuery_skills {

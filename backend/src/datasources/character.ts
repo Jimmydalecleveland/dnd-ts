@@ -219,7 +219,7 @@ class CharacterAPI implements ICharacterAPI {
     return db
       .query(
         `
-        SELECT "Item".*, "CharacterItem".quantity FROM "Item"
+        SELECT "Item".*, "AdventuringGear".*, "CharacterItem".quantity FROM "Item"
         INNER JOIN "CharacterItem" ON "CharacterItem"."itemID" = "Item"."ID"
         INNER JOIN "AdventuringGear" ON "AdventuringGear"."itemID" = "Item"."ID"
         WHERE "CharacterItem"."characterID" = $1
@@ -233,7 +233,7 @@ class CharacterAPI implements ICharacterAPI {
     return db
       .query(
         `
-        SELECT "Item".*, "CharacterItem".quantity FROM "Item"
+        SELECT "Item".*, "Tool".*, "CharacterItem".quantity FROM "Item"
         INNER JOIN "CharacterItem" ON "CharacterItem"."itemID" = "Item"."ID"
         INNER JOIN "Tool" ON "Tool"."itemID" = "Item"."ID"
         WHERE "CharacterItem"."characterID" = $1
@@ -247,7 +247,7 @@ class CharacterAPI implements ICharacterAPI {
     return db
       .query(
         `
-        SELECT "Item".*, "CharacterItem".quantity FROM "Item"
+        SELECT "Item".*, "Armor".*, "CharacterItem".quantity FROM "Item"
         INNER JOIN "CharacterItem" ON "CharacterItem"."itemID" = "Item"."ID"
         INNER JOIN "Armor" ON "Armor"."itemID" = "Item"."ID"
         WHERE "CharacterItem"."characterID" = $1

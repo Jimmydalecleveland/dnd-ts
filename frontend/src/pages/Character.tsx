@@ -54,6 +54,10 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     abilityScores,
     skills,
     weapons,
+    armor,
+    tools,
+    adventuringGear,
+    customItems,
   } = data.character
 
   const levelSpecifics = charClass.levelSpecifics[0]
@@ -116,6 +120,30 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         {weapons.map((weapon) => (
           <p key={weapon.ID}>
             {weapon.quantity}x {weapon.name}
+          </p>
+        ))}
+        <h3>Armor</h3>
+        {armor.map((singleArmor) => (
+          <p key={singleArmor.ID}>
+            {singleArmor.quantity}x {singleArmor.name}
+          </p>
+        ))}
+        <h3>Adventuring Gear</h3>
+        {adventuringGear.map((singleAdventuringGear) => (
+          <p key={singleAdventuringGear.ID}>
+            {singleAdventuringGear.quantity}x {singleAdventuringGear.name}
+          </p>
+        ))}
+        <h3>Tools</h3>
+        {tools.map((tool) => (
+          <p key={tool.ID}>
+            {tool.quantity}x {tool.name}
+          </p>
+        ))}
+        <h3>Custom Items</h3>
+        {customItems.map((customItem) => (
+          <p key={customItem.ID}>
+            {customItem.quantity}x {customItem.name}
           </p>
         ))}
       </section>
@@ -190,8 +218,48 @@ const CHARACTER_PAGE_QUERY = gql`
       weapons {
         ID
         name
+        type
+        cost
+        weight
         damage
         skillType
+        rangeType
+        quantity
+      }
+      armor {
+        ID
+        name
+        type
+        category
+        ac
+        cost
+        weight
+        quantity
+      }
+      customItems {
+        ID
+        type
+        name
+        quantity
+      }
+      adventuringGear {
+        ID
+        name
+        type
+        cost
+        weight
+        category
+        categoryDescription
+        quantity
+      }
+      tools {
+        ID
+        name
+        type
+        cost
+        weight
+        category
+        description
         quantity
       }
     }

@@ -264,6 +264,7 @@ type Armor {
 type QuantifiedArmor {
   ID: ID!
   name: String!
+  type: String!
   category: String!
   ac: String!
   cost: String!
@@ -277,6 +278,7 @@ to be bound to a character or a gear pack.
 """
 type QuantifiedWeapon {
   ID: ID!
+  type: String!
   name: String!
   cost: String!
   weight: String
