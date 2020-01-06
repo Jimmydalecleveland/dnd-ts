@@ -60,7 +60,7 @@ class CharClassAPI implements ICharClassAPI {
         SELECT "ClassLevelFeature".*, "ClassLevel"."classLevel" FROM "ClassLevel"
         INNER JOIN "ClassLevelFeature" ON "ClassLevel"."ID" = "ClassLevelFeature"."classLevelID"
         WHERE "classID" = $1
-        ORDER BY "level" ASC
+        ORDER BY "classLevel" ASC
         `,
         [Number(ID)]
       )

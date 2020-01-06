@@ -61,6 +61,11 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   } = data.character
 
   const levelSpecifics = charClass.levelSpecifics[0]
+  // TODO: temp until charClass levels are in DB
+  const charClassLevel = 1
+  const features = charClass.features.filter(
+    (feature) => feature.classLevel <= charClassLevel
+  )
 
   return (
     <div>
@@ -148,6 +153,16 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         ))}
       </section>
 
+      <section>
+        <SectionHeader>Class Features</SectionHeader>
+        {features.map((feature) => (
+          <div>
+            <h3>{feature.name}</h3>
+            <p>{feature.description}</p>
+          </div>
+        ))}
+      </section>
+
       <ActivityButton handleClick={() => deleteCharacter()}>
         Delete
       </ActivityButton>
@@ -196,6 +211,12 @@ const CHARACTER_PAGE_QUERY = gql`
         name
         numSkillProficiencies
         hitDice
+        features {
+          ID
+          name
+          description
+          classLevel
+        }
         levelSpecifics {
           classLevel
           proficiencyBonus

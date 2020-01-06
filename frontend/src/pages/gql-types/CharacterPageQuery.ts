@@ -38,6 +38,14 @@ export interface CharacterPageQuery_character_subrace {
   speed: number;
 }
 
+export interface CharacterPageQuery_character_charClass_features {
+  __typename: "CharClassFeature";
+  ID: string;
+  name: string;
+  description: string;
+  classLevel: number;
+}
+
 export interface CharacterPageQuery_character_charClass_levelSpecifics {
   __typename: "LevelSpecific";
   classLevel: number;
@@ -50,6 +58,7 @@ export interface CharacterPageQuery_character_charClass {
   name: string;
   numSkillProficiencies: number;
   hitDice: string | null;
+  features: (CharacterPageQuery_character_charClass_features | null)[];
   levelSpecifics: (CharacterPageQuery_character_charClass_levelSpecifics | null)[];
 }
 
