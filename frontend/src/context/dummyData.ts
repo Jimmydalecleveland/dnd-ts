@@ -28,6 +28,7 @@ const dummyCharacter: ICharacter = {
   charClass: {
     ID: '5',
     name: 'barbarian',
+    hitDice: '1d12',
     numSkillProficiencies: 2,
   },
   background: {

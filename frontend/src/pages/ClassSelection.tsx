@@ -104,6 +104,7 @@ const CLASSES_QUERY = gql`
     charClasses {
       ID
       name
+      hitDice
       numSkillProficiencies
     }
   }

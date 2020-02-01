@@ -57,7 +57,7 @@ export interface CharacterPageQuery_character_charClass {
   ID: string;
   name: string;
   numSkillProficiencies: number;
-  hitDice: string | null;
+  hitDice: string;
   features: (CharacterPageQuery_character_charClass_features | null)[];
   levelSpecifics: (CharacterPageQuery_character_charClass_levelSpecifics | null)[];
 }

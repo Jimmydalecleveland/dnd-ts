@@ -72,6 +72,8 @@ class CharacterAPI implements ICharacterAPI {
       abilityScores,
       skills,
       items,
+      maxHP,
+      HP
     } = characterData
     const { str, dex, con, wis, int, cha } = abilityScores
 
@@ -79,8 +81,8 @@ class CharacterAPI implements ICharacterAPI {
     return db
       .query(
         `
-        INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID", str, dex, con, wis, int, cha) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID", str, dex, con, wis, int, cha, "maxHP", "HP") 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
         RETURNING *
         `,
         [
@@ -95,6 +97,8 @@ class CharacterAPI implements ICharacterAPI {
           wis,
           int,
           cha,
+          maxHP,
+          HP
         ]
       )
       .then((response) => {

@@ -23,7 +23,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
       ID: characterID,
     },
   })
-  const [deleteCharacter] = useMutation<{}, IMutationVariables>(
+  const [deleteCharacter] = useMutation<{}, {ID: string}>(
     DELETE_CHARACTER,
     {
       onCompleted: () => history.push('/characters'),
@@ -58,6 +58,8 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     tools,
     adventuringGear,
     customItems,
+    maxHP,
+    HP
   } = data.character
 
   const levelSpecifics = charClass.levelSpecifics[0]
@@ -66,6 +68,13 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const features = charClass.features.filter(
     (feature) => feature.classLevel <= charClassLevel
   )
+  const { str, dex, wis, cha, int, con } = abilityScores
+  const strModifier = getModifier(str)
+  const dexModifier = getModifier(dex)
+  const wisModifier = getModifier(wis)
+  const chaModifier = getModifier(cha)
+  const intModifier = getModifier(int)
+  const conModifier = getModifier(con)
 
   return (
     <div>
@@ -81,16 +90,14 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         <SectionHeader>Calculated Stats</SectionHeader>
         <h3>Speed: {subrace ? subrace.speed : race.speed}</h3>
         <h3>Hit Die: {charClass.hitDice}</h3>
-        <h3>
-          Max HP:{' '}
-          {getModifier(abilityScores.con) +
-            Number(charClass.hitDice.replace('1d', ''))}
-        </h3>
+        <h3>Max HP: {maxHP}</h3>
+        <h3>HP: {HP}</h3>
         <h3>Proficiency Bonus: {levelSpecifics.proficiencyBonus}</h3>
-        <h3>AC: {Math.floor(10 + (abilityScores.dex - 10) / 2)}</h3>
+        <h3>AC: {10 + dexModifier}</h3>
         <h3>
-          Passive Perception: {Math.floor(10 + (abilityScores.wis - 10) / 2)}
+          Passive Perception: {10 + wisModifier}
         </h3>
+          <h3>Initiative: +{dexModifier}</h3>
       </section>
 
       <section>
@@ -174,15 +181,13 @@ interface IProps {
   id: string
 }
 
-interface IMutationVariables {
-  ID: string
-}
-
 const CHARACTER_PAGE_QUERY = gql`
   query CharacterPageQuery($ID: ID!) {
     character(ID: $ID) {
       ID
       name
+      maxHP
+      HP
       abilityScores {
         str
         dex

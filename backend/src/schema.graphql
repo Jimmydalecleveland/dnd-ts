@@ -8,6 +8,8 @@ type Mutation {
     abilityScores: AbilityScoresInput!
     skills: [ID]!
     items: [ItemInput]!
+    maxHP: Int!
+    HP: Int!
   ): ID!
   deleteCharacter(ID: ID!): Int
 }
@@ -51,8 +53,8 @@ type Character {
   adventuringGear: [QuantifiedAdventuringGear]
   customItems: [QuantifiedCustomItem]
   tools: [QuantifiedTool]
-  HP: String
-  maxHP: String
+  HP: Int
+  maxHP: Int
 }
 
 type Race {
@@ -100,7 +102,7 @@ type CharClassFeature {
 type CharClass {
   ID: ID!
   name: String!
-  hitDice: String
+  hitDice: String!
   numSkillProficiencies: Int!
   features: [CharClassFeature]!
   skills: [Skill]

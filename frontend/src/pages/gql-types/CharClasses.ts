@@ -10,6 +10,7 @@ export interface CharClasses_charClasses {
   __typename: "CharClass";
   ID: string;
   name: string;
+  hitDice: string;
   numSkillProficiencies: number;
 }
 

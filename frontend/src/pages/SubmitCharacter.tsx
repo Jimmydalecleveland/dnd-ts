@@ -3,6 +3,7 @@ import { gql } from 'apollo-boost'
 import { useMutation } from '@apollo/react-hooks'
 import { useCharacter } from '../context'
 import { RouteComponentProps } from 'react-router-dom'
+import { getModifier } from '../utils/helpers'
 
 const SubmitCharacter = ({ history }: RouteComponentProps) => {
   const [submitCharacter, { data, error, loading }] = useMutation(
@@ -19,7 +20,7 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
       abilityScores,
       race: { ID: raceID },
       subrace: { ID: subraceID = null },
-      charClass: { ID: charClassID },
+      charClass: { ID: charClassID, hitDice },
       background: { ID: backgroundID },
       skills,
       startingEquipment,
@@ -32,6 +33,8 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
   if (error) {
     return <p>Error: {JSON.stringify(error)}</p>
   }
+
+  const maxHP = getModifier(abilityScores.con) + Number(hitDice.replace('1d', ''))
 
   return (
     <div>
@@ -47,6 +50,8 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
               abilityScores,
               skills,
               items: startingEquipment,
+              maxHP,
+              HP: maxHP
             },
           })
         }
@@ -67,6 +72,8 @@ const SUBMIT_CHARACTER = gql`
     $abilityScores: AbilityScoresInput!
     $skills: [ID]!
     $items: [ItemInput]!
+    $maxHP: Int!
+    $HP: Int!
   ) {
     createCharacter(
       name: $name
@@ -77,6 +84,8 @@ const SUBMIT_CHARACTER = gql`
       abilityScores: $abilityScores
       skills: $skills
       items: $items
+      maxHP: $maxHP
+      HP: $HP
     )
   }
 `

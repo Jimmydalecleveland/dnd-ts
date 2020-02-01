@@ -18,6 +18,8 @@ export interface ICreateCharacter {
     ID: string
     quantity: number
   }>
+  maxHP: number
+  HP: number
 }
 
 export interface ICharClass {

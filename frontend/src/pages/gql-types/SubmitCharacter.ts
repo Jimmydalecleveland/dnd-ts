@@ -21,4 +21,6 @@ export interface SubmitCharacterVariables {
   abilityScores: AbilityScoresInput;
   skills: (string | null)[];
   items: (ItemInput | null)[];
+  maxHP: number;
+  HP: number;
 }
