@@ -18,6 +18,7 @@ export interface IRaceTrait {
 export interface IBackground {
   ID: string
   name: string
+  startingGp: number
 }
 
 export interface IBackgroundFeature {

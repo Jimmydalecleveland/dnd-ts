@@ -21,7 +21,7 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
       race: { ID: raceID },
       subrace: { ID: subraceID = null },
       charClass: { ID: charClassID, hitDice },
-      background: { ID: backgroundID },
+      background: { ID: backgroundID, startingGp },
       skills,
       startingEquipment,
     },
@@ -51,7 +51,8 @@ const SubmitCharacter = ({ history }: RouteComponentProps) => {
               skills,
               items: startingEquipment,
               maxHP,
-              HP: maxHP
+              HP: maxHP,
+              startingGp,
             },
           })
         }
@@ -74,6 +75,7 @@ const SUBMIT_CHARACTER = gql`
     $items: [ItemInput]!
     $maxHP: Int!
     $HP: Int!
+    $startingGp: Int!
   ) {
     createCharacter(
       name: $name
@@ -86,6 +88,7 @@ const SUBMIT_CHARACTER = gql`
       items: $items
       maxHP: $maxHP
       HP: $HP
+      startingGp: $startingGp
     )
   }
 `

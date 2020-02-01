@@ -34,6 +34,7 @@ const dummyCharacter: ICharacter = {
   background: {
     ID: '10',
     name: 'sailor',
+    startingGp: 10,
   },
   abilityScores: {
     str: 20,

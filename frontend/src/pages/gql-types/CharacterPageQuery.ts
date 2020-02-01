@@ -144,6 +144,8 @@ export interface CharacterPageQuery_character {
   __typename: "Character";
   ID: string;
   name: string;
+  maxHP: number;
+  HP: number;
   abilityScores: CharacterPageQuery_character_abilityScores;
   race: CharacterPageQuery_character_race;
   subrace: CharacterPageQuery_character_subrace | null;

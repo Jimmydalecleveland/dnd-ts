@@ -59,7 +59,12 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     adventuringGear,
     customItems,
     maxHP,
-    HP
+    HP,
+    cp,
+    sp,
+    gp,
+    ep,
+    pp,
   } = data.character
 
   const levelSpecifics = charClass.levelSpecifics[0]
@@ -127,6 +132,15 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
       </section>
 
       <section>
+        <SectionHeader>Currency</SectionHeader>
+        <p>cp: {cp}</p>
+        <p>sp: {sp}</p>
+        <p>gp: {gp}</p>
+        <p>ep: {ep}</p>
+        <p>pp: {pp}</p>
+      </section>
+
+      <section>
         <SectionHeader>Equipment</SectionHeader>
         <h3>Weapons</h3>
         {weapons.map((weapon) => (
@@ -188,6 +202,11 @@ const CHARACTER_PAGE_QUERY = gql`
       name
       maxHP
       HP
+      cp
+      sp
+      gp
+      ep
+      pp
       abilityScores {
         str
         dex

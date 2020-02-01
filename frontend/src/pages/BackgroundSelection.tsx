@@ -107,6 +107,7 @@ const BACKGROUNDS_QUERY = gql`
     backgrounds {
       ID
       name
+      startingGp
     }
   }
 `

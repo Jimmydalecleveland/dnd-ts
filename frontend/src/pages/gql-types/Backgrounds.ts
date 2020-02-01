@@ -10,6 +10,7 @@ export interface Backgrounds_backgrounds {
   __typename: "Background";
   ID: string;
   name: string;
+  startingGp: number;
 }
 
 export interface Backgrounds {

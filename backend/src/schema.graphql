@@ -10,6 +10,7 @@ type Mutation {
     items: [ItemInput]!
     maxHP: Int!
     HP: Int!
+    startingGp: Int!
   ): ID!
   deleteCharacter(ID: ID!): Int
 }
@@ -53,8 +54,13 @@ type Character {
   adventuringGear: [QuantifiedAdventuringGear]
   customItems: [QuantifiedCustomItem]
   tools: [QuantifiedTool]
-  HP: Int
-  maxHP: Int
+  HP: Int!
+  maxHP: Int!
+  cp: Int
+  sp: Int
+  gp: Int
+  ep: Int
+  pp: Int
 }
 
 type Race {
@@ -84,6 +90,7 @@ type Background {
   name: String!
   features: [BackgroundFeature]!
   skills: [Skill]
+  startingGp: Int!
 }
 
 type BackgroundFeature {

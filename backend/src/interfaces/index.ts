@@ -20,6 +20,7 @@ export interface ICreateCharacter {
   }>
   maxHP: number
   HP: number
+  startingGp: number
 }
 
 export interface ICharClass {
