@@ -1,9 +1,10 @@
 {
-  "name": "backend",
+  "name": "mimic-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for the Mimic project",
   "main": "src/index.ts",
   "scripts": {
+    "start": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -141,6 +141,24 @@ const resolvers = {
     ) => dataSources.charClassAPI.getLevelSpecifics({ ID: CharClass.ID }),
   },
 
+  CharacterClass: {
+    features: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getFeatures({ ID: CharClass.ID }),
+    skills: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getSkills({ ID: CharClass.ID }),
+    levelSpecifics: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getLevelSpecifics({ ID: CharClass.ID }),
+  },
+
   LevelSpecific: {
     features: (
       LevelSpecific: ILevelSpecific,

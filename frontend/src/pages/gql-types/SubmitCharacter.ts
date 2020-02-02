@@ -23,4 +23,5 @@ export interface SubmitCharacterVariables {
   items: (ItemInput | null)[];
   maxHP: number;
   HP: number;
+  startingGp: number;
 }

@@ -53,8 +53,9 @@ export interface CharacterPageQuery_character_charClass_levelSpecifics {
 }
 
 export interface CharacterPageQuery_character_charClass {
-  __typename: "CharClass";
+  __typename: "CharacterClass";
   ID: string;
+  level: number;
   name: string;
   numSkillProficiencies: number;
   hitDice: string;
@@ -146,6 +147,11 @@ export interface CharacterPageQuery_character {
   name: string;
   maxHP: number;
   HP: number;
+  cp: number | null;
+  sp: number | null;
+  gp: number | null;
+  ep: number | null;
+  pp: number | null;
   abilityScores: CharacterPageQuery_character_abilityScores;
   race: CharacterPageQuery_character_race;
   subrace: CharacterPageQuery_character_subrace | null;

@@ -45,7 +45,7 @@ type Character {
   name: String!
   race: Race!
   subrace: Subrace
-  charClass: CharClass!
+  charClass: CharacterClass!
   background: Background!
   abilityScores: AbilityScores!
   skills: [Skill]!
@@ -116,6 +116,17 @@ type CharClass {
   levelSpecifics: [LevelSpecific]!
 }
 
+type CharacterClass {
+  ID: ID!
+  level: Int!
+  name: String!
+  hitDice: String!
+  numSkillProficiencies: Int!
+  features: [CharClassFeature]!
+  skills: [Skill]
+  levelSpecifics: [LevelSpecific]!
+}
+
 type LevelSpecific {
   classLevel: Int!
   features: [CharClassFeature]!
@@ -151,7 +162,7 @@ Items
 """
 union GearPackItem = GearPackCustomItem | GearPackAdventuringGear | GearPackTool
 
-type Item {
+interface Item {
   ID: ID!
   name: String!
   type: String!
@@ -159,7 +170,7 @@ type Item {
   weight: String
 }
 
-type CustomItem {
+type CustomItem implements Item {
   ID: ID!
   name: String!
   type: String!
@@ -167,16 +178,7 @@ type CustomItem {
   weight: String
 }
 
-type QuantifiedCustomItem {
-  ID: ID!
-  name: String!
-  type: String!
-  cost: String
-  weight: String
-  quantity: Int!
-}
-
-type GearPackCustomItem {
+type QuantifiedCustomItem implements Item {
   ID: ID!
   name: String!
   type: String!
@@ -185,7 +187,16 @@ type GearPackCustomItem {
   quantity: Int!
 }
 
-type AdventuringGear {
+type GearPackCustomItem implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  quantity: Int!
+}
+
+type AdventuringGear implements Item {
   ID: ID!
   name: String!
   type: String!
@@ -196,19 +207,7 @@ type AdventuringGear {
   description: String
 }
 
-type QuantifiedAdventuringGear {
-  ID: ID!
-  name: String!
-  type: String!
-  cost: String
-  weight: String
-  category: String
-  categoryDescription: String
-  description: String
-  quantity: Int!
-}
-
-type GearPackAdventuringGear {
+type QuantifiedAdventuringGear implements Item {
   ID: ID!
   name: String!
   type: String!
@@ -220,7 +219,19 @@ type GearPackAdventuringGear {
   quantity: Int!
 }
 
-type Tool {
+type GearPackAdventuringGear implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  categoryDescription: String
+  description: String
+  quantity: Int!
+}
+
+type Tool implements Item {
   ID: ID!
   name: String!
   type: String!
@@ -230,7 +241,7 @@ type Tool {
   description: String
 }
 
-type QuantifiedTool {
+type QuantifiedTool implements Item {
   ID: ID!
   name: String!
   type: String!
@@ -241,7 +252,7 @@ type QuantifiedTool {
   quantity: Int!
 }
 
-type GearPackTool {
+type GearPackTool implements Item {
   ID: ID!
   name: String!
   type: String!
@@ -261,6 +272,7 @@ type GearPack {
 type Armor {
   ID: ID!
   name: String!
+  type: String!
   cost: String!
   weight: String
   category: String!

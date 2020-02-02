@@ -109,6 +109,14 @@ class CharacterAPI implements ICharacterAPI {
         const skillValues = skills.map((skillID) => [ID, skillID])
         const itemValues = items.map((item) => [ID, item.ID, item.quantity])
 
+        const characterHasClassQuery = format(
+          `
+          INSERT INTO "CharacterHasClass" ("charClassID", "characterID")
+          VALUES %L
+          `,
+          [[charClassID, ID]]
+        )
+
         // pg-format is required for parsed params when entering multiple rows to pg
         const skillsQuery = format(
           `
@@ -127,7 +135,7 @@ class CharacterAPI implements ICharacterAPI {
           itemValues
         )
 
-        return Promise.all([db.query(skillsQuery), db.query(itemsQuery)])
+        return Promise.all([db.query(skillsQuery), db.query(itemsQuery), db.query(characterHasClassQuery)])
       })
       .then(([skillsResponse]) => skillsResponse.rows[0].charID)
       .catch((error) => {
@@ -172,9 +180,9 @@ class CharacterAPI implements ICharacterAPI {
     return db
       .query(
         `
-        SELECT "CharClass".* FROM "Character"
-        INNER JOIN "CharClass" ON "CharClass"."ID" = "Character"."charClassID"
-        WHERE "Character"."ID" = $1
+        SELECT "CharClass".*, "CharacterHasClass".level FROM "CharacterHasClass"
+        INNER JOIN "CharClass" ON "CharClass"."ID" = "CharacterHasClass"."charClassID"
+        WHERE "CharacterHasClass"."characterID" = $1
         `,
         [Number(ID)]
       )

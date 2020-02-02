@@ -69,7 +69,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
 
   const levelSpecifics = charClass.levelSpecifics[0]
   // TODO: temp until charClass levels are in DB
-  const charClassLevel = 1
+  const charClassLevel = charClass.level
   const features = charClass.features.filter(
     (feature) => feature.classLevel <= charClassLevel
   )
@@ -93,8 +93,10 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
 
       <section>
         <SectionHeader>Calculated Stats</SectionHeader>
+        <h3>Level: {charClassLevel}</h3>
         <h3>Speed: {subrace ? subrace.speed : race.speed}</h3>
         <h3>Hit Die: {charClass.hitDice}</h3>
+        <h3>Total Hit Dice: {charClassLevel}</h3>
         <h3>Max HP: {maxHP}</h3>
         <h3>HP: {HP}</h3>
         <h3>Proficiency Bonus: {levelSpecifics.proficiencyBonus}</h3>
@@ -232,6 +234,7 @@ const CHARACTER_PAGE_QUERY = gql`
       }
       charClass {
         ID
+        level
         name
         numSkillProficiencies
         hitDice

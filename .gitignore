@@ -54,4 +54,5 @@ typings/
 .cache
 
 build
+public
 .vscode
