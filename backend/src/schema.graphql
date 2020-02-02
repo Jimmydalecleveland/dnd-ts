@@ -111,6 +111,7 @@ type CharClass {
   name: String!
   hitDice: String!
   numSkillProficiencies: Int!
+  savingThrowProficiencies: [String!]!
   features: [CharClassFeature]!
   skills: [Skill]
   levelSpecifics: [LevelSpecific]!
@@ -122,6 +123,7 @@ type CharacterClass {
   name: String!
   hitDice: String!
   numSkillProficiencies: Int!
+  savingThrowProficiencies: [String!]!
   features: [CharClassFeature]!
   skills: [Skill]
   levelSpecifics: [LevelSpecific]!

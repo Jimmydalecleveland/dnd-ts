@@ -134,6 +134,18 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
       </section>
 
       <section>
+        <ProficiencyList
+          list={{
+            characterAbilityScores: abilityScores,
+            skills: data.skills,
+            backgroundSkills: background.skills,
+            raceSkills: race.skills,
+            charClassSkills: skills,
+          }}
+        ></ProficiencyList>
+      </section>
+
+      <section>
         <SectionHeader>Currency</SectionHeader>
         <p>cp: {cp}</p>
         <p>sp: {sp}</p>
@@ -179,7 +191,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
       <section>
         <SectionHeader>Class Features</SectionHeader>
         {features.map((feature) => (
-          <div>
+          <div key={feature.ID}>
             <h3>{feature.name}</h3>
             <p>{feature.description}</p>
           </div>
@@ -237,6 +249,7 @@ const CHARACTER_PAGE_QUERY = gql`
         level
         name
         numSkillProficiencies
+        savingThrowProficiencies
         hitDice
         features {
           ID
