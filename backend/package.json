@@ -30,6 +30,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "jest": "^25.1.0",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0"
   }
