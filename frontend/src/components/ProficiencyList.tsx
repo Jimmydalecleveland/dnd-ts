@@ -54,7 +54,7 @@ export const generateSkillSet = ({
   backgroundSkills: ISkill[]
   raceSkills: ISkill[]
   charClassSkills: ISkill[]
-}) => {
+}): Array<{ ID: string, name: string, proficient: boolean, value: number}> => {
   const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
   const raceSkillIDs = raceSkills.map((skill) => skill.ID)
   const charClassSkillIDs = charClassSkills.map((skill) => skill.ID)
