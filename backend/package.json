@@ -1,9 +1,10 @@
 {
-  "name": "backend",
+  "name": "mimic-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for the Mimic project",
   "main": "src/index.ts",
   "scripts": {
+    "start": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,8 +21,8 @@
     "apollo-datasource": "^0.6.3",
     "apollo-server": "^2.9.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
     "graphql": "^14.5.8",
+    "graphql-import": "^0.7.1",
     "pg": "^7.12.1",
     "pg-format": "^1.0.4",
     "ts-node-dev": "^1.0.0-pre.40",
@@ -29,6 +30,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "jest": "^25.1.0",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0"
   }

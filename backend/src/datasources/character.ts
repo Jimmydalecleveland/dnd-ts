@@ -16,7 +16,7 @@ export interface ICharacterAPI extends DataSource {
     backgroundID,
     abilityScores,
     skills,
-    weapons,
+    items,
   }: ICreateCharacter): Promise<object>
   deleteByID({ ID }: { ID: string }): Promise<number>
   getRace({ ID }: { ID: string }): Promise<object>
@@ -25,6 +25,10 @@ export interface ICharacterAPI extends DataSource {
   getBackground({ ID }: { ID: string }): Promise<object>
   getSkills({ ID }: { ID: string }): Promise<object[]>
   getWeapons({ ID }: { ID: string }): Promise<object[]>
+  getAdventuringGear({ ID }: { ID: string }): Promise<object[]>
+  getTools({ ID }: { ID: string }): Promise<object[]>
+  getArmor({ ID }: { ID: string }): Promise<object[]>
+  getCustomItems({ ID }: { ID: string }): Promise<object[]>
 }
 
 class CharacterAPI implements ICharacterAPI {
@@ -35,9 +39,12 @@ class CharacterAPI implements ICharacterAPI {
   }
 
   public getAll() {
-    return db
-      .query('SELECT * FROM "Character"')
-      .then((response) => response.rows)
+    return db.query('SELECT * FROM "Character"').then((response) =>
+      response.rows.map((row) => {
+        const { str, dex, con, int, wis, cha, ...rest } = row
+        return { abilityScores: { str, dex, con, int, wis, cha }, ...rest }
+      })
+    )
   }
 
   public getByID({ ID }: { ID: string }) {
@@ -64,7 +71,10 @@ class CharacterAPI implements ICharacterAPI {
       backgroundID,
       abilityScores,
       skills,
-      weapons,
+      items,
+      maxHP,
+      HP,
+      startingGp
     } = characterData
     const { str, dex, con, wis, int, cha } = abilityScores
 
@@ -72,8 +82,8 @@ class CharacterAPI implements ICharacterAPI {
     return db
       .query(
         `
-        INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID", str, dex, con, wis, int, cha) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        INSERT INTO "Character" ("name", "raceID", "subraceID", "charClassID", "backgroundID", str, dex, con, wis, int, cha, "maxHP", "HP", gp) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING *
         `,
         [
@@ -88,17 +98,24 @@ class CharacterAPI implements ICharacterAPI {
           wis,
           int,
           cha,
+          maxHP,
+          HP,
+          startingGp
         ]
       )
       .then((response) => {
         const { ID } = response.rows[0]
         // The character that is returned will need a row per skill associated with their ID
         const skillValues = skills.map((skillID) => [ID, skillID])
-        const weaponValues = weapons.map((weapon) => [
-          ID,
-          weapon.ID,
-          weapon.quantity,
-        ])
+        const itemValues = items.map((item) => [ID, item.ID, item.quantity])
+
+        const characterHasClassQuery = format(
+          `
+          INSERT INTO "CharacterHasClass" ("charClassID", "characterID")
+          VALUES %L
+          `,
+          [[charClassID, ID]]
+        )
 
         // pg-format is required for parsed params when entering multiple rows to pg
         const skillsQuery = format(
@@ -110,15 +127,15 @@ class CharacterAPI implements ICharacterAPI {
           skillValues
         )
 
-        const weaponsQuery = format(
+        const itemsQuery = format(
           `
-          INSERT INTO "CharHasWeapon" ("charID", "weaponID", "quantity")
+          INSERT INTO "CharacterItem" ("characterID", "itemID", "quantity")
           VALUES %L
           `,
-          weaponValues
+          itemValues
         )
 
-        return Promise.all([db.query(skillsQuery), db.query(weaponsQuery)])
+        return Promise.all([db.query(skillsQuery), db.query(itemsQuery), db.query(characterHasClassQuery)])
       })
       .then(([skillsResponse]) => skillsResponse.rows[0].charID)
       .catch((error) => {
@@ -163,9 +180,9 @@ class CharacterAPI implements ICharacterAPI {
     return db
       .query(
         `
-        SELECT "CharClass".* FROM "Character"
-        INNER JOIN "CharClass" ON "CharClass"."ID" = "Character"."charClassID"
-        WHERE "Character"."ID" = $1
+        SELECT "CharClass".*, "CharacterHasClass".level FROM "CharacterHasClass"
+        INNER JOIN "CharClass" ON "CharClass"."ID" = "CharacterHasClass"."charClassID"
+        WHERE "CharacterHasClass"."characterID" = $1
         `,
         [Number(ID)]
       )
@@ -202,9 +219,66 @@ class CharacterAPI implements ICharacterAPI {
     return db
       .query(
         `
-        SELECT "Weapon".*, "CharHasWeapon"."quantity" FROM "CharHasWeapon"
-        INNER JOIN "Weapon" ON "CharHasWeapon"."weaponID" = "Weapon"."ID"
-        WHERE "CharHasWeapon"."charID" = $1
+        SELECT "Item".*, "Weapon".*, "CharacterItem".quantity FROM "Item"
+        INNER JOIN "Weapon" ON "Weapon"."itemID" = "Item"."ID"
+        INNER JOIN "CharacterItem" ON "CharacterItem"."itemID" = "Item"."ID"
+        WHERE "CharacterItem"."characterID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows)
+  }
+
+  public getAdventuringGear({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT "Item".*, "AdventuringGear".*, "CharacterItem".quantity FROM "Item"
+        INNER JOIN "CharacterItem" ON "CharacterItem"."itemID" = "Item"."ID"
+        INNER JOIN "AdventuringGear" ON "AdventuringGear"."itemID" = "Item"."ID"
+        WHERE "CharacterItem"."characterID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows)
+  }
+
+  public getTools({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT "Item".*, "Tool".*, "CharacterItem".quantity FROM "Item"
+        INNER JOIN "CharacterItem" ON "CharacterItem"."itemID" = "Item"."ID"
+        INNER JOIN "Tool" ON "Tool"."itemID" = "Item"."ID"
+        WHERE "CharacterItem"."characterID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows)
+  }
+
+  public getArmor({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT "Item".*, "Armor".*, "CharacterItem".quantity FROM "Item"
+        INNER JOIN "CharacterItem" ON "CharacterItem"."itemID" = "Item"."ID"
+        INNER JOIN "Armor" ON "Armor"."itemID" = "Item"."ID"
+        WHERE "CharacterItem"."characterID" = $1
+        `,
+        [Number(ID)]
+      )
+      .then((response) => response.rows)
+  }
+
+  public getCustomItems({ ID }: { ID: string }) {
+    return db
+      .query(
+        `
+        SELECT "Item".*, "CharacterItem".quantity FROM "Item"
+        INNER JOIN "CharacterItem" ON "CharacterItem"."itemID" = "Item"."ID"
+        WHERE "CharacterItem"."characterID" = $1 
+          AND "Item".type = 'CustomItem'
         `,
         [Number(ID)]
       )

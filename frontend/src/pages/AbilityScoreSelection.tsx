@@ -28,6 +28,7 @@ const AbilityScoreSelection = ({ history }: RouteComponentProps) => {
       <AbilityScoresWrapper>
         {Object.entries(character.abilityScores).map((ability) => (
           <AbilityScoreRange
+            key={ability[0]}
             ability={ability[0]}
             score={ability[1]}
             updateAbilityScore={updateAbilityScore}

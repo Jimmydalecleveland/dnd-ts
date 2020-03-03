@@ -1,0 +1,332 @@
+type Mutation {
+  createCharacter(
+    name: String!
+    raceID: ID!
+    subraceID: ID
+    charClassID: ID!
+    backgroundID: ID!
+    abilityScores: AbilityScoresInput!
+    skills: [ID]!
+    items: [ItemInput]!
+    maxHP: Int!
+    HP: Int!
+    startingGp: Int!
+  ): ID!
+  deleteCharacter(ID: ID!): Int
+}
+
+type Query {
+  spells: [Spell]!
+  spell(ID: ID!): Spell
+  characters: [Character]!
+  character(ID: ID!): Character
+  races: [Race]!
+  race(ID: ID!): Race
+  raceTraits(raceID: ID!): [RaceTrait]!
+  backgrounds: [Background]!
+  background(ID: ID!): Background
+  charClasses: [CharClass]!
+  charClass(ID: ID!): CharClass
+  skills: [Skill]!
+  customItems: [CustomItem]!
+  armor: [Armor]!
+  weapons(filter: WeaponFilter): [Weapon]!
+  gearPacks: [GearPack]!
+  gearPack(ID: ID!): GearPack
+}
+
+type Spell {
+  ID: ID!
+  name: String!
+}
+
+type Character {
+  ID: ID!
+  name: String!
+  race: Race!
+  subrace: Subrace
+  charClass: CharacterClass!
+  background: Background!
+  abilityScores: AbilityScores!
+  skills: [Skill]!
+  weapons: [QuantifiedWeapon]!
+  armor: [QuantifiedArmor]
+  adventuringGear: [QuantifiedAdventuringGear]
+  customItems: [QuantifiedCustomItem]
+  tools: [QuantifiedTool]
+  HP: Int!
+  maxHP: Int!
+  cp: Int
+  sp: Int
+  gp: Int
+  ep: Int
+  pp: Int
+}
+
+type Race {
+  ID: ID!
+  name: String!
+  subraces: [Subrace]
+  traits: [RaceTrait]!
+  skills: [Skill]
+  speed: Int!
+}
+
+type Subrace {
+  ID: ID!
+  name: String!
+  speed: Int!
+  traits: [RaceTrait]!
+}
+
+type RaceTrait {
+  ID: ID!
+  name: String!
+  description: String!
+}
+
+type Background {
+  ID: ID!
+  name: String!
+  features: [BackgroundFeature]!
+  skills: [Skill]
+  startingGp: Int!
+}
+
+type BackgroundFeature {
+  ID: ID!
+  name: String!
+  description: String!
+}
+
+type CharClassFeature {
+  ID: ID!
+  name: String!
+  description: String!
+  classLevel: Int!
+}
+
+type CharClass {
+  ID: ID!
+  name: String!
+  hitDice: String!
+  numSkillProficiencies: Int!
+  savingThrowProficiencies: [String!]!
+  features: [CharClassFeature]!
+  skills: [Skill]
+  levelSpecifics: [LevelSpecific]!
+}
+
+type CharacterClass {
+  ID: ID!
+  level: Int!
+  name: String!
+  hitDice: String!
+  numSkillProficiencies: Int!
+  savingThrowProficiencies: [String!]!
+  features: [CharClassFeature]!
+  skills: [Skill]
+  levelSpecifics: [LevelSpecific]!
+}
+
+type LevelSpecific {
+  classLevel: Int!
+  features: [CharClassFeature]!
+  proficiencyBonus: Int!
+}
+
+type AbilityScores {
+  str: Int!
+  dex: Int!
+  con: Int!
+  int: Int!
+  wis: Int!
+  cha: Int!
+}
+
+input AbilityScoresInput {
+  str: Int!
+  dex: Int!
+  con: Int!
+  int: Int!
+  wis: Int!
+  cha: Int!
+}
+
+type Skill {
+  ID: ID!
+  name: String!
+  ability: String!
+}
+
+"""
+Items
+"""
+union GearPackItem = GearPackCustomItem | GearPackAdventuringGear | GearPackTool
+
+interface Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+}
+
+type CustomItem implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+}
+
+type QuantifiedCustomItem implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  quantity: Int!
+}
+
+type GearPackCustomItem implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  quantity: Int!
+}
+
+type AdventuringGear implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  categoryDescription: String
+  description: String
+}
+
+type QuantifiedAdventuringGear implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  categoryDescription: String
+  description: String
+  quantity: Int!
+}
+
+type GearPackAdventuringGear implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  categoryDescription: String
+  description: String
+  quantity: Int!
+}
+
+type Tool implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  description: String
+}
+
+type QuantifiedTool implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  description: String
+  quantity: Int!
+}
+
+type GearPackTool implements Item {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String
+  weight: String
+  category: String
+  description: String
+  quantity: Int!
+}
+
+type GearPack {
+  ID: ID!
+  name: String!
+  items: [GearPackItem]!
+}
+
+type Armor {
+  ID: ID!
+  name: String!
+  type: String!
+  cost: String!
+  weight: String
+  category: String!
+  ac: Int!
+  isDexAdded: Boolean!
+  maxDex: Int
+  disadvantageOnStealth: Boolean!
+}
+
+type QuantifiedArmor {
+  ID: ID!
+  name: String!
+  type: String!
+  category: String!
+  ac: String!
+  cost: String!
+  weight: String
+  quantity: Int!
+}
+
+"""
+QuantifiedWeapon is identical to weapon except that it needs 'quantity'
+to be bound to a character or a gear pack.
+"""
+type QuantifiedWeapon {
+  ID: ID!
+  type: String!
+  name: String!
+  cost: String!
+  weight: String
+  damage: String!
+  skillType: String!
+  rangeType: String!
+  quantity: Int!
+}
+
+type Weapon {
+  ID: ID!
+  name: String!
+  cost: String!
+  weight: String
+  damage: String!
+  skillType: String!
+  rangeType: String!
+}
+
+input WeaponFilter {
+  skillType: String
+  rangeType: String
+}
+
+input ItemInput {
+  ID: ID!
+  quantity: Int
+}

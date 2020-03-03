@@ -12,6 +12,7 @@ import SectionHeader from '../components/SectionHeader'
 import ToggleButton from '../components/ToggleButton'
 import ActivityButton from '../components/ActivityButton'
 import BackgroundFeatures from '../components/BackgroundFeatures'
+import CharacterTitles from '../components/CharacterTitles'
 
 const BackgroundSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
@@ -24,10 +25,7 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
 
   return (
     <div>
-      <h1>{character.name}</h1>
-      <h2>{character.race.name}</h2>
-      {character.subrace && <h3>{character.subrace.name}</h3>}
-      {character.charClass && <h3>{character.charClass.name}</h3>}
+      <CharacterTitles />
 
       {!loading && !error && (
         <section>
@@ -36,7 +34,10 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
             {data.backgrounds.map((background) => (
               <ToggleButton
                 key={background.ID}
-                isActive={character.background.ID === background.ID}
+                isActive={
+                  character.background &&
+                  character.background.ID === background.ID
+                }
                 handleClick={() => {
                   getBackgroundFeatures({
                     variables: { backgroundID: background.ID },
@@ -53,11 +54,13 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
 
       <Styled.BottomWrapper>
         <ToggleButton
-          disabled={!character.background.ID}
+          disabled={character.background ? !character.background.ID : true}
           isActive={showModal}
           handleClick={() => setShowModal(true)}
         >
-          {`${character.background.name} details`}
+          {character.background
+            ? `${character.background.name} details`
+            : 'Select a background'}
         </ToggleButton>
         {showModal && (
           <AnimatePresence>
@@ -74,7 +77,7 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
                 X
               </span>
               <div>
-                {character.charClass && (
+                {character.background && (
                   <div>
                     <BackgroundFeatures
                       backgroundID={character.background.ID}
@@ -87,7 +90,9 @@ const BackgroundSelection = ({ history }: RouteComponentProps) => {
           </AnimatePresence>
         )}
         <ActivityButton
-          disabled={character.background.ID ? false : true}
+          disabled={
+            character.background && character.background.ID ? false : true
+          }
           handleClick={() => history.push('/create-character/ability-scores')}
         >
           Next: Ability Scores
@@ -102,6 +107,7 @@ const BACKGROUNDS_QUERY = gql`
     backgrounds {
       ID
       name
+      startingGp
     }
   }
 `

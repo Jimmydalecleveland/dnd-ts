@@ -1,28 +1,32 @@
 import React from 'react'
 import * as Styled from './CharacterTitles.styles'
-import { useCharacter } from '../context'
 
 /**
- * Displays a stylized character's race/subrace, class, and background
- * @remarks
- * useCharacter context is used to obtain character information
+ * Displays a stylized character's name, race/subrace, class, and background
  */
-const CharacterTitles: React.FC = () => {
-  const { character } = useCharacter()
-
+const CharacterTitles: React.FC<IProps> = ({
+  charName,
+  race,
+  subrace,
+  charClass,
+  background,
+}) => {
   return (
     <Styled.Wrapper>
-      <Styled.Race>
-        {character.subrace ? character.subrace.name : character.race.name}
-      </Styled.Race>
-      {character.charClass && (
-        <Styled.CharClass>{character.charClass.name}</Styled.CharClass>
-      )}
-      {character.background && (
-        <Styled.Background>{character.background.name}</Styled.Background>
-      )}
+      {charName && <Styled.CharName>{charName}</Styled.CharName>}
+      {race && <Styled.Race>{subrace || race}</Styled.Race>}
+      {charClass && <Styled.CharClass>{charClass}</Styled.CharClass>}
+      {background && <Styled.Background>{background}</Styled.Background>}
     </Styled.Wrapper>
   )
+}
+
+interface IProps {
+  charName?: string
+  race?: string
+  subrace?: string
+  charClass?: string
+  background?: string
 }
 
 export default CharacterTitles

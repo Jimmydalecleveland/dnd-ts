@@ -28,11 +28,13 @@ const dummyCharacter: ICharacter = {
   charClass: {
     ID: '5',
     name: 'barbarian',
+    hitDice: '1d12',
     numSkillProficiencies: 2,
   },
   background: {
     ID: '10',
     name: 'sailor',
+    startingGp: 10,
   },
   abilityScores: {
     str: 20,
@@ -42,15 +44,15 @@ const dummyCharacter: ICharacter = {
     wis: 6,
     cha: 0,
   },
-  skills: ['1', '2'],
-  startingEquipment: {
-    weapons: [
-      {
-        ID: '1',
-        quantity: 1,
-      },
-    ],
-  },
+  skills: [],
+  // startingEquipment: {
+  //   weapons: [
+  //     {
+  //       ID: '1',
+  //       quantity: 1,
+  //     },
+  //   ],
+  // },
 }
 
 export default dummyCharacter

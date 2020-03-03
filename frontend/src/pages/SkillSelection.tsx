@@ -3,13 +3,8 @@ import { RouteComponentProps } from 'react-router-dom'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
 
-import {
-  Skills,
-  Skills_skills,
-  Skills_background_skills,
-  Skills_race_skills,
-} from '../graphql-types'
-import logger from '../logger'
+import { Skills } from './gql-types/Skills'
+import logger from '../utils/logger'
 import { useCharacter } from '../context'
 import { IAbilityScores } from '../interfaces'
 import * as Styled from './SkillSelection.styles'
@@ -21,6 +16,10 @@ import TitledList from '../components/TitledList'
 
 const SkillSelection = ({ history }: RouteComponentProps) => {
   const { character, setCharacter } = useCharacter()
+  if (!character.charClass || !character.race) {
+    return <h1>You should not be here!</h1>
+  }
+
   const { data, error } = useQuery<Skills>(SKILLS_QUERY, {
     variables: {
       charClassID: character.charClass.ID,
@@ -68,7 +67,7 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
         data.background.skills
           .map((backgroundSkill) => backgroundSkill.ID)
           .includes(ID)
-      const isActive = character.skills.includes(ID)
+      const isActive = character.skills && character.skills.includes(ID)
       return { ID, name, disabled, isActive }
     })
     return result
@@ -99,12 +98,13 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
             )}
           </section>
           <ProficiencyList
-            list={generateSkillSet(character.abilityScores, {
+            list={{
+              characterAbilityScores: character.abilityScores,
               skills: data.skills,
               raceSkills: data.race.skills,
               backgroundSkills: data.background.skills,
               charClassSkills: character.skills,
-            })}
+            }}
           />
         </Styled.Grid>
       )}
@@ -115,51 +115,6 @@ const SkillSelection = ({ history }: RouteComponentProps) => {
       </ActivityButton>
     </section>
   )
-}
-
-/**
- * Takes in Character's ability scores and the skills pertaining to each choice the user has made
- * thus far and gives back a list of every possible skill and the character's current value for each.
- * @param {Object} characterAbilityScores - str,dex,con,int,wis,cha values
- * @param {Object} skillProficiencies - Object comprised of every skill, and character's skills
- * from choices thus far
- * @param {Object[]} skillProficiencies[].skills - Every skill
- * @param {Object[]} skillProficiencies[].backgroundSkills - Skills from user's background choice
- * @param {Object[]} skillProficiencies[].raceSkills - Skills from user's race choice
- * @param {string[]} skillProficiencies[].charClassSkills - Character's currently selected skill IDs
- * @returns {Object[]} An array of every skill, each containing a skill's ID, name, proficient boolean,
- * and numeric value
- */
-export const generateSkillSet = (
-  characterAbilityScores: IAbilityScores,
-  {
-    skills,
-    backgroundSkills,
-    raceSkills,
-    charClassSkills,
-  }: {
-    skills: Skills_skills[]
-    backgroundSkills: Skills_background_skills[]
-    raceSkills: Skills_race_skills[]
-    charClassSkills: string[]
-  }
-) => {
-  const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
-  const raceSkillIDs = raceSkills.map((skill) => skill.ID)
-  const allProficientSkillIDs = [
-    ...backgroundSkillIDs,
-    ...raceSkillIDs,
-    ...charClassSkills,
-  ]
-
-  return skills.map((skill) => {
-    const proficient = allProficientSkillIDs.includes(skill.ID)
-    let value = Math.floor((characterAbilityScores[skill.ability] - 10) / 2)
-    if (proficient) {
-      value = value + 2
-    }
-    return { ID: skill.ID, name: skill.name, proficient, value }
-  })
 }
 
 const SKILLS_QUERY = gql`

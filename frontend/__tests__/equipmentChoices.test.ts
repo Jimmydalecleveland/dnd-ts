@@ -1,4 +1,4 @@
-import determineEquipmentChoices from '../src/equipmentChoices'
+import { determineEquipmentChoices } from '../src/utils/equipmentChoices'
 
 const mockMartialMeleeWeapons = {
   data: {
@@ -38,7 +38,7 @@ const expected = [
   [
     // Option 1
     {
-      ID: '21',
+      ID: '177',
       tableName: 'Weapon',
       text: 'a greataxe',
       quantity: 1,
@@ -53,7 +53,7 @@ const expected = [
   ],
   [
     {
-      ID: '13',
+      ID: '169',
       tableName: 'Weapon',
       text: 'two handaxes',
       quantity: 2,

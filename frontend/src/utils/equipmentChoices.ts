@@ -1,6 +1,27 @@
 import { gql } from 'apollo-boost'
-import client from './apolloClient'
+import client from '../apolloClient'
 import logger from './logger'
+
+export const defaultEquipment: { [key: string]: any[] } = {
+  barbarian: [
+    {
+      ID: '170',
+      tableName: 'Weapon',
+      text: '4x javelins',
+      quantity: 4,
+    },
+  ],
+}
+
+export const defaultGearPack: {
+  [key: string]: { ID: string; tableName: string; text: string }
+} = {
+  barbarian: {
+    ID: '5',
+    tableName: 'GearPack',
+    text: "an explorer's pack",
+  },
+}
 
 /**
  * Used for the first level equipment choices step in creating a character.
@@ -8,7 +29,9 @@ import logger from './logger'
  * map (with each class as a key) will be used to look up the appropriate questions and options.
  * @param {string} charClassName  - The character class to look up
  */
-async function determineEquipmentChoices(charClassName: string): Promise<any> {
+export async function determineEquipmentChoices(
+  charClassName: string
+): Promise<any> {
   const allMartialMeleeWeapons = await getWeapons('martial', 'melee')
   const allSimpleWeapons = await getWeapons('simple')
 
@@ -18,7 +41,7 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
       [
         // Option 1
         {
-          ID: '21',
+          ID: '177',
           tableName: 'Weapon',
           text: 'a greataxe',
           quantity: 1,
@@ -33,7 +56,7 @@ async function determineEquipmentChoices(charClassName: string): Promise<any> {
       ],
       [
         {
-          ID: '13',
+          ID: '169',
           tableName: 'Weapon',
           text: 'two handaxes',
           quantity: 2,
@@ -98,8 +121,6 @@ async function getWeapons(
 
     return weapons
   } catch (error) {
-    logger('allMartialMeleeWeapons query returned an error', error)
+    logger('allWeaponsFiltered query returned an error', error)
   }
 }
-
-export default determineEquipmentChoices

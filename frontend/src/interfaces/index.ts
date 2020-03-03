@@ -18,6 +18,7 @@ export interface IRaceTrait {
 export interface IBackground {
   ID: string
   name: string
+  startingGp: number
 }
 
 export interface IBackgroundFeature {
@@ -29,6 +30,7 @@ export interface IBackgroundFeature {
 export interface ICharClass {
   ID: string
   name: string
+  hitDice: string
   numSkillProficiencies: number
 }
 
@@ -46,7 +48,12 @@ export interface IAbilityScores {
   int: number
   wis: number
   cha: number
-  [key: string]: number
+}
+
+export interface ISkill {
+  ID: string
+  name: string
+  ability: string
 }
 
 export interface IEquipment {
@@ -57,22 +64,16 @@ export interface IEquipment {
 }
 
 export interface ICharacter {
-  ID: string
-  name: string
-  race: IRace
-  subrace: ISubrace
-  charClass: ICharClass
-  background: IBackground
-  abilityScores: IAbilityScores
-  skills: string[]
-  startingEquipment: {
-    weapons: Array<{
-      ID: string
-      quantity: number
-    }>
-    // armor: Array<{
-    //   ID: string
-    //   quantity: number
-    // }>
-  }
+  ID?: string
+  name?: string
+  race?: IRace
+  subrace?: ISubrace
+  charClass?: ICharClass
+  background?: IBackground
+  abilityScores?: IAbilityScores
+  skills?: string[]
+  startingEquipment?: Array<{
+    ID: string
+    quantity: number
+  }>
 }

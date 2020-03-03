@@ -3,7 +3,7 @@ import { IBackgroundAPI } from '../datasources/background'
 import { ICharacterAPI } from '../datasources/character'
 import { ICharClassAPI } from '../datasources/charClass'
 import { IRaceAPI } from '../datasources/race'
-import { IEquipmentAPI } from '../datasources/equipment'
+import { IItemAPI } from '../datasources/item'
 import { ISpellAPI } from '../datasources/spell'
 
 export interface ICreateCharacter {
@@ -14,15 +14,23 @@ export interface ICreateCharacter {
   backgroundID: string
   abilityScores: IAbilityScores
   skills: string[]
-  weapons: Array<{
+  items: Array<{
     ID: string
     quantity: number
   }>
+  maxHP: number
+  HP: number
+  startingGp: number
 }
 
 export interface ICharClass {
   ID: string
   name: string
+}
+
+export interface ILevelSpecific {
+  classID: string
+  classLevel: number
 }
 
 export interface ICharacter {
@@ -57,5 +65,5 @@ export interface IDataSources {
   raceAPI: IRaceAPI
   spellAPI: ISpellAPI
   skillAPI: ISkillAPI
-  equipmentAPI: IEquipmentAPI
+  itemAPI: IItemAPI
 }

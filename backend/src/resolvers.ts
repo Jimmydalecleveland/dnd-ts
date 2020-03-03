@@ -5,6 +5,7 @@ import {
   ICharClass,
   IBackground,
   IDataSources,
+  ILevelSpecific,
 } from './interfaces'
 
 const resolvers = {
@@ -19,7 +20,10 @@ const resolvers = {
         backgroundID,
         abilityScores,
         skills,
-        weapons,
+        items,
+        maxHP,
+        HP,
+        startingGp
       }: ICreateCharacter,
       { dataSources }: { dataSources: IDataSources }
     ) =>
@@ -31,7 +35,10 @@ const resolvers = {
         backgroundID,
         abilityScores,
         skills,
-        weapons,
+        items,
+        maxHP,
+        HP,
+        startingGp
       }),
     deleteCharacter: (
       _: any,
@@ -92,11 +99,28 @@ const resolvers = {
     ) => dataSources.charClassAPI.getByID({ ID }),
     skills: (_: any, __: any, { dataSources }: { dataSources: IDataSources }) =>
       dataSources.skillAPI.getAll(),
+    customItems: (
+      _: any,
+      __: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.itemAPI.getCustomItems(),
+    armor: (_: any, __: any, { dataSources }: { dataSources: IDataSources }) =>
+      dataSources.itemAPI.getArmor(),
     weapons: (
       _: any,
       { filter }: { filter?: { skillType?: string; rangeType?: string } },
       { dataSources }: { dataSources: IDataSources }
-    ) => dataSources.equipmentAPI.getWeapons(filter),
+    ) => dataSources.itemAPI.getWeapons(filter),
+    gearPacks: (
+      _: any,
+      __: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.itemAPI.getGearPacks(),
+    gearPack: (
+      _: any,
+      { ID }: { ID: string },
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.itemAPI.getGearPack({ ID }),
   },
 
   CharClass: {
@@ -110,6 +134,41 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.charClassAPI.getSkills({ ID: CharClass.ID }),
+    levelSpecifics: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getLevelSpecifics({ ID: CharClass.ID }),
+  },
+
+  CharacterClass: {
+    features: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getFeatures({ ID: CharClass.ID }),
+    skills: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getSkills({ ID: CharClass.ID }),
+    levelSpecifics: (
+      CharClass: ICharClass,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.charClassAPI.getLevelSpecifics({ ID: CharClass.ID }),
+  },
+
+  LevelSpecific: {
+    features: (
+      LevelSpecific: ILevelSpecific,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) =>
+      dataSources.charClassAPI.getLevelFeatures({
+        charClassID: LevelSpecific.classID,
+        classLevel: LevelSpecific.classLevel,
+      }),
   },
 
   Character: {
@@ -149,6 +208,26 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.characterAPI.getWeapons({ ID: Character.ID }),
+    armor: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getArmor({ ID: Character.ID }),
+    customItems: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getCustomItems({ ID: Character.ID }),
+    adventuringGear: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getAdventuringGear({ ID: Character.ID }),
+    tools: (
+      Character: ICharacter,
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.getTools({ ID: Character.ID }),
   },
 
   Race: {
@@ -188,6 +267,27 @@ const resolvers = {
       _: any,
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.backgroundAPI.getSkills({ ID: Background.ID }),
+  },
+
+  GearPack: {
+    items: (
+      GearPack: { ID: string; name: string },
+      _: any,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.itemAPI.getGearPackItems({ ID: GearPack.ID }),
+  },
+
+  GearPackItem: {
+    __resolveType(obj: any) {
+      switch (obj.type) {
+        case 'CustomItem':
+          return 'GearPackCustomItem'
+        case 'AdventuringGear':
+          return 'GearPackAdventuringGear'
+        case 'Tool':
+          return 'GearPackTool'
+      }
+    },
   },
 }
 

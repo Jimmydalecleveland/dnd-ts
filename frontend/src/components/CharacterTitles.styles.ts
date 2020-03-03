@@ -5,6 +5,9 @@ export const Wrapper = styled.section`
   text-align: center;
 `
 
+// TODO: style name
+export const CharName = styled.h1``
+
 export const Race = styled.h3`
   color: white;
   opacity: 0.6;

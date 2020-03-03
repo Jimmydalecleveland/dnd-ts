@@ -5,12 +5,12 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import darkTheme from './theme'
 
+import CharacterProvider from './context'
 import client from './apolloClient'
-import Character from './components/Character'
+import Character from './pages/Character'
 import Characters from './components/Characters'
 import GlobalStyle from './GlobalStyle'
 import Main from './components/Main'
-import MobileNav from './components/MobileNav'
 import CreateCharacter from './pages/CreateCharacter'
 import Spell from './components/Spell'
 
@@ -21,12 +21,13 @@ ReactDOM.render(
         <GlobalStyle />
         <BrowserRouter>
           <Main>
-            <Route exact path="/characters" component={Characters} />
-            <Route path="/create-character" component={CreateCharacter} />
-            <Route exact path="/character/:id" component={Character} />
+            <CharacterProvider>
+              <Route exact path="/characters" component={Characters} />
+              <Route path="/create-character" component={CreateCharacter} />
+              <Route exact path="/character/:id" component={Character} />
+            </CharacterProvider>
             <Route exact path="/spell/:id" component={Spell} />
           </Main>
-          <MobileNav />
         </BrowserRouter>
       </>
     </ThemeProvider>
