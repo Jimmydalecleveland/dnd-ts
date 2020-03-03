@@ -1922,7 +1922,51 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isDexAdded",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "maxDex",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "disadvantageOnStealth",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -1975,7 +2019,162 @@
           }
         ],
         "inputFields": null,
-        "interfaces": [],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Item",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "Item",
+        "description": null,
+        "fields": [
+          {
+            "name": "ID",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "cost",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "weight",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "QuantifiedArmor",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "QuantifiedAdventuringGear",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "QuantifiedCustomItem",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "QuantifiedTool",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "CustomItem",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Armor",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "GearPackCustomItem",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "GearPackAdventuringGear",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "GearPackTool",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "AdventuringGear",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Tool",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "kind": "SCALAR",
+        "name": "Boolean",
+        "description": "The `Boolean` scalar type represents `true` or `false`.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -2119,135 +2318,6 @@
         ],
         "enumValues": null,
         "possibleTypes": null
-      },
-      {
-        "kind": "INTERFACE",
-        "name": "Item",
-        "description": null,
-        "fields": [
-          {
-            "name": "ID",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "cost",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "weight",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "QuantifiedAdventuringGear",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "QuantifiedCustomItem",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "QuantifiedTool",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "CustomItem",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "GearPackCustomItem",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "GearPackAdventuringGear",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "GearPackTool",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "AdventuringGear",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "Tool",
-            "ofType": null
-          }
-        ]
       },
       {
         "kind": "OBJECT",
@@ -2886,17 +2956,13 @@
           }
         ],
         "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "Boolean",
-        "description": "The `Boolean` scalar type represents `true` or `false`.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Item",
+            "ofType": null
+          }
+        ],
         "enumValues": null,
         "possibleTypes": null
       },

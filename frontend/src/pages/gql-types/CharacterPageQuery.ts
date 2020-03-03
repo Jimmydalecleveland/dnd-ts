@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -58,6 +59,7 @@ export interface CharacterPageQuery_character_charClass {
   level: number;
   name: string;
   numSkillProficiencies: number;
+  savingThrowProficiencies: string[];
   hitDice: string;
   features: (CharacterPageQuery_character_charClass_features | null)[];
   levelSpecifics: (CharacterPageQuery_character_charClass_levelSpecifics | null)[];
@@ -103,7 +105,9 @@ export interface CharacterPageQuery_character_armor {
   name: string;
   type: string;
   category: string;
-  ac: string;
+  ac: number;
+  isDexAdded: boolean;
+  maxDex: number | null;
   cost: string;
   weight: string | null;
   quantity: number;

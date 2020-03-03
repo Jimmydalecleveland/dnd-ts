@@ -271,7 +271,7 @@ type GearPack {
   items: [GearPackItem]!
 }
 
-type Armor {
+type Armor implements Item {
   ID: ID!
   name: String!
   type: String!
@@ -284,12 +284,15 @@ type Armor {
   disadvantageOnStealth: Boolean!
 }
 
-type QuantifiedArmor {
+type QuantifiedArmor implements Item {
   ID: ID!
   name: String!
   type: String!
   category: String!
-  ac: String!
+  ac: Int!
+  isDexAdded: Boolean!
+  maxDex: Int
+  disadvantageOnStealth: Boolean!
   cost: String!
   weight: String
   quantity: Int!

@@ -6,12 +6,36 @@ import { RouteComponentProps } from 'react-router-dom'
 import {
   CharacterPageQuery,
   CharacterPageQueryVariables,
+  CharacterPageQuery_character_armor,
 } from './gql-types/CharacterPageQuery'
 import { getModifier } from '../utils/helpers'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
 import ProficiencyList from '../components/ProficiencyList'
 import ActivityButton from '../components/ActivityButton'
+
+const getAC = (
+  dexModifier: number,
+  equippedArmor: CharacterPageQuery_character_armor | undefined
+): number => {
+  // If this function was called without an equipped armor,
+  // return the armorless ac value
+  if (typeof equippedArmor !== 'object') return dexModifier + 10
+
+  let ac = equippedArmor.ac
+
+  // If the armor adds the dexterity modifier, check if there is a
+  // dexterity limit and add the appropriate bonus to ac.
+  if (equippedArmor.isDexAdded) {
+    if (equippedArmor.maxDex) {
+      ac = ac + Math.min(dexModifier, equippedArmor.maxDex)
+    } else {
+      ac = ac + dexModifier
+    }
+  }
+
+  return ac
+}
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const { id: characterID } = match.params
@@ -23,13 +47,10 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
       ID: characterID,
     },
   })
-  const [deleteCharacter] = useMutation<{}, {ID: string}>(
-    DELETE_CHARACTER,
-    {
-      onCompleted: () => history.push('/characters'),
-      variables: { ID: characterID },
-    }
-  )
+  const [deleteCharacter] = useMutation<{}, { ID: string }>(DELETE_CHARACTER, {
+    onCompleted: () => history.push('/characters'),
+    variables: { ID: characterID },
+  })
 
   if (loading) {
     return <p>loading...</p>
@@ -81,6 +102,9 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const intModifier = getModifier(int)
   const conModifier = getModifier(con)
 
+  // TODO: implement equipping functionality
+  const equippedArmor = armor[0]
+
   return (
     <div>
       <CharacterTitles
@@ -100,11 +124,9 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         <h3>Max HP: {maxHP}</h3>
         <h3>HP: {HP}</h3>
         <h3>Proficiency Bonus: {levelSpecifics.proficiencyBonus}</h3>
-        <h3>AC: {10 + dexModifier}</h3>
-        <h3>
-          Passive Perception: {10 + wisModifier}
-        </h3>
-          <h3>Initiative: +{dexModifier}</h3>
+        <h3>AC: {getAC(dexModifier, equippedArmor)}</h3>
+        <h3>Passive Perception: {10 + wisModifier}</h3>
+        <h3>Initiative: +{dexModifier}</h3>
       </section>
 
       <section>
@@ -293,6 +315,8 @@ const CHARACTER_PAGE_QUERY = gql`
         type
         category
         ac
+        isDexAdded
+        maxDex
         cost
         weight
         quantity
