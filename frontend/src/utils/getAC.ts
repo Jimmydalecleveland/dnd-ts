@@ -5,10 +5,11 @@ const getAC = (
   equippedArmor:
     | { ac: number; isDexAdded: boolean; maxDex: number | null }
     | undefined
+    | null
 ): number => {
   // If this function was called without an equipped armor,
   // return the armorless ac value
-  if (typeof equippedArmor !== 'object') return dexModifier + 10
+  if (!equippedArmor) return dexModifier + 10
 
   let ac = equippedArmor.ac
 

@@ -16,4 +16,9 @@ describe('getAC', () => {
   test('should subtract from AC when dex modifier is negative', () => {
     expect(getAC(-1, { ac: 11, isDexAdded: true, maxDex: 2 })).toBe(10)
   })
+
+  test('should return default AC when no armor is passed', () => {
+    expect(getAC(1, undefined)).toBe(11)
+    expect(getAC(1, null)).toBe(11)
+  })
 })
