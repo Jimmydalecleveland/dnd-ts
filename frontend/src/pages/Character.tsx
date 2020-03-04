@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { RouteComponentProps } from 'react-router-dom'
@@ -15,6 +15,8 @@ import ActivityButton from '../components/ActivityButton'
 import getAC from '../utils/getAC'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
+  const [equippedArmor, setEquippedArmor] = useState()
+
   const { id: characterID } = match.params
   const { loading, data } = useQuery<
     CharacterPageQuery,
@@ -79,9 +81,6 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const intModifier = getModifier(int)
   const conModifier = getModifier(con)
 
-  // TODO: implement equipping functionality
-  const equippedArmor = armor[0]
-
   return (
     <div>
       <CharacterTitles
@@ -132,6 +131,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         ></ProficiencyList>
       </section>
 
+      {/* TODO: Saving throws */}
       <section>
         <ProficiencyList
           list={{
@@ -165,6 +165,13 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         {armor.map((singleArmor) => (
           <p key={singleArmor.ID}>
             {singleArmor.quantity}x {singleArmor.name}
+            {equippedArmor && equippedArmor.ID === singleArmor.ID ? (
+              <button onClick={() => setEquippedArmor(null)}>Unequip</button>
+            ) : (
+              <button onClick={() => setEquippedArmor(singleArmor)}>
+                Equip
+              </button>
+            )}
           </p>
         ))}
         <h3>Adventuring Gear</h3>
