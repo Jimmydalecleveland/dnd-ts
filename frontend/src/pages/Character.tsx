@@ -6,36 +6,13 @@ import { RouteComponentProps } from 'react-router-dom'
 import {
   CharacterPageQuery,
   CharacterPageQueryVariables,
-  CharacterPageQuery_character_armor,
 } from './gql-types/CharacterPageQuery'
 import { getModifier } from '../utils/helpers'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
 import ProficiencyList from '../components/ProficiencyList'
 import ActivityButton from '../components/ActivityButton'
-
-const getAC = (
-  dexModifier: number,
-  equippedArmor: CharacterPageQuery_character_armor | undefined
-): number => {
-  // If this function was called without an equipped armor,
-  // return the armorless ac value
-  if (typeof equippedArmor !== 'object') return dexModifier + 10
-
-  let ac = equippedArmor.ac
-
-  // If the armor adds the dexterity modifier, check if there is a
-  // dexterity limit and add the appropriate bonus to ac.
-  if (equippedArmor.isDexAdded) {
-    if (equippedArmor.maxDex) {
-      ac = ac + Math.min(dexModifier, equippedArmor.maxDex)
-    } else {
-      ac = ac + dexModifier
-    }
-  }
-
-  return ac
-}
+import getAC from '../utils/getAC'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
   const { id: characterID } = match.params
