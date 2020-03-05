@@ -11,6 +11,7 @@ import { getModifier } from '../utils/helpers'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
 import ProficiencyList from '../components/ProficiencyList'
+import SavingThrowList from '../components/SavingThrowList'
 import ActivityButton from '../components/ActivityButton'
 import getAC from '../utils/getAC'
 
@@ -119,19 +120,17 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         })}
       </section>
 
+      {/* TODO: Saving throws */}
       <section>
-        <ProficiencyList
+        <SectionHeader>Saving Throws</SectionHeader>
+        <SavingThrowList
           list={{
+            proficiencies: charClass.savingThrowProficiencies,
             characterAbilityScores: abilityScores,
-            skills: data.skills,
-            backgroundSkills: background.skills,
-            raceSkills: race.skills,
-            charClassSkills: skills,
           }}
-        ></ProficiencyList>
+        ></SavingThrowList>
       </section>
 
-      {/* TODO: Saving throws */}
       <section>
         <ProficiencyList
           list={{
