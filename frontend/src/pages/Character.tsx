@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import {
   CharacterPageQuery,
   CharacterPageQueryVariables,
+  CharacterPageQuery_character_armor,
 } from './gql-types/CharacterPageQuery'
 import { getModifier } from '../utils/helpers'
 import { SectionHeader } from '../components/SectionHeader.styles'
@@ -16,7 +17,7 @@ import ActivityButton from '../components/ActivityButton'
 import getAC from '../utils/getAC'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
-  const [equippedArmor, setEquippedArmor] = useState()
+  const [equippedArmor, setEquippedArmor] = useState<CharacterPageQuery_character_armor | undefined>()
 
   const { id: characterID } = match.params
   const { loading, data } = useQuery<
@@ -31,6 +32,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     onCompleted: () => history.push('/characters'),
     variables: { ID: characterID },
   })
+  const [addSuccessfulDeathSave] = useMutation(UPDATE_DEATH_SAVE_SUCCESSES, { variables: { ID: characterID, deathsaves: { successes: 1, failures: 0 } }})
 
   if (loading) {
     return <p>loading...</p>
@@ -66,6 +68,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     gp,
     ep,
     pp,
+    deathsaves
   } = data.character
 
   const levelSpecifics = charClass.levelSpecifics[0]
@@ -104,6 +107,10 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         <h3>AC: {getAC(dexModifier, equippedArmor)}</h3>
         <h3>Passive Perception: {10 + wisModifier}</h3>
         <h3>Initiative: +{dexModifier}</h3>
+        <h3>Death Saving Throws:</h3>
+        <button onClick={addSuccessfulDeathSave}>Add Successful Save</button>
+        <h4>Successes: {deathsaves.successes}</h4>
+        <h4>Failures: {deathsaves.failures}</h4>
       </section>
 
       <section>
@@ -330,6 +337,10 @@ const CHARACTER_PAGE_QUERY = gql`
         description
         quantity
       }
+      deathsaves {
+        successes
+        failures
+      }
     }
     skills {
       ID
@@ -342,6 +353,12 @@ const CHARACTER_PAGE_QUERY = gql`
 const DELETE_CHARACTER = gql`
   mutation DeleteCharacter($ID: ID!) {
     deleteCharacter(ID: $ID)
+  }
+`
+
+const UPDATE_DEATH_SAVE_SUCCESSES = gql`
+  mutation UpdateCharacter($ID: ID!, $deathsaves: DeathsavesInput) {
+    updateCharacter(ID: $ID, deathsaves: $deathsaves)
   }
 `
 

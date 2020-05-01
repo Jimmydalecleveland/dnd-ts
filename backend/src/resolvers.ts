@@ -1,6 +1,7 @@
 import {
   ICharacter,
   ICreateCharacter,
+  IUpdateCharacter,
   IRace,
   ICharClass,
   IBackground,
@@ -45,6 +46,11 @@ const resolvers = {
       { ID }: { ID: string },
       { dataSources }: { dataSources: IDataSources }
     ) => dataSources.characterAPI.deleteByID({ ID }),
+    updateCharacter: (
+      _: any,
+      { ID, deathsaves }: IUpdateCharacter,
+      { dataSources }: { dataSources: IDataSources }
+    ) => dataSources.characterAPI.updateByID({ ID, deathsaves })
   },
 
   Query: {

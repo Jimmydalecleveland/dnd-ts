@@ -23,6 +23,14 @@ export interface ICreateCharacter {
   startingGp: number
 }
 
+export interface IUpdateCharacter {
+  ID: string
+  deathsaves?: {
+    successes: number
+    failures: number
+  }
+}
+
 export interface ICharClass {
   ID: string
   name: string

@@ -2,7 +2,7 @@ import { DataSource } from 'apollo-datasource'
 import db from '../db'
 import format from 'pg-format'
 import logger from '../logger'
-import { ICreateCharacter, ICharacter } from '../interfaces'
+import { ICreateCharacter, ICharacter, IUpdateCharacter } from '../interfaces'
 
 export interface ICharacterAPI extends DataSource {
   context: any
@@ -18,6 +18,7 @@ export interface ICharacterAPI extends DataSource {
     skills,
     items,
   }: ICreateCharacter): Promise<object>
+  updateByID({ ID, deathsaves }: IUpdateCharacter): Promise<number>
   deleteByID({ ID }: { ID: string }): Promise<number>
   getRace({ ID }: { ID: string }): Promise<object>
   getSubrace({ ID }: { ID: string }): Promise<object>
@@ -142,6 +143,21 @@ class CharacterAPI implements ICharacterAPI {
         logger.error('createCharacter returned an error:', error)
         throw new Error(error)
       })
+  }
+
+  public updateByID(characterData: IUpdateCharacter) {
+      const { ID, deathsaves } = characterData
+
+      logger.info('Character:updateByID request started:', characterData)
+      return db.query(
+        `
+        UPDATE "Character"
+        SET deathsaves = $1
+        WHERE "Character"."ID" = $2
+        `,
+        [JSON.stringify(deathsaves), ID]
+      )
+      .then((response) => response.rowCount)
   }
 
   public deleteByID({ ID }: { ID: string }) {
