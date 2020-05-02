@@ -157,6 +157,7 @@ export interface CharacterPageQuery_character {
   name: string;
   maxHP: number;
   HP: number;
+  tempHP: number;
   cp: number | null;
   sp: number | null;
   gp: number | null;

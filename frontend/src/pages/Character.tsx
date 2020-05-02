@@ -63,6 +63,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     customItems,
     maxHP,
     HP,
+    tempHP,
     cp,
     sp,
     gp,
@@ -103,6 +104,7 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         <h3>Total Hit Dice: {charClassLevel}</h3>
         <h3>Max HP: {maxHP}</h3>
         <h3>HP: {HP}</h3>
+        <h3>Temporary HP: {tempHP || '0'}</h3>
         <h3>Proficiency Bonus: {levelSpecifics.proficiencyBonus}</h3>
         <h3>AC: {getAC(dexModifier, equippedArmor)}</h3>
         <h3>Passive Perception: {10 + wisModifier}</h3>
@@ -228,6 +230,7 @@ const CHARACTER_PAGE_QUERY = gql`
       name
       maxHP
       HP
+      tempHP
       cp
       sp
       gp

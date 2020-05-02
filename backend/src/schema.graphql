@@ -57,6 +57,7 @@ type Character {
   tools: [QuantifiedTool]
   HP: Int!
   maxHP: Int!
+  tempHP: Int
   cp: Int
   sp: Int
   gp: Int
