@@ -13,7 +13,7 @@ type Mutation {
     startingGp: Int!
   ): ID!
   deleteCharacter(ID: ID!): Int
-  updateCharacter(ID: ID! deathsaves: DeathsavesInput): Int
+  updateCharacter(input: UpdateCharacterInput): Int
 }
 
 type Query {
@@ -66,12 +66,13 @@ type Character {
   deathsaves: Deathsaves
 }
 
-type Deathsaves {
-  successes: Int
-  failures: Int
+input UpdateCharacterInput {
+  ID: ID!
+  deathsaveSuccesses: Int
+  deathsaveFailures: Int
 }
 
-input DeathsavesInput {
+type Deathsaves {
   successes: Int
   failures: Int
 }

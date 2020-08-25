@@ -32,7 +32,8 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     onCompleted: () => history.push('/characters'),
     variables: { ID: characterID },
   })
-  const [addSuccessfulDeathSave] = useMutation(UPDATE_DEATH_SAVE_SUCCESSES, { variables: { ID: characterID, deathsaves: { successes: 1, failures: 0 } }})
+  const [setDeathSaveSuccesses] = useMutation(UPDATE_DEATH_SAVE_SUCCESSES)
+  const [setDeathSaveFailures] = useMutation(UPDATE_DEATH_SAVE_FAILURES)
 
   if (loading) {
     return <p>loading...</p>
@@ -110,9 +111,14 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         <h3>Passive Perception: {10 + wisModifier}</h3>
         <h3>Initiative: +{dexModifier}</h3>
         <h3>Death Saving Throws:</h3>
-        <button onClick={addSuccessfulDeathSave}>Add Successful Save</button>
         <h4>Successes: {deathsaves.successes}</h4>
+        <button onClick={() => setDeathSaveSuccesses({ variables: { ID: characterID, deathsaveSuccesses: 1  }})}>1</button>
+        <button onClick={() => setDeathSaveSuccesses({ variables: { ID: characterID, deathsaveSuccesses: 2  }})}>2</button>
+        <button onClick={() => setDeathSaveSuccesses({ variables: { ID: characterID, deathsaveSuccesses: 3  }})}>3</button>
         <h4>Failures: {deathsaves.failures}</h4>
+        <button onClick={() => setDeathSaveFailures({ variables: { ID: characterID, deathsaveFailures: 1 }})}>1</button>
+        <button onClick={() => setDeathSaveFailures({ variables: { ID: characterID, deathsaveFailures: 2 }})}>2</button>
+        <button onClick={() => setDeathSaveFailures({ variables: { ID: characterID, deathsaveFailures: 3 }})}>3</button>
       </section>
 
       <section>
@@ -360,9 +366,16 @@ const DELETE_CHARACTER = gql`
 `
 
 const UPDATE_DEATH_SAVE_SUCCESSES = gql`
-  mutation UpdateCharacter($ID: ID!, $deathsaves: DeathsavesInput) {
+  mutation UpdateDeathSaveSuccesses($ID: ID!, $deathsaveSuccesses: Int) {
     updateCharacter(ID: $ID, deathsaves: $deathsaves)
   }
 `
+
+const UPDATE_DEATH_SAVE_FAILURES = gql`
+  mutation UpdateDeathSaveFailures($ID: ID!, $deathsaveFailures: Int) {
+    updateCharacter(ID: $ID, deathsaves: $deathsaves)
+  }
+`
+
 
 export default Character

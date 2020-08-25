@@ -2,12 +2,12 @@ import { DataSource } from 'apollo-datasource'
 import db from '../db'
 import format from 'pg-format'
 import logger from '../logger'
-import { ICreateCharacter, ICharacter, IUpdateCharacter } from '../interfaces'
+import { ICreateCharacter, ICharacterRow, IUpdateCharacter } from '../interfaces'
 
 export interface ICharacterAPI extends DataSource {
   context: any
   getAll(): Promise<object[]>
-  getByID({ ID }: { ID: string }): Promise<object>
+  getByID({ ID }: { ID: string }): Promise<void | object>
   createCharacter({
     name,
     raceID,
@@ -42,8 +42,7 @@ class CharacterAPI implements ICharacterAPI {
   public getAll() {
     return db.query('SELECT * FROM "Character"').then((response) =>
       response.rows.map((row) => {
-        const { str, dex, con, int, wis, cha, ...rest } = row
-        return { abilityScores: { str, dex, con, int, wis, cha }, ...rest }
+        return this.buildCharacterObject(row)
       })
     )
   }
@@ -53,10 +52,7 @@ class CharacterAPI implements ICharacterAPI {
 
     return db
       .query('SELECT * FROM "Character" WHERE "ID" = $1', [Number(ID)])
-      .then((response) => {
-        const { str, dex, con, int, wis, cha, ...rest } = response.rows[0]
-        return { abilityScores: { str, dex, con, int, wis, cha }, ...rest }
-      })
+      .then((response) => this.buildCharacterObject(response.rows[0]))
       .catch((error) => {
         logger.error(`getCharacter request returned an error: ${error.message}`)
       })
@@ -146,17 +142,17 @@ class CharacterAPI implements ICharacterAPI {
   }
 
   public updateByID(characterData: IUpdateCharacter) {
-      const { ID, deathsaves } = characterData
+    const { ID, deathsaveSuccesses, deathsaveFailures } = characterData
 
-      logger.info('Character:updateByID request started:', characterData)
-      return db.query(
-        `
+    logger.info('Character:updateByID request started:', characterData)
+    return db.query(
+      `
         UPDATE "Character"
-        SET deathsaves = $1
+        SET deathsaveSuccesses = $1
         WHERE "Character"."ID" = $2
         `,
-        [JSON.stringify(deathsaves), ID]
-      )
+      [JSON.stringify(deathsaveSuccesses), ID]
+    )
       .then((response) => response.rowCount)
   }
 
@@ -299,6 +295,11 @@ class CharacterAPI implements ICharacterAPI {
         [Number(ID)]
       )
       .then((response) => response.rows)
+  }
+
+  private buildCharacterObject(row: ICharacterRow) {
+    const { str, dex, con, int, wis, cha, deathSaveSuccesses, deathSaveFailures, ...rest } = row
+    return { abilityScores: { str, dex, con, int, wis, cha }, deathsaves: { successes: deathSaveSuccesses, failures: deathSaveFailures }, ...rest }
   }
 }
 
