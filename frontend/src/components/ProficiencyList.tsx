@@ -54,7 +54,7 @@ export const generateSkillSet = ({
   backgroundSkills: ISkill[]
   raceSkills: ISkill[]
   charClassSkills: ISkill[]
-}): Array<{ ID: string, name: string, proficient: boolean, value: number}> => {
+}): Array<{ ID: string; name: string; proficient: boolean; value: number }> => {
   const backgroundSkillIDs = backgroundSkills.map((skill) => skill.ID)
   const raceSkillIDs = raceSkills.map((skill) => skill.ID)
   const charClassSkillIDs = charClassSkills.map((skill) => skill.ID)
@@ -68,6 +68,7 @@ export const generateSkillSet = ({
     const proficient = allProficientSkillIDs.includes(skill.ID)
     let value = Math.floor((characterAbilityScores[skill.ability] - 10) / 2)
     if (proficient) {
+      // TODO: should not be hard coded
       value = value + 2
     }
     return { ID: skill.ID, name: skill.name, proficient, value }

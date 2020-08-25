@@ -6,16 +6,18 @@ import { RouteComponentProps } from 'react-router-dom'
 import {
   CharacterPageQuery,
   CharacterPageQueryVariables,
+  CharacterPageQuery_character_armor,
 } from './gql-types/CharacterPageQuery'
 import { getModifier } from '../utils/helpers'
 import { SectionHeader } from '../components/SectionHeader.styles'
 import CharacterTitles from '../components/CharacterTitles'
 import ProficiencyList from '../components/ProficiencyList'
+import SavingThrowList from '../components/SavingThrowList'
 import ActivityButton from '../components/ActivityButton'
 import getAC from '../utils/getAC'
 
 const Character = ({ match, history }: RouteComponentProps<IProps>) => {
-  const [equippedArmor, setEquippedArmor] = useState()
+  const [equippedArmor, setEquippedArmor] = useState<CharacterPageQuery_character_armor | undefined>()
 
   const { id: characterID } = match.params
   const { loading, data } = useQuery<
@@ -30,6 +32,8 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     onCompleted: () => history.push('/characters'),
     variables: { ID: characterID },
   })
+  const [setDeathSaveSuccesses] = useMutation(UPDATE_DEATH_SAVE_SUCCESSES)
+  const [setDeathSaveFailures] = useMutation(UPDATE_DEATH_SAVE_FAILURES)
 
   if (loading) {
     return <p>loading...</p>
@@ -60,11 +64,13 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
     customItems,
     maxHP,
     HP,
+    tempHP,
     cp,
     sp,
     gp,
     ep,
     pp,
+    deathsaves
   } = data.character
 
   const levelSpecifics = charClass.levelSpecifics[0]
@@ -99,10 +105,20 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         <h3>Total Hit Dice: {charClassLevel}</h3>
         <h3>Max HP: {maxHP}</h3>
         <h3>HP: {HP}</h3>
+        <h3>Temporary HP: {tempHP || '0'}</h3>
         <h3>Proficiency Bonus: {levelSpecifics.proficiencyBonus}</h3>
         <h3>AC: {getAC(dexModifier, equippedArmor)}</h3>
         <h3>Passive Perception: {10 + wisModifier}</h3>
         <h3>Initiative: +{dexModifier}</h3>
+        <h3>Death Saving Throws:</h3>
+        <h4>Successes: {deathsaves.successes}</h4>
+        <button onClick={() => setDeathSaveSuccesses({ variables: { ID: characterID, deathsaveSuccesses: 1  }})}>1</button>
+        <button onClick={() => setDeathSaveSuccesses({ variables: { ID: characterID, deathsaveSuccesses: 2  }})}>2</button>
+        <button onClick={() => setDeathSaveSuccesses({ variables: { ID: characterID, deathsaveSuccesses: 3  }})}>3</button>
+        <h4>Failures: {deathsaves.failures}</h4>
+        <button onClick={() => setDeathSaveFailures({ variables: { ID: characterID, deathsaveFailures: 1 }})}>1</button>
+        <button onClick={() => setDeathSaveFailures({ variables: { ID: characterID, deathsaveFailures: 2 }})}>2</button>
+        <button onClick={() => setDeathSaveFailures({ variables: { ID: characterID, deathsaveFailures: 3 }})}>3</button>
       </section>
 
       <section>
@@ -119,19 +135,17 @@ const Character = ({ match, history }: RouteComponentProps<IProps>) => {
         })}
       </section>
 
+      {/* TODO: Saving throws */}
       <section>
-        <ProficiencyList
+        <SectionHeader>Saving Throws</SectionHeader>
+        <SavingThrowList
           list={{
+            proficiencies: charClass.savingThrowProficiencies,
             characterAbilityScores: abilityScores,
-            skills: data.skills,
-            backgroundSkills: background.skills,
-            raceSkills: race.skills,
-            charClassSkills: skills,
           }}
-        ></ProficiencyList>
+        ></SavingThrowList>
       </section>
 
-      {/* TODO: Saving throws */}
       <section>
         <ProficiencyList
           list={{
@@ -222,6 +236,7 @@ const CHARACTER_PAGE_QUERY = gql`
       name
       maxHP
       HP
+      tempHP
       cp
       sp
       gp
@@ -331,6 +346,10 @@ const CHARACTER_PAGE_QUERY = gql`
         description
         quantity
       }
+      deathsaves {
+        successes
+        failures
+      }
     }
     skills {
       ID
@@ -345,5 +364,18 @@ const DELETE_CHARACTER = gql`
     deleteCharacter(ID: $ID)
   }
 `
+
+const UPDATE_DEATH_SAVE_SUCCESSES = gql`
+  mutation UpdateDeathSaveSuccesses($ID: ID!, $deathsaveSuccesses: Int) {
+    updateCharacter(ID: $ID, deathsaves: $deathsaves)
+  }
+`
+
+const UPDATE_DEATH_SAVE_FAILURES = gql`
+  mutation UpdateDeathSaveFailures($ID: ID!, $deathsaveFailures: Int) {
+    updateCharacter(ID: $ID, deathsaves: $deathsaves)
+  }
+`
+
 
 export default Character

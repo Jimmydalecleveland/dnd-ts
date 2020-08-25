@@ -16,6 +16,11 @@ export interface AbilityScoresInput {
   cha: number;
 }
 
+export interface DeathsavesInput {
+  successes?: number | null;
+  failures?: number | null;
+}
+
 export interface ItemInput {
   ID: string;
   quantity?: number | null;

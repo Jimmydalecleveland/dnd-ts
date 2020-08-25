@@ -2,12 +2,12 @@ import { DataSource } from 'apollo-datasource'
 import db from '../db'
 import format from 'pg-format'
 import logger from '../logger'
-import { ICreateCharacter, ICharacter } from '../interfaces'
+import { ICreateCharacter, ICharacterRow, IUpdateCharacter } from '../interfaces'
 
 export interface ICharacterAPI extends DataSource {
   context: any
   getAll(): Promise<object[]>
-  getByID({ ID }: { ID: string }): Promise<object>
+  getByID({ ID }: { ID: string }): Promise<void | object>
   createCharacter({
     name,
     raceID,
@@ -18,6 +18,7 @@ export interface ICharacterAPI extends DataSource {
     skills,
     items,
   }: ICreateCharacter): Promise<object>
+  updateByID({ ID, deathsaves }: IUpdateCharacter): Promise<number>
   deleteByID({ ID }: { ID: string }): Promise<number>
   getRace({ ID }: { ID: string }): Promise<object>
   getSubrace({ ID }: { ID: string }): Promise<object>
@@ -41,8 +42,7 @@ class CharacterAPI implements ICharacterAPI {
   public getAll() {
     return db.query('SELECT * FROM "Character"').then((response) =>
       response.rows.map((row) => {
-        const { str, dex, con, int, wis, cha, ...rest } = row
-        return { abilityScores: { str, dex, con, int, wis, cha }, ...rest }
+        return this.buildCharacterObject(row)
       })
     )
   }
@@ -52,10 +52,7 @@ class CharacterAPI implements ICharacterAPI {
 
     return db
       .query('SELECT * FROM "Character" WHERE "ID" = $1', [Number(ID)])
-      .then((response) => {
-        const { str, dex, con, int, wis, cha, ...rest } = response.rows[0]
-        return { abilityScores: { str, dex, con, int, wis, cha }, ...rest }
-      })
+      .then((response) => this.buildCharacterObject(response.rows[0]))
       .catch((error) => {
         logger.error(`getCharacter request returned an error: ${error.message}`)
       })
@@ -142,6 +139,21 @@ class CharacterAPI implements ICharacterAPI {
         logger.error('createCharacter returned an error:', error)
         throw new Error(error)
       })
+  }
+
+  public updateByID(characterData: IUpdateCharacter) {
+    const { ID, deathsaveSuccesses, deathsaveFailures } = characterData
+
+    logger.info('Character:updateByID request started:', characterData)
+    return db.query(
+      `
+        UPDATE "Character"
+        SET deathsaveSuccesses = $1
+        WHERE "Character"."ID" = $2
+        `,
+      [JSON.stringify(deathsaveSuccesses), ID]
+    )
+      .then((response) => response.rowCount)
   }
 
   public deleteByID({ ID }: { ID: string }) {
@@ -283,6 +295,11 @@ class CharacterAPI implements ICharacterAPI {
         [Number(ID)]
       )
       .then((response) => response.rows)
+  }
+
+  private buildCharacterObject(row: ICharacterRow) {
+    const { str, dex, con, int, wis, cha, deathSaveSuccesses, deathSaveFailures, ...rest } = row
+    return { abilityScores: { str, dex, con, int, wis, cha }, deathsaves: { successes: deathSaveSuccesses, failures: deathSaveFailures }, ...rest }
   }
 }
 

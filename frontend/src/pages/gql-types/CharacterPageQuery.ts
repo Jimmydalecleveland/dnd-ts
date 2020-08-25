@@ -145,12 +145,19 @@ export interface CharacterPageQuery_character_tools {
   quantity: number;
 }
 
+export interface CharacterPageQuery_character_deathsaves {
+  __typename: "Deathsaves";
+  successes: number | null;
+  failures: number | null;
+}
+
 export interface CharacterPageQuery_character {
   __typename: "Character";
   ID: string;
   name: string;
   maxHP: number;
   HP: number;
+  tempHP: number;
   cp: number | null;
   sp: number | null;
   gp: number | null;
@@ -167,6 +174,7 @@ export interface CharacterPageQuery_character {
   customItems: (CharacterPageQuery_character_customItems | null)[] | null;
   adventuringGear: (CharacterPageQuery_character_adventuringGear | null)[] | null;
   tools: (CharacterPageQuery_character_tools | null)[] | null;
+  deathsaves: CharacterPageQuery_character_deathsaves | null;
 }
 
 export interface CharacterPageQuery_skills {

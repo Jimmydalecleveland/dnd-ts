@@ -4,6 +4,9 @@ dotenv.config()
 
 const client = new Client()
 
-client.connect()
+client.connect().catch((error) => {
+  console.log(error)
+  throw Error(error)
+})
 
 export default client

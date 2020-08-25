@@ -13,6 +13,7 @@ type Mutation {
     startingGp: Int!
   ): ID!
   deleteCharacter(ID: ID!): Int
+  updateCharacter(input: UpdateCharacterInput): Int
 }
 
 type Query {
@@ -56,11 +57,24 @@ type Character {
   tools: [QuantifiedTool]
   HP: Int!
   maxHP: Int!
+  tempHP: Int
   cp: Int
   sp: Int
   gp: Int
   ep: Int
   pp: Int
+  deathsaves: Deathsaves
+}
+
+input UpdateCharacterInput {
+  ID: ID!
+  deathsaveSuccesses: Int
+  deathsaveFailures: Int
+}
+
+type Deathsaves {
+  successes: Int
+  failures: Int
 }
 
 type Race {

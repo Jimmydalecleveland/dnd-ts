@@ -23,6 +23,12 @@ export interface ICreateCharacter {
   startingGp: number
 }
 
+export interface IUpdateCharacter {
+  ID: string
+  deathsaveSuccesses?: number
+  deathsaveFailures?: number
+}
+
 export interface ICharClass {
   ID: string
   name: string
@@ -36,6 +42,33 @@ export interface ILevelSpecific {
 export interface ICharacter {
   ID: string
   name: string
+}
+
+export interface ICharacterRow {
+  ID: number,
+  name: string,
+  charClassID: number,
+  raceID: number,
+  maxHP: number,
+  str: number,
+  dex: number,
+  con: number,
+  int: number,
+  wis: number,
+  cha: number,
+  HP: number,
+  gp?: number,
+  sp?: number,
+  cp?: number,
+  userID?: number,
+  backgroundID?: number,
+  specID?: number,
+  subraceID?: number,
+  ep?: number,
+  pp?: number,
+  tempHP?: number,
+  deathSaveSuccesses?: number,
+  deathSaveFailures?: number
 }
 
 export interface IRace {
