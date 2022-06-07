@@ -2,6 +2,8 @@
 
 This is a for fun/practice side project. The goal is to have a character creation app for D&D. We'll see where it goes from there. This is a rewrite (starting from scratch) of an older project because I wanted to learn Typescript and some other tools. The database isn't hosted anywhere so it won't run locally for anyone but me currently.
 
+**Update**: I've started to rewrite the [backend](https://github.com/Jimmydalecleveland/dnd-mimic-backend-go) in Go + GraphQL
+
 ## Tech
 
 - Node.js
